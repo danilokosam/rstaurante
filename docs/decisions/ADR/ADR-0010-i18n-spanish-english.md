@@ -15,12 +15,12 @@ En la revisión de M0 el propietario decidió que la web debe estar en **españo
 
 ## Opciones consideradas
 
-| Ámbito | Opción elegida | Alternativas descartadas |
-|---|---|---|
-| Contenido | **Localización nativa de Payload** (`localization` + `localized: true` en campos de texto) | Duplicar campos (`nameEs`, `nameEn`): no escala y ensucia el modelo. Colecciones separadas por idioma: duplica relaciones e imágenes. |
-| Textos fijos | **Diccionarios tipados propios** (`src/i18n/dictionaries/{es,en}.ts`), patrón documentado por Next.js | `next-intl` u otra librería: dependencia extra para unas decenas de cadenas; se reconsidera si crecen pluralizaciones/formatos complejos. |
-| Rutas públicas | **Prefijo de idioma**: `/es`, `/en` (`app/(frontend)/[locale]/…`); `/` redirige a `/es` | Detección automática por `Accept-Language` sin prefijo: peor para SEO y caché. Subdominios/dominios por idioma: complejidad innecesaria. |
-| Panel | `i18n.supportedLanguages` de Payload con `es` (por defecto) y `en` (traducciones oficiales de `@payloadcms/translations`, verificadas) | — |
+| Ámbito         | Opción elegida                                                                                                                         | Alternativas descartadas                                                                                                                  |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Contenido      | **Localización nativa de Payload** (`localization` + `localized: true` en campos de texto)                                             | Duplicar campos (`nameEs`, `nameEn`): no escala y ensucia el modelo. Colecciones separadas por idioma: duplica relaciones e imágenes.     |
+| Textos fijos   | **Diccionarios tipados propios** (`src/i18n/dictionaries/{es,en}.ts`), patrón documentado por Next.js                                  | `next-intl` u otra librería: dependencia extra para unas decenas de cadenas; se reconsidera si crecen pluralizaciones/formatos complejos. |
+| Rutas públicas | **Prefijo de idioma**: `/es`, `/en` (`app/(frontend)/[locale]/…`); `/` redirige a `/es`                                                | Detección automática por `Accept-Language` sin prefijo: peor para SEO y caché. Subdominios/dominios por idioma: complejidad innecesaria.  |
+| Panel          | `i18n.supportedLanguages` de Payload con `es` (por defecto) y `en` (traducciones oficiales de `@payloadcms/translations`, verificadas) | —                                                                                                                                         |
 
 ## Decisión
 

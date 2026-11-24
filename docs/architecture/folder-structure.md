@@ -1,28 +1,31 @@
 # Estructura de carpetas (planificada)
 
-Basada en la plantilla oficial `with-postgres` de Payload 3 (route groups `(frontend)` y `(payload)`), con las carpetas mínimas añadidas para el MVP. Se crea en M1 y se amplía en cada milestone. **Ninguna carpeta se crea vacía "por si acaso".**
+Basada en la plantilla oficial `with-postgres` de Payload 3 (route groups `(frontend)` y `(payload)`), con las carpetas mínimas añadidas para el MVP. Creada en M1 (estado real marcado con ✅; lo demás llega en milestones posteriores) y se amplía en cada milestone. **Ninguna carpeta se crea vacía "por si acaso".**
 
 ```
 .
 ├── MILESTONE.md                  # Fuente de verdad del estado del proyecto
 ├── README.md
 ├── docs/                         # Documentación (ver docs/README.md)
-├── docker-compose.yml            # PostgreSQL local para dev y test (M1)
+├── .github/workflows/ci.yml      # ✅ CI (ADR-0012)
+├── docker-compose.yml            # ✅ PostgreSQL 17 local (dev + test)
+├── docker/postgres/init/         # ✅ Crea la BD rstaurante_test
+├── pnpm-workspace.yaml           # ✅ Ajustes de pnpm 11 (allowBuilds)
+├── postcss.config.mjs            # ✅ Tailwind 4
 ├── .env.example                  # Variables documentadas, sin secretos (M1)
-├── next.config.ts                # withPayload(), cabeceras de seguridad, images
+├── next.config.ts                # ✅ withPayload(), redirección / → /es; cabeceras de seguridad (M7)
 ├── playwright.config.ts
 ├── vitest.config.mts
 ├── tsconfig.json                 # strict: true; alias @/* y @payload-config
 ├── eslint.config.mjs
 ├── src/
-│   ├── payload.config.ts         # Configuración raíz de Payload
+│   ├── payload.config.ts         # ✅ Configuración raíz de Payload
 │   ├── payload-types.ts          # GENERADO (pnpm generate:types) — no editar
 │   ├── app/
 │   │   ├── (frontend)/           # Web pública
-│   │   │   ├── page.tsx          # Redirección / → /es
-│   │   │   ├── [locale]/         # es | en (otro → 404)
-│   │   │   │   ├── layout.tsx    # <html lang>, cabecera con selector de idioma
-│   │   │   │   ├── page.tsx      # Home
+│   │   │   ├── [locale]/         # ✅ es | en (otro → 404 por dynamicParams = false)
+│   │   │   │   ├── layout.tsx    # ✅ <html lang>; cabecera con selector de idioma (M5)
+│   │   │   │   ├── page.tsx      # ✅ Home (provisional hasta M5)
 │   │   │   │   ├── menu/page.tsx # Carta
 │   │   │   │   ├── not-found.tsx
 │   │   │   │   └── error.tsx
@@ -37,22 +40,23 @@ Basada en la plantilla oficial `with-postgres` de Payload 3 (route groups `(fron
 │   ├── fields/                   # Campos/validadores reutilizados en varias colecciones (si los hay)
 │   ├── hooks/                    # Hooks de Payload (p. ej. revalidateSite)
 │   ├── i18n/
-│   │   ├── config.ts             # locales soportados, locale por defecto
+│   │   ├── config.ts             # ✅ locales soportados, locale por defecto, isLocale
 │   │   └── dictionaries/         # es.ts, en.ts (textos fijos de la web)
 │   ├── lib/
-│   │   ├── env.ts                # Validación de variables de entorno
+│   │   ├── env.ts                # ✅ Validación de variables de entorno
 │   │   ├── content/              # Consultas de la web pública vía Local API
 │   │   └── *.ts                  # Lógica pura: precios (EUR), alérgenos, horarios, enlaces, JSON-LD
 │   ├── components/               # Componentes de UI de la web pública
 │   │   └── sections/             # Hero, About, Featured, Gallery, Hours, Contact
-│   └── styles/                   # globals.css (Tailwind)
+│   ├── migrations/               # ✅ Migraciones generadas por Payload (no editar a mano)
+│   └── styles/                   # ✅ globals.css (Tailwind, solo web pública)
 ├── scripts/
 │   └── seed.ts                   # Contenido demo (M7) y primer usuario de desarrollo
 └── tests/
     ├── unit/                     # Vitest: lógica pura de src/lib
     ├── int/                      # Vitest: Payload Local API + PostgreSQL real
     ├── e2e/                      # Playwright: flujos críticos
-    └── helpers/                  # Utilidades de test (crear usuario, limpiar BD…)
+    └── helpers/                  # ✅ testDatabase (guarda *_test), resetDatabase
 ```
 
 ## Reglas

@@ -13,20 +13,20 @@ Excluido: código de la aplicación, instalación de dependencias, `git init`, c
 
 ## Requisitos del milestone y cómo se cumplieron
 
-| # | Requisito | Entregable |
-|---|---|---|
-| 1 | Inspeccionar el repositorio | Directorio vacío, no es repositorio git. Nada que preservar. |
-| 2 | Verificar compatibilidad del stack | [ADR-0001](../decisions/ADR/ADR-0001-tech-stack-and-versions.md) (npm registry + plantilla oficial `v3.94.2`; tipos de `payload@3.94.2` inspeccionados) |
-| 3 | Visión, público, alcance | [vision.md](../product/vision.md), [mvp-scope.md](../product/mvp-scope.md), [future-proposals.md](../product/future-proposals.md) |
-| 4 | Requisitos funcionales y no funcionales | [requirements.md](../product/requirements.md) |
-| 5 | User stories y criterios de aceptación | [user-stories.md](../product/user-stories.md) |
-| 6 | Arquitectura | [architecture.md](../architecture/architecture.md), [data-flows.md](../architecture/data-flows.md), [ADR-0002](../decisions/ADR/ADR-0002-single-instance-monolith.md) |
-| 7 | Modelo de datos inicial | [data-model.md](../architecture/data-model.md), [ADR-0005](../decisions/ADR/ADR-0005-content-model.md) |
-| 8 | Estructura del proyecto | [folder-structure.md](../architecture/folder-structure.md) |
-| 9 | Estrategias: testing, seguridad, almacenamiento, publicación, despliegue | [testing-strategy.md](../development/testing-strategy.md) + ADR-0008; [security.md](../architecture/security.md) + ADR-0006; ADR-0003/0004; ADR-0007; [deployment.md](../operations/deployment.md) + ADR-0009 |
-| 10 | Convenciones y setup | [conventions.md](../development/conventions.md), [setup.md](../development/setup.md), [environment.md](../operations/environment.md) |
-| 11 | `MILESTONE.md` | [/MILESTONE.md](../../MILESTONE.md) |
-| 12 | Consistencia entre documentos | Ver "Verificación" |
+| #   | Requisito                                                                | Entregable                                                                                                                                                                                                    |
+| --- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Inspeccionar el repositorio                                              | Directorio vacío, no es repositorio git. Nada que preservar.                                                                                                                                                  |
+| 2   | Verificar compatibilidad del stack                                       | [ADR-0001](../decisions/ADR/ADR-0001-tech-stack-and-versions.md) (npm registry + plantilla oficial `v3.94.2`; tipos de `payload@3.94.2` inspeccionados)                                                       |
+| 3   | Visión, público, alcance                                                 | [vision.md](../product/vision.md), [mvp-scope.md](../product/mvp-scope.md), [future-proposals.md](../product/future-proposals.md)                                                                             |
+| 4   | Requisitos funcionales y no funcionales                                  | [requirements.md](../product/requirements.md)                                                                                                                                                                 |
+| 5   | User stories y criterios de aceptación                                   | [user-stories.md](../product/user-stories.md)                                                                                                                                                                 |
+| 6   | Arquitectura                                                             | [architecture.md](../architecture/architecture.md), [data-flows.md](../architecture/data-flows.md), [ADR-0002](../decisions/ADR/ADR-0002-single-instance-monolith.md)                                         |
+| 7   | Modelo de datos inicial                                                  | [data-model.md](../architecture/data-model.md), [ADR-0005](../decisions/ADR/ADR-0005-content-model.md)                                                                                                        |
+| 8   | Estructura del proyecto                                                  | [folder-structure.md](../architecture/folder-structure.md)                                                                                                                                                    |
+| 9   | Estrategias: testing, seguridad, almacenamiento, publicación, despliegue | [testing-strategy.md](../development/testing-strategy.md) + ADR-0008; [security.md](../architecture/security.md) + ADR-0006; ADR-0003/0004; ADR-0007; [deployment.md](../operations/deployment.md) + ADR-0009 |
+| 10  | Convenciones y setup                                                     | [conventions.md](../development/conventions.md), [setup.md](../development/setup.md), [environment.md](../operations/environment.md)                                                                          |
+| 11  | `MILESTONE.md`                                                           | [/MILESTONE.md](../../MILESTONE.md)                                                                                                                                                                           |
+| 12  | Consistencia entre documentos                                            | Ver "Verificación"                                                                                                                                                                                            |
 
 ## Cambios realizados
 
@@ -53,14 +53,14 @@ No aplica código en M0 (no hay comportamiento implementado que testear). La est
 
 ## Verificación ejecutada
 
-| Comprobación | Comando / método | Resultado |
-|---|---|---|
-| Estado del repo | `ls -la`, `git status` | Directorio vacío; no es repo git |
-| Herramientas locales | `node -v`, `pnpm -v`, `docker --version` | Node 24.18.0 (⚠️ < 24.22.3 requerido), pnpm 11.20.0, Docker 29.9.3, Compose 5.7.1 |
-| Versiones y peers | `npm view <pkg> version/peerDependencies/engines` | Compatibles (ver ADR-0001) |
-| APIs de Payload usadas en el diseño | Inspección de `.d.ts` de `payload@3.94.2`, `db-postgres`, `storage-s3` | Existen: `orderable`, upload `hasMany`, `maxLoginAttempts`/`lockTime`, `csrf`/`cors`, `schemaName`, `mimeTypes`, verificación de tipo por contenido (`file-type`), `clientUploads`/`acl` en S3 |
-| Enlaces internos de la documentación | Script Python de comprobación de enlaces y anclas Markdown relativos | 117 enlaces comprobados, 0 rotos |
-| Consistencia | Revisión cruzada: IDs de requisitos ↔ user stories ↔ data-model ↔ ADRs ↔ MILESTONE.md | Sin contradicciones detectadas tras la revisión (ver "Problemas encontrados") |
+| Comprobación                         | Comando / método                                                                      | Resultado                                                                                                                                                                                      |
+| ------------------------------------ | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Estado del repo                      | `ls -la`, `git status`                                                                | Directorio vacío; no es repo git                                                                                                                                                               |
+| Herramientas locales                 | `node -v`, `pnpm -v`, `docker --version`                                              | Node 24.18.0 (⚠️ < 24.22.3 requerido), pnpm 11.20.0, Docker 29.9.3, Compose 5.7.1                                                                                                              |
+| Versiones y peers                    | `npm view <pkg> version/peerDependencies/engines`                                     | Compatibles (ver ADR-0001)                                                                                                                                                                     |
+| APIs de Payload usadas en el diseño  | Inspección de `.d.ts` de `payload@3.94.2`, `db-postgres`, `storage-s3`                | Existen: `orderable`, upload `hasMany`, `maxLoginAttempts`/`lockTime`, `csrf`/`cors`, `schemaName`, `mimeTypes`, verificación de tipo por contenido (`file-type`), `clientUploads`/`acl` en S3 |
+| Enlaces internos de la documentación | Script Python de comprobación de enlaces y anclas Markdown relativos                  | 117 enlaces comprobados, 0 rotos                                                                                                                                                               |
+| Consistencia                         | Revisión cruzada: IDs de requisitos ↔ user stories ↔ data-model ↔ ADRs ↔ MILESTONE.md | Sin contradicciones detectadas tras la revisión (ver "Problemas encontrados")                                                                                                                  |
 
 ## Problemas encontrados y resolución
 
@@ -75,13 +75,13 @@ Ver `MILESTONE.md` → "Bloqueos y riesgos" y "Preguntas abiertas".
 
 ## Revisión del propietario (2026-11-24)
 
-| Pregunta abierta | Respuesta | Impacto incorporado |
-|---|---|---|
-| Moneda e idioma | **EUR**; web en **español e inglés** | [ADR-0010](../decisions/ADR/ADR-0010-i18n-spanish-english.md) (localización Payload, rutas `/es` `/en`, diccionarios, hreflang) y [ADR-0011](../decisions/ADR/ADR-0011-allergens-and-currency.md) (EUR fijo; se elimina el campo `currency`). Actualizados: mvp-scope, requirements (RF-I18N-01…05), user-stories (US-C3, US-F5), data-model (campos 🌐), architecture, folder-structure, data-flows, testing-strategy, conventions. |
-| Hosting | **Aprobado Vercel + Supabase** | ADR-0009 → Accepted; planes concretos en M7. |
-| Alérgenos | **Incluidos en el MVP** | ADR-0011 (14 alérgenos UE, lista cerrada); RF-MENU-08, US-E5, WEB-19, data-model `dishes.allergens`. |
-| Git | Repositorio remoto creado | `git init -b main` + `git remote add origin https://github.com/danilokosam/rstaurante.git` ejecutados. **Sin commit ni push** (requieren petición expresa). No se ejecutó el `echo "# rstaurante" >> README.md` de las instrucciones de GitHub para no alterar el README existente. |
-| Node.js | Actualizado a 24.22.3 | Bloqueo B-01 cerrado (verificado con `node -v`). |
+| Pregunta abierta | Respuesta                            | Impacto incorporado                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ---------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Moneda e idioma  | **EUR**; web en **español e inglés** | [ADR-0010](../decisions/ADR/ADR-0010-i18n-spanish-english.md) (localización Payload, rutas `/es` `/en`, diccionarios, hreflang) y [ADR-0011](../decisions/ADR/ADR-0011-allergens-and-currency.md) (EUR fijo; se elimina el campo `currency`). Actualizados: mvp-scope, requirements (RF-I18N-01…05), user-stories (US-C3, US-F5), data-model (campos 🌐), architecture, folder-structure, data-flows, testing-strategy, conventions. |
+| Hosting          | **Aprobado Vercel + Supabase**       | ADR-0009 → Accepted; planes concretos en M7.                                                                                                                                                                                                                                                                                                                                                                                         |
+| Alérgenos        | **Incluidos en el MVP**              | ADR-0011 (14 alérgenos UE, lista cerrada); RF-MENU-08, US-E5, WEB-19, data-model `dishes.allergens`.                                                                                                                                                                                                                                                                                                                                 |
+| Git              | Repositorio remoto creado            | `git init -b main` + `git remote add origin https://github.com/danilokosam/rstaurante.git` ejecutados. **Sin commit ni push** (requieren petición expresa). No se ejecutó el `echo "# rstaurante" >> README.md` de las instrucciones de GitHub para no alterar el README existente.                                                                                                                                                  |
+| Node.js          | Actualizado a 24.22.3                | Bloqueo B-01 cerrado (verificado con `node -v`).                                                                                                                                                                                                                                                                                                                                                                                     |
 
 **Análisis de impacto del cambio de alcance**: i18n y alérgenos afectan a M2 (idiomas del panel), M3 (campos localizados en globals y media), M4 (campos localizados, alérgenos) y M5 (rutas por idioma, selector, hreflang, sitemap, presentación de alérgenos). Incluirlos ahora, antes de escribir código, evita migraciones de datos posteriores. M1 no cambia salvo la estructura de carpetas `[locale]` prevista.
 

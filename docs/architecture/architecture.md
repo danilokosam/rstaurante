@@ -24,14 +24,14 @@
 
 ## Componentes
 
-| Componente | Responsabilidad | Tecnología |
-|---|---|---|
-| Web pública | Renderizar contenido publicado; SEO; accesibilidad. Solo lectura. | Next.js App Router, React Server Components, Tailwind CSS |
-| Panel CMS | UI de edición, autenticación, gestión de imágenes. | Payload Admin (`/admin`), personalizado solo mediante configuración (labels, descripciones, idioma) |
-| API | REST de Payload para el panel. GraphQL **deshabilitado** (no se usa; reduce superficie). | Payload REST (`/api/*`) |
-| Dominio / contenido | Esquema de contenido, validación, control de acceso, hooks de revalidación. | Configuración de Payload (TypeScript) |
-| Persistencia | Datos estructurados y versiones. | PostgreSQL gestionado en Supabase vía `@payloadcms/db-postgres` (Drizzle) |
-| Archivos | Imágenes originales y tamaños generados. | Supabase Storage (API S3) vía `@payloadcms/storage-s3` |
+| Componente          | Responsabilidad                                                                          | Tecnología                                                                                          |
+| ------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Web pública         | Renderizar contenido publicado; SEO; accesibilidad. Solo lectura.                        | Next.js App Router, React Server Components, Tailwind CSS                                           |
+| Panel CMS           | UI de edición, autenticación, gestión de imágenes.                                       | Payload Admin (`/admin`), personalizado solo mediante configuración (labels, descripciones, idioma) |
+| API                 | REST de Payload para el panel. GraphQL **deshabilitado** (no se usa; reduce superficie). | Payload REST (`/api/*`)                                                                             |
+| Dominio / contenido | Esquema de contenido, validación, control de acceso, hooks de revalidación.              | Configuración de Payload (TypeScript)                                                               |
+| Persistencia        | Datos estructurados y versiones.                                                         | PostgreSQL gestionado en Supabase vía `@payloadcms/db-postgres` (Drizzle)                           |
+| Archivos            | Imágenes originales y tamaños generados.                                                 | Supabase Storage (API S3) vía `@payloadcms/storage-s3`                                              |
 
 ## Principios arquitectónicos
 
@@ -59,11 +59,11 @@
 
 ## Entornos
 
-| Entorno | Base de datos | Almacenamiento | Uso |
-|---|---|---|---|
-| Local (dev) | PostgreSQL en Docker (`docker compose`) | Disco local (adaptador por defecto de Payload) o Supabase si se configuran variables S3 | Desarrollo |
-| Test | PostgreSQL en Docker, base de datos separada (`*_test`) | Disco local temporal | Tests de integración y E2E |
-| Producción / demo | Supabase PostgreSQL | Supabase Storage | Restaurante real o demo |
+| Entorno           | Base de datos                                           | Almacenamiento                                                                          | Uso                        |
+| ----------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------- | -------------------------- |
+| Local (dev)       | PostgreSQL en Docker (`docker compose`)                 | Disco local (adaptador por defecto de Payload) o Supabase si se configuran variables S3 | Desarrollo                 |
+| Test              | PostgreSQL en Docker, base de datos separada (`*_test`) | Disco local temporal                                                                    | Tests de integración y E2E |
+| Producción / demo | Supabase PostgreSQL                                     | Supabase Storage                                                                        | Restaurante real o demo    |
 
 Ver [ADR-0003](../decisions/ADR/ADR-0003-database-supabase-postgres.md), [ADR-0004](../decisions/ADR/ADR-0004-media-storage.md) y [ADR-0009](../decisions/ADR/ADR-0009-deployment.md).
 

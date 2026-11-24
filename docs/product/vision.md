@@ -10,11 +10,11 @@ Un sitio web moderno para un restaurante, más un panel de administración senci
 
 ## Público objetivo
 
-| Perfil | Descripción | Necesidad principal |
-|---|---|---|
-| **Propietario / encargado del restaurante** (usuario del CMS) | Persona no técnica, usa el móvil y el ordenador a nivel básico. Poco tiempo. | Cambiar precios, platos, horarios o fotos en minutos y con seguridad de no "romper" la web. |
-| **Cliente final del restaurante** (visitante de la web) | Busca el restaurante en Google o lo encuentra en redes, normalmente desde el móvil. | Ver carta, horarios, ubicación y contactar (llamar / WhatsApp) rápidamente. |
-| **Desarrollador / proveedor** (nosotros) | Instala, configura y mantiene la instancia de cada restaurante. | Base de código limpia, documentada, segura y barata de operar. |
+| Perfil                                                        | Descripción                                                                         | Necesidad principal                                                                         |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| **Propietario / encargado del restaurante** (usuario del CMS) | Persona no técnica, usa el móvil y el ordenador a nivel básico. Poco tiempo.        | Cambiar precios, platos, horarios o fotos en minutos y con seguridad de no "romper" la web. |
+| **Cliente final del restaurante** (visitante de la web)       | Busca el restaurante en Google o lo encuentra en redes, normalmente desde el móvil. | Ver carta, horarios, ubicación y contactar (llamar / WhatsApp) rápidamente.                 |
+| **Desarrollador / proveedor** (nosotros)                      | Instala, configura y mantiene la instancia de cada restaurante.                     | Base de código limpia, documentada, segura y barata de operar.                              |
 
 ## Modelo de producto en esta fase
 

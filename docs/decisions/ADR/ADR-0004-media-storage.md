@@ -10,12 +10,12 @@ El CMS permite subir imágenes (logo, hero, platos, galería). En un hosting ser
 
 ## Opciones consideradas
 
-| Opción | Pros | Contras |
-|---|---|---|
+| Opción                                                                                               | Pros                                                                                                                                                                                      | Contras                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | 1. **Supabase Storage** con `@payloadcms/storage-s3` (Supabase ofrece un endpoint compatible con S3) | Mismo proveedor que la BD (una cuenta, una factura, un panel); plugin oficial de Payload; protocolo S3 estándar → portable a S3/R2/etc. cambiando solo variables. Plan gratuito con 1 GB. | Configuración S3 algo menos conocida (`forcePathStyle`, endpoint propio); claves S3 de Supabase con alcance de proyecto. |
-| 2. Vercel Blob (`@payloadcms/storage-vercel-blob`) | Integración sencilla si se despliega en Vercel. | Ata el almacenamiento al proveedor de hosting; segundo proveedor de datos. |
-| 3. Disco local de Payload | Cero configuración. | No persistente en serverless; no válido para producción. |
-| 4. Supabase Storage vía `supabase-js` (adaptador propio) | — | Código a medida que mantener; el plugin S3 oficial ya resuelve el problema. |
+| 2. Vercel Blob (`@payloadcms/storage-vercel-blob`)                                                   | Integración sencilla si se despliega en Vercel.                                                                                                                                           | Ata el almacenamiento al proveedor de hosting; segundo proveedor de datos.                                               |
+| 3. Disco local de Payload                                                                            | Cero configuración.                                                                                                                                                                       | No persistente en serverless; no válido para producción.                                                                 |
+| 4. Supabase Storage vía `supabase-js` (adaptador propio)                                             | —                                                                                                                                                                                         | Código a medida que mantener; el plugin S3 oficial ya resuelve el problema.                                              |
 
 ## Decisión
 

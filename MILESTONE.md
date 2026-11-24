@@ -4,12 +4,12 @@
 
 ## 1. Estado actual
 
-| | |
-|---|---|
-| **Milestone activo** | **M0 — Product Definition & Architecture** |
-| **Estado de M0** | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`. |
-| **Siguiente acción concreta** | **Iniciar M1** en una rama `feat/m1-project-foundation`: marcar M1 como activo aquí, crear `docs/milestones/milestone-1.md` y presentar objetivo, tareas y plan de tests. |
-| **No hacer** | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa. |
+|                               |                                                                                                                                                                                 |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Milestone activo**          | **M1 — Project Foundation** (rama `feat/m1-project-foundation`)                                                                                                                 |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                                                        |
+| **Siguiente acción concreta** | Con autorización del propietario: commit en `feat/m1-project-foundation`, push, PR a `main`, CI en verde en GitHub, protección de `main` y merge (squash). Después, iniciar M2. |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                                                   |
 
 ## 2. Visión resumida
 
@@ -22,22 +22,22 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 
 ## 4. Stack confirmado ([ADR-0001](docs/decisions/ADR/ADR-0001-tech-stack-and-versions.md))
 
-| Pieza | Versión / elección |
-|---|---|
-| Runtime | Node.js 24 LTS **≥ 24.22.3**, pnpm |
-| App | Next.js **16.4.x** (App Router) + React 19.2.x |
-| CMS | Payload **3.94.x** (todos los `@payloadcms/*` misma versión exacta); Payload 4 en beta → no se usa |
-| BD | Supabase PostgreSQL vía `@payloadcms/db-postgres` ([ADR-0003](docs/decisions/ADR/ADR-0003-database-supabase-postgres.md)); PostgreSQL en Docker para dev/test |
-| Archivos | Supabase Storage vía `@payloadcms/storage-s3` ([ADR-0004](docs/decisions/ADR/ADR-0004-media-storage.md)) |
-| Estilos | Tailwind CSS 4.x |
-| Lenguaje | TypeScript 5.x `strict` |
-| Tests | Vitest (unit + integración) + Playwright (E2E + axe) ([ADR-0008](docs/decisions/ADR/ADR-0008-testing-strategy.md)) |
-| Auth | Payload auth nativa (sin Supabase Auth) ([ADR-0006](docs/decisions/ADR/ADR-0006-auth-and-access-control.md)) |
-| Hosting | Vercel + Supabase — **Accepted** ([ADR-0009](docs/decisions/ADR/ADR-0009-deployment.md)) |
-| Idiomas | Español (por defecto) e inglés: localización de Payload + diccionarios propios ([ADR-0010](docs/decisions/ADR/ADR-0010-i18n-spanish-english.md)) |
-| Moneda | EUR fija ([ADR-0011](docs/decisions/ADR/ADR-0011-allergens-and-currency.md)) |
-| Repositorio | GitHub `danilokosam/rstaurante`, GitHub Flow ([ADR-0012](docs/decisions/ADR/ADR-0012-branching-and-ci-cd.md)) |
-| CI/CD | GitHub Actions (CI, M1) + protección de `main` (M1) + Vercel Git (CD: previews por PR y producción desde `main`, M7) |
+| Pieza       | Versión / elección                                                                                                                                            |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Runtime     | Node.js 24 LTS **≥ 24.22.3**, pnpm                                                                                                                            |
+| App         | Next.js **16.4.x** (App Router) + React 19.2.x                                                                                                                |
+| CMS         | Payload **3.94.x** (todos los `@payloadcms/*` misma versión exacta); Payload 4 en beta → no se usa                                                            |
+| BD          | Supabase PostgreSQL vía `@payloadcms/db-postgres` ([ADR-0003](docs/decisions/ADR/ADR-0003-database-supabase-postgres.md)); PostgreSQL en Docker para dev/test |
+| Archivos    | Supabase Storage vía `@payloadcms/storage-s3` ([ADR-0004](docs/decisions/ADR/ADR-0004-media-storage.md))                                                      |
+| Estilos     | Tailwind CSS 4.x                                                                                                                                              |
+| Lenguaje    | TypeScript 5.x `strict`                                                                                                                                       |
+| Tests       | Vitest (unit + integración) + Playwright (E2E + axe) ([ADR-0008](docs/decisions/ADR/ADR-0008-testing-strategy.md))                                            |
+| Auth        | Payload auth nativa (sin Supabase Auth) ([ADR-0006](docs/decisions/ADR/ADR-0006-auth-and-access-control.md))                                                  |
+| Hosting     | Vercel + Supabase — **Accepted** ([ADR-0009](docs/decisions/ADR/ADR-0009-deployment.md))                                                                      |
+| Idiomas     | Español (por defecto) e inglés: localización de Payload + diccionarios propios ([ADR-0010](docs/decisions/ADR/ADR-0010-i18n-spanish-english.md))              |
+| Moneda      | EUR fija ([ADR-0011](docs/decisions/ADR/ADR-0011-allergens-and-currency.md))                                                                                  |
+| Repositorio | GitHub `danilokosam/rstaurante`, GitHub Flow ([ADR-0012](docs/decisions/ADR/ADR-0012-branching-and-ci-cd.md))                                                 |
+| CI/CD       | GitHub Actions (CI, M1) + protección de `main` (M1) + Vercel Git (CD: previews por PR y producción desde `main`, M7)                                          |
 
 ## 5. Principios arquitectónicos
 
@@ -65,16 +65,16 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 
 ## 7. Roadmap
 
-| # | Milestone | Estado | Documento |
-|---|---|---|---|
-| M0 | Product Definition & Architecture | ✅ Completado y revisado | [milestone-0.md](docs/milestones/milestone-0.md) |
-| M1 | Project Foundation | ⏳ Siguiente | — |
-| M2 | Authentication & Admin Foundation | ⏳ Pendiente | — |
-| M3 | CMS & Content Management | ⏳ Pendiente | — |
-| M4 | Restaurant Menu Management | ⏳ Pendiente | — |
-| M5 | Public Restaurant Website | ⏳ Pendiente | — |
-| M6 | Customization & Branding | ⏳ Pendiente | — |
-| M7 | Deployment & Demo Readiness | ⏳ Pendiente | — |
+| #   | Milestone                         | Estado                                         | Documento                                        |
+| --- | --------------------------------- | ---------------------------------------------- | ------------------------------------------------ |
+| M0  | Product Definition & Architecture | ✅ Completado y revisado                       | [milestone-0.md](docs/milestones/milestone-0.md) |
+| M1  | Project Foundation                | 🔎 Verificado en local — pendiente PR/CI/merge | [milestone-1.md](docs/milestones/milestone-1.md) |
+| M2  | Authentication & Admin Foundation | ⏳ Pendiente                                   | —                                                |
+| M3  | CMS & Content Management          | ⏳ Pendiente                                   | —                                                |
+| M4  | Restaurant Menu Management        | ⏳ Pendiente                                   | —                                                |
+| M5  | Public Restaurant Website         | ⏳ Pendiente                                   | —                                                |
+| M6  | Customization & Branding          | ⏳ Pendiente                                   | —                                                |
+| M7  | Deployment & Demo Readiness       | ⏳ Pendiente                                   | —                                                |
 
 ### Resumen de cada milestone
 
@@ -86,7 +86,11 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 - **M6 — Branding**: temas/paletas predefinidas con contraste AA, logo/branding, opciones limitadas de secciones. Sin builder.
 - **M7 — Deploy & Demo**: **CD con Vercel** (preview por PR, producción desde `main`, migraciones en el build), E2E en la CI, producción segura (cabeceras/CSP, pooler, Data API off, migraciones), seed demo ficticio, E2E de flujos críticos contra build de producción, Lighthouse, documentación de operación.
 
-## 8. Milestone activo — M0 checklist
+## 8. Milestone activo — M1
+
+Checklist, plan de tests y resultados en [milestone-1.md](docs/milestones/milestone-1.md).
+
+### Checklist de M0 (cerrado)
 
 Documento: [milestone-0.md](docs/milestones/milestone-0.md)
 
@@ -117,16 +121,16 @@ Documento: [milestone-0.md](docs/milestones/milestone-0.md)
 
 ### Criterios de aceptación de M0
 
-| Criterio | Verificado |
-|---|---|
-| Alcance del MVP y exclusiones definidos y sin contradicción con el prompt original | ✅ |
-| Cada funcionalidad del alcance tiene requisito con ID y milestone asignado | ✅ |
-| User stories con criterios de aceptación verificables para M2–M7 | ✅ |
-| Compatibilidad del stack verificada con fuentes oficiales (registro npm, repositorio oficial) | ✅ |
-| Arquitectura, modelo de datos, flujos y seguridad documentados | ✅ |
-| Decisiones importantes con ADR (stack, arquitectura, BD, storage, contenido, auth, publicación, testing, deployment) | ✅ |
-| Ningún código de aplicación implementado | ✅ |
-| Enlaces internos de la documentación válidos | ✅ |
+| Criterio                                                                                                             | Verificado |
+| -------------------------------------------------------------------------------------------------------------------- | ---------- |
+| Alcance del MVP y exclusiones definidos y sin contradicción con el prompt original                                   | ✅         |
+| Cada funcionalidad del alcance tiene requisito con ID y milestone asignado                                           | ✅         |
+| User stories con criterios de aceptación verificables para M2–M7                                                     | ✅         |
+| Compatibilidad del stack verificada con fuentes oficiales (registro npm, repositorio oficial)                        | ✅         |
+| Arquitectura, modelo de datos, flujos y seguridad documentados                                                       | ✅         |
+| Decisiones importantes con ADR (stack, arquitectura, BD, storage, contenido, auth, publicación, testing, deployment) | ✅         |
+| Ningún código de aplicación implementado                                                                             | ✅         |
+| Enlaces internos de la documentación válidos                                                                         | ✅         |
 
 ## 9. Definition of Done (aplica a todos los milestones)
 
@@ -152,18 +156,20 @@ Ver la matriz en [testing-strategy.md](docs/development/testing-strategy.md#matr
 
 ## 11. Bloqueos y riesgos
 
-| ID | Tipo | Descripción | Impacto | Mitigación / acción | Estado |
-|---|---|---|---|---|---|
-| B-01 | Bloqueo (M1) | Node.js local 24.18.0; Payload 3.94 exige ≥ 24.22.3 | No se puede instalar/ejecutar Payload | Node actualizado a 24.22.3 (verificado) | ✅ Cerrado |
-| R-01 | Riesgo seguridad | Data API de Supabase podría exponer tablas de Payload | Fuga de datos (hashes de usuarios) | Deshabilitar Data API; evaluar `schemaName`; verificación manual en M1/M7 (ADR-0003) | Mitigación planificada |
-| R-02 | Riesgo técnico | Cambios en la API de caché de Next.js 16 | Publicación no inmediata | Verificar contra la doc instalada y test E2E de publicación (ADR-0007) | Abierto |
-| R-03 | Riesgo técnico | Pooling de conexiones Supabase desde funciones serverless | Errores de conexión en producción | Pooler de Supabase; prueba en M7 (ADR-0003/0009) | Abierto |
-| R-04 | Riesgo producto | Payload 4 en beta → futura migración | Trabajo de actualización | Mantener configuración estándar; FP-09 | Aceptado |
-| R-05 | Riesgo coste | Proyectos gratuitos de Supabase se pausan por inactividad; plan Hobby de Vercel no comercial | Demo caída / coste | Decidir planes en M7 | Abierto |
-| R-06 | Riesgo funcional | Recuperación de contraseña por email no incluida (sin adaptador de email) | Usuario bloqueado sin acceso | Otro admin o script restablece; reevaluar en M7 (ADR-0006) | Aceptado |
-| R-07 | Riesgo legal/producto | Exactitud de los alérgenos (responsabilidad del restaurante) | Información incorrecta a clientes alérgicos | Alérgenos incluidos (ADR-0011); lista cerrada UE; aviso fijo en la carta; documentar responsabilidad en la guía de uso (M7) | Mitigado |
-| R-08 | Riesgo técnico | Validación de campos obligatorios localizados en Payload (¿exige cada idioma?) | Inglés obligatorio sin querer | Test en M3; validación propia si hace falta (ADR-0010) | Abierto |
-| R-09 | Riesgo de alcance | i18n duplica el trabajo de contenido y de pruebas en M3–M5 | Más esfuerzo | Diccionarios simples, rutas no traducidas, fallback a español | Aceptado |
+| ID   | Tipo                    | Descripción                                                                                      | Impacto                                                    | Mitigación / acción                                                                                                         | Estado                 |
+| ---- | ----------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| B-01 | Bloqueo (M1)            | Node.js local 24.18.0; Payload 3.94 exige ≥ 24.22.3                                              | No se puede instalar/ejecutar Payload                      | Node actualizado a 24.22.3 (verificado)                                                                                     | ✅ Cerrado             |
+| R-01 | Riesgo seguridad        | Data API de Supabase podría exponer tablas de Payload                                            | Fuga de datos (hashes de usuarios)                         | Deshabilitar Data API; evaluar `schemaName`; verificación manual en M1/M7 (ADR-0003)                                        | Mitigación planificada |
+| R-02 | Riesgo técnico          | Cambios en la API de caché de Next.js 16                                                         | Publicación no inmediata                                   | Verificar contra la doc instalada y test E2E de publicación (ADR-0007)                                                      | Abierto                |
+| R-03 | Riesgo técnico          | Pooling de conexiones Supabase desde funciones serverless                                        | Errores de conexión en producción                          | Pooler de Supabase; prueba en M7 (ADR-0003/0009)                                                                            | Abierto                |
+| R-04 | Riesgo producto         | Payload 4 en beta → futura migración                                                             | Trabajo de actualización                                   | Mantener configuración estándar; FP-09                                                                                      | Aceptado               |
+| R-05 | Riesgo coste            | Proyectos gratuitos de Supabase se pausan por inactividad; plan Hobby de Vercel no comercial     | Demo caída / coste                                         | Decidir planes en M7                                                                                                        | Abierto                |
+| R-06 | Riesgo funcional        | Recuperación de contraseña por email no incluida (sin adaptador de email)                        | Usuario bloqueado sin acceso                               | Otro admin o script restablece; reevaluar en M7 (ADR-0006)                                                                  | Aceptado               |
+| R-07 | Riesgo legal/producto   | Exactitud de los alérgenos (responsabilidad del restaurante)                                     | Información incorrecta a clientes alérgicos                | Alérgenos incluidos (ADR-0011); lista cerrada UE; aviso fijo en la carta; documentar responsabilidad en la guía de uso (M7) | Mitigado               |
+| R-08 | Riesgo técnico          | Validación de campos obligatorios localizados en Payload (¿exige cada idioma?)                   | Inglés obligatorio sin querer                              | Test en M3; validación propia si hace falta (ADR-0010)                                                                      | Abierto                |
+| R-09 | Riesgo de alcance       | i18n duplica el trabajo de contenido y de pruebas en M3–M5                                       | Más esfuerzo                                               | Diccionarios simples, rutas no traducidas, fallback a español                                                               | Aceptado               |
+| R-10 | Riesgo seguridad (bajo) | Vulnerabilidad moderada GHSA-67mh-4wv8-2f99 en `esbuild <= 0.24.2` (transitiva de `drizzle-kit`) | Solo afecta al servidor de desarrollo de esbuild, no usado | Aceptada; revisar al actualizar Payload; CI falla solo con altas/críticas                                                   | Aceptado               |
+| R-11 | Riesgo seguridad        | Colecciones `Users`/`Media` de la plantilla sin access control propio                            | Exposición si se desplegara antes de M2/M3                 | No desplegar hasta M2/M3 (CD llega en M7)                                                                                   | Abierto                |
 
 ## 12. Preguntas abiertas (para el propietario)
 
@@ -178,20 +184,20 @@ Cambios confirmados y primer commit autorizado por el propietario. Sin preguntas
 
 ## 13. Decisiones relevantes
 
-| ADR | Decisión | Estado |
-|---|---|---|
-| [0001](docs/decisions/ADR/ADR-0001-tech-stack-and-versions.md) | Payload 3.94.x + Next 16.4.x + Node ≥ 24.22.3, versiones exactas | Accepted |
-| [0002](docs/decisions/ADR/ADR-0002-single-instance-monolith.md) | Monolito, una instancia por restaurante, sin tenants | Accepted |
-| [0003](docs/decisions/ADR/ADR-0003-database-supabase-postgres.md) | Supabase Postgres vía adaptador oficial; migraciones; Data API off | Accepted |
-| [0004](docs/decisions/ADR/ADR-0004-media-storage.md) | Supabase Storage vía plugin S3 | Accepted |
-| [0005](docs/decisions/ADR/ADR-0005-content-model.md) | Globals + collections, textarea, precio numeric, disponibilidad de 3 estados, `orderable` | Accepted |
-| [0006](docs/decisions/ADR/ADR-0006-auth-and-access-control.md) | Payload auth, un rol, access control explícito | Accepted |
-| [0007](docs/decisions/ADR/ADR-0007-publishing-and-caching.md) | Guardar = publicar + revalidación del sitio + versiones | Accepted |
-| [0008](docs/decisions/ADR/ADR-0008-testing-strategy.md) | Vitest + Playwright + Postgres en Docker | Accepted |
-| [0009](docs/decisions/ADR/ADR-0009-deployment.md) | Vercel + Supabase | Accepted |
-| [0010](docs/decisions/ADR/ADR-0010-i18n-spanish-english.md) | Español e inglés: localización Payload, rutas `/es` `/en`, diccionarios | Accepted |
-| [0011](docs/decisions/ADR/ADR-0011-allergens-and-currency.md) | 14 alérgenos UE en platos; moneda fija EUR | Accepted |
-| [0012](docs/decisions/ADR/ADR-0012-branching-and-ci-cd.md) | GitHub Flow + CI (M1) + CD con Vercel (M7) | Accepted |
+| ADR                                                               | Decisión                                                                                  | Estado   |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | -------- |
+| [0001](docs/decisions/ADR/ADR-0001-tech-stack-and-versions.md)    | Payload 3.94.x + Next 16.4.x + Node ≥ 24.22.3, versiones exactas                          | Accepted |
+| [0002](docs/decisions/ADR/ADR-0002-single-instance-monolith.md)   | Monolito, una instancia por restaurante, sin tenants                                      | Accepted |
+| [0003](docs/decisions/ADR/ADR-0003-database-supabase-postgres.md) | Supabase Postgres vía adaptador oficial; migraciones; Data API off                        | Accepted |
+| [0004](docs/decisions/ADR/ADR-0004-media-storage.md)              | Supabase Storage vía plugin S3                                                            | Accepted |
+| [0005](docs/decisions/ADR/ADR-0005-content-model.md)              | Globals + collections, textarea, precio numeric, disponibilidad de 3 estados, `orderable` | Accepted |
+| [0006](docs/decisions/ADR/ADR-0006-auth-and-access-control.md)    | Payload auth, un rol, access control explícito                                            | Accepted |
+| [0007](docs/decisions/ADR/ADR-0007-publishing-and-caching.md)     | Guardar = publicar + revalidación del sitio + versiones                                   | Accepted |
+| [0008](docs/decisions/ADR/ADR-0008-testing-strategy.md)           | Vitest + Playwright + Postgres en Docker                                                  | Accepted |
+| [0009](docs/decisions/ADR/ADR-0009-deployment.md)                 | Vercel + Supabase                                                                         | Accepted |
+| [0010](docs/decisions/ADR/ADR-0010-i18n-spanish-english.md)       | Español e inglés: localización Payload, rutas `/es` `/en`, diccionarios                   | Accepted |
+| [0011](docs/decisions/ADR/ADR-0011-allergens-and-currency.md)     | 14 alérgenos UE en platos; moneda fija EUR                                                | Accepted |
+| [0012](docs/decisions/ADR/ADR-0012-branching-and-ci-cd.md)        | GitHub Flow + CI (M1) + CD con Vercel (M7)                                                | Accepted |
 
 ## 14. Último progreso
 
@@ -208,3 +214,5 @@ Cambios confirmados y primer commit autorizado por el propietario. Sin preguntas
 
 **2026-11-24 — Confirmación y primer commit.** Añadidos `CONTRIBUTING.md`, `AGENTS.md`, `CLAUDE.md` y ADR-0012 (GitHub Flow + CI/CD). Commit inicial en `main` y push a `origin`. **M0 cerrado.**
 Commit propuesto en [milestone-0.md](docs/milestones/milestone-0.md#commit-propuesto-no-ejecutado) (no ejecutado).
+
+**2026-11-24 — M1 implementado y verificado en local** (rama `feat/m1-project-foundation`): Next.js 16.4.6 + Payload 3.94.1 + Postgres 17 (Docker) + Tailwind 4; `env.ts` validado (TDD); GraphQL deshabilitado; migración inicial; rutas `/es` `/en`; Vitest unit (29) + integración (2) + Playwright E2E (4) en verde; `pnpm verify` y build en verde; CI en `.github/workflows/ci.yml` con detección de migraciones pendientes. Detalle en [milestone-1.md](docs/milestones/milestone-1.md). Pendiente: push, PR, CI en GitHub, protección de `main`, merge.

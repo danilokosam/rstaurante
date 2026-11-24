@@ -46,11 +46,18 @@ Incluye: objetivo y milestone, requisitos/user stories cubiertos (IDs), qué tes
 
 ## CI/CD (control de calidad automático)
 
-| Pieza | Qué hace | Cuándo | Estado |
-|---|---|---|---|
-| **CI** (GitHub Actions) | Instala dependencias con lockfile, `typecheck`, `lint`, comprobación de formato, tests unitarios, tests de integración contra PostgreSQL (servicio de Docker en CI), `build`, `pnpm audit`. E2E de flujos críticos. | En cada PR hacia `main` y en cada push a `main` | Se crea en **M1** (E2E en M5/M7) |
-| **Protección de `main`** | PR obligatorio, checks de CI obligatorios, rama actualizada antes de fusionar, sin force-push | Siempre | Se configura en **M1** (requiere permisos de administrador del repositorio) |
-| **CD** (Vercel) | Despliegue de **preview** por cada PR; despliegue a **producción** al fusionar en `main` (con migraciones `payload migrate` antes del build) | PR / merge | Se configura en **M7** |
+Definida en [`.github/workflows/ci.yml`](.github/workflows/ci.yml). Se ejecuta en **cada Pull Request hacia `main`** y en cada push a `main`.
+
+| Job         | Comprobaciones                                                                                                                                                                                                                                        |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Quality** | Instalación con lockfile congelado · formato (Prettier) · lint (ESLint, 0 warnings) · typecheck · tests unitarios · `pnpm audit` (falla con vulnerabilidades altas/críticas)                                                                          |
+| **App**     | PostgreSQL 17 efímero · `pnpm migrate` sobre BD vacía (igual que producción) · **el esquema no puede cambiar sin migración** · tests de integración · `pnpm build` · tests E2E (Playwright) contra el build de producción (informe adjunto si fallan) |
+
+| Pieza                | Estado                                                                                                                                             |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CI                   | ✅ Creada en M1                                                                                                                                    |
+| Protección de `main` | Se activa al cerrar M1: PR obligatorio, checks `Quality` y `App` obligatorios, rama al día, sin force-push (requiere autorización del propietario) |
+| CD (Vercel)          | M7: preview por PR, producción al fusionar en `main`, migraciones antes del build                                                                  |
 
 Si un check falla, **no se fusiona**: se corrige en la misma rama. No se desactivan tests, reglas de lint ni checks para que pasen.
 
