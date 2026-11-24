@@ -1,6 +1,6 @@
 # Milestone 1 — Project Foundation
 
-- **Estado**: ✅ Implementado y verificado en local (2026-11-24). **Falta para cerrar**: subir la rama `feat/m1-project-foundation`, abrir el PR, ver la CI en verde en GitHub, activar la protección de `main` y fusionar (las tres acciones requieren autorización del propietario).
+- **Estado**: ✅ Cerrado (2026-11-24). PR [#1](https://github.com/danilokosam/rstaurante/pull/1) con CI en verde en GitHub, `main` protegida, fusionado con squash merge.
 
 ## Objetivo
 
@@ -32,9 +32,9 @@ Excluido (milestones posteriores): colecciones de contenido, reglas de acceso, c
 - [x] `pnpm audit` (1 moderada aceptada, ver riesgos)
 - [x] CI (`.github/workflows/ci.yml`) con comprobación de migraciones pendientes
 - [x] Documentación actualizada
-- [ ] Push de la rama + PR + CI verde en GitHub ← requiere autorización
-- [ ] Protección de `main` (PR + checks `Quality` y `App` obligatorios) ← requiere autorización
-- [ ] Merge del PR (squash) ← requiere autorización
+- [x] Push de la rama + PR #1 + CI verde en GitHub (Quality 30 s, App 1 min 29 s; 29 unit, 2 int, 4 E2E)
+- [x] Protección de `main`: PR obligatorio, checks `Quality` y `App` obligatorios, rama al día, historial lineal, conversaciones resueltas, sin force-push ni borrado, **también para administradores**; repo solo squash merge y borrado automático de ramas
+- [x] Merge del PR #1 (squash)
 
 ## Archivos adoptados de la plantilla oficial
 
@@ -109,7 +109,7 @@ Ejecutar: `pnpm test:unit`, `pnpm test:int` (requiere `docker compose up -d`), `
 | `pnpm build`                                                           | ✅ `/es`, `/en` estáticas; `/admin`, `/api` dinámicas                           |
 | `pnpm verify`                                                          | ✅                                                                              |
 | `pnpm audit`                                                           | ⚠️ 1 moderada (ver riesgos); 0 altas/críticas                                   |
-| CI en GitHub                                                           | ⏳ pendiente de push (requiere autorización)                                    |
+| CI en GitHub (PR #1)                                                   | ✅ Quality y App en verde; logs: 29 unit, 2 int, 4 E2E, migración aplicada      |
 
 ## Problemas encontrados y solución
 
@@ -132,7 +132,9 @@ Ejecutar: `pnpm test:unit`, `pnpm test:int` (requiere `docker compose up -d`), `
 
 ## Estado final
 
-Implementación completa y verificada en local. Pendiente de autorización: push + PR + CI verde en GitHub + protección de `main` + merge.
+M1 cerrado: implementación verificada en local y en CI de GitHub, `main` protegida y PR fusionado.
+
+Nota: la protección exige PR pero **0 aprobaciones** porque hoy hay un único desarrollador (GitHub no permite aprobar el propio PR). Cuando se incorporen colaboradores, subir a 1 aprobación.
 
 ## Siguiente milestone (no iniciado)
 

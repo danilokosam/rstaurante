@@ -53,11 +53,11 @@ Definida en [`.github/workflows/ci.yml`](.github/workflows/ci.yml). Se ejecuta e
 | **Quality** | Instalación con lockfile congelado · formato (Prettier) · lint (ESLint, 0 warnings) · typecheck · tests unitarios · `pnpm audit` (falla con vulnerabilidades altas/críticas)                                                                          |
 | **App**     | PostgreSQL 17 efímero · `pnpm migrate` sobre BD vacía (igual que producción) · **el esquema no puede cambiar sin migración** · tests de integración · `pnpm build` · tests E2E (Playwright) contra el build de producción (informe adjunto si fallan) |
 
-| Pieza                | Estado                                                                                                                                             |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CI                   | ✅ Creada en M1                                                                                                                                    |
-| Protección de `main` | Se activa al cerrar M1: PR obligatorio, checks `Quality` y `App` obligatorios, rama al día, sin force-push (requiere autorización del propietario) |
-| CD (Vercel)          | M7: preview por PR, producción al fusionar en `main`, migraciones antes del build                                                                  |
+| Pieza                | Estado                                                                                                                                                                                                                                                                     |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CI                   | ✅ Creada en M1                                                                                                                                                                                                                                                            |
+| Protección de `main` | ✅ Activa: PR obligatorio, checks `Quality` y `App` obligatorios, rama al día, historial lineal, conversaciones resueltas, sin force-push ni borrado; aplica también a administradores. 0 aprobaciones mientras haya un único desarrollador (subir a 1 con colaboradores). |
+| CD (Vercel)          | M7: preview por PR, producción al fusionar en `main`, migraciones antes del build                                                                                                                                                                                          |
 
 Si un check falla, **no se fusiona**: se corrige en la misma rama. No se desactivan tests, reglas de lint ni checks para que pasen.
 

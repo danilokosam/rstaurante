@@ -4,12 +4,12 @@
 
 ## 1. Estado actual
 
-|                               |                                                                                                                                                                                 |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Milestone activo**          | **M1 — Project Foundation** (rama `feat/m1-project-foundation`)                                                                                                                 |
-| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                                                        |
-| **Siguiente acción concreta** | Con autorización del propietario: commit en `feat/m1-project-foundation`, push, PR a `main`, CI en verde en GitHub, protección de `main` y merge (squash). Después, iniciar M2. |
-| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                                                   |
+|                               |                                                                                                                                                        |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Milestone activo**          | **M2 — Authentication & Admin Foundation** (no iniciado)                                                                                               |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                               |
+| **Siguiente acción concreta** | Iniciar M2 en la rama `feat/m2-auth-admin`: marcarlo activo aquí, crear `docs/milestones/milestone-2.md` y presentar objetivo, tareas y plan de tests. |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                          |
 
 ## 2. Visión resumida
 
@@ -65,16 +65,16 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 
 ## 7. Roadmap
 
-| #   | Milestone                         | Estado                                         | Documento                                        |
-| --- | --------------------------------- | ---------------------------------------------- | ------------------------------------------------ |
-| M0  | Product Definition & Architecture | ✅ Completado y revisado                       | [milestone-0.md](docs/milestones/milestone-0.md) |
-| M1  | Project Foundation                | 🔎 Verificado en local — pendiente PR/CI/merge | [milestone-1.md](docs/milestones/milestone-1.md) |
-| M2  | Authentication & Admin Foundation | ⏳ Pendiente                                   | —                                                |
-| M3  | CMS & Content Management          | ⏳ Pendiente                                   | —                                                |
-| M4  | Restaurant Menu Management        | ⏳ Pendiente                                   | —                                                |
-| M5  | Public Restaurant Website         | ⏳ Pendiente                                   | —                                                |
-| M6  | Customization & Branding          | ⏳ Pendiente                                   | —                                                |
-| M7  | Deployment & Demo Readiness       | ⏳ Pendiente                                   | —                                                |
+| #   | Milestone                         | Estado                   | Documento                                        |
+| --- | --------------------------------- | ------------------------ | ------------------------------------------------ |
+| M0  | Product Definition & Architecture | ✅ Completado y revisado | [milestone-0.md](docs/milestones/milestone-0.md) |
+| M1  | Project Foundation                | ✅ Cerrado (PR #1)       | [milestone-1.md](docs/milestones/milestone-1.md) |
+| M2  | Authentication & Admin Foundation | ⏳ Siguiente             | —                                                |
+| M3  | CMS & Content Management          | ⏳ Pendiente             | —                                                |
+| M4  | Restaurant Menu Management        | ⏳ Pendiente             | —                                                |
+| M5  | Public Restaurant Website         | ⏳ Pendiente             | —                                                |
+| M6  | Customization & Branding          | ⏳ Pendiente             | —                                                |
+| M7  | Deployment & Demo Readiness       | ⏳ Pendiente             | —                                                |
 
 ### Resumen de cada milestone
 
@@ -86,9 +86,9 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 - **M6 — Branding**: temas/paletas predefinidas con contraste AA, logo/branding, opciones limitadas de secciones. Sin builder.
 - **M7 — Deploy & Demo**: **CD con Vercel** (preview por PR, producción desde `main`, migraciones en el build), E2E en la CI, producción segura (cabeceras/CSP, pooler, Data API off, migraciones), seed demo ficticio, E2E de flujos críticos contra build de producción, Lighthouse, documentación de operación.
 
-## 8. Milestone activo — M1
+## 8. Milestone activo — M2 (no iniciado)
 
-Checklist, plan de tests y resultados en [milestone-1.md](docs/milestones/milestone-1.md).
+Se detallará en `docs/milestones/milestone-2.md` al iniciarlo. M1 cerrado: ver [milestone-1.md](docs/milestones/milestone-1.md).
 
 ### Checklist de M0 (cerrado)
 
@@ -216,3 +216,5 @@ Cambios confirmados y primer commit autorizado por el propietario. Sin preguntas
 Commit propuesto en [milestone-0.md](docs/milestones/milestone-0.md#commit-propuesto-no-ejecutado) (no ejecutado).
 
 **2026-11-24 — M1 implementado y verificado en local** (rama `feat/m1-project-foundation`): Next.js 16.4.6 + Payload 3.94.1 + Postgres 17 (Docker) + Tailwind 4; `env.ts` validado (TDD); GraphQL deshabilitado; migración inicial; rutas `/es` `/en`; Vitest unit (29) + integración (2) + Playwright E2E (4) en verde; `pnpm verify` y build en verde; CI en `.github/workflows/ci.yml` con detección de migraciones pendientes. Detalle en [milestone-1.md](docs/milestones/milestone-1.md). Pendiente: push, PR, CI en GitHub, protección de `main`, merge.
+
+**2026-11-24 — M1 cerrado.** PR #1 con CI en verde en GitHub; `main` protegida (PR + checks `Quality` y `App` obligatorios, rama al día, historial lineal, sin force-push, aplicado también a administradores; 0 aprobaciones requeridas mientras haya un único desarrollador); repositorio con solo squash merge y borrado automático de ramas. Siguiente: M2.
