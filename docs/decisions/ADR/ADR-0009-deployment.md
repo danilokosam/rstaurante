@@ -10,11 +10,11 @@ Hay que desplegar una aplicación Next.js 16 + Payload con Supabase (BD + Storag
 
 ## Opciones consideradas
 
-| Opción | Pros | Contras |
-|---|---|---|
+| Opción                                               | Pros                                                                                                                  | Contras                                                                                                                                                                                              |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1. **Vercel** (aplicación) + Supabase (BD y Storage) | Soporte nativo de Next.js; despliegues por Git con previews; HTTPS y CDN; plan gratuito/Pro; documentado por Payload. | Límite de 4,5 MB en el cuerpo de peticiones de funciones (cubierto: subida máx. 4 MB); conexiones a BD desde funciones → usar pooler; plan Hobby no es para uso comercial (cliente real → plan Pro). |
-| 2. Contenedor Docker en un VPS / Railway / Fly.io | Proceso persistente (sin problemas de pooling); coste fijo. | Más operación (actualizaciones, TLS, monitorización). |
-| 3. Netlify / Cloudflare | — | Soporte de Payload/Next 16 menos directo. |
+| 2. Contenedor Docker en un VPS / Railway / Fly.io    | Proceso persistente (sin problemas de pooling); coste fijo.                                                           | Más operación (actualizaciones, TLS, monitorización).                                                                                                                                                |
+| 3. Netlify / Cloudflare                              | —                                                                                                                     | Soporte de Payload/Next 16 menos directo.                                                                                                                                                            |
 
 ## Decisión
 

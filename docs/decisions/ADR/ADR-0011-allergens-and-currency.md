@@ -13,31 +13,33 @@ En la revisión de M0 el propietario decidió: (1) incluir **alérgenos** en la 
 
 - Campo `allergens` en `dishes`: `select` con `hasMany: true` y **lista cerrada de los 14 alérgenos** del Anexo II:
 
-  | Valor | Español | English |
-  |---|---|---|
-  | `gluten` | Cereales con gluten | Cereals containing gluten |
-  | `crustaceans` | Crustáceos | Crustaceans |
-  | `eggs` | Huevos | Eggs |
-  | `fish` | Pescado | Fish |
-  | `peanuts` | Cacahuetes | Peanuts |
-  | `soybeans` | Soja | Soybeans |
-  | `milk` | Leche | Milk |
-  | `nuts` | Frutos de cáscara | Tree nuts |
-  | `celery` | Apio | Celery |
-  | `mustard` | Mostaza | Mustard |
-  | `sesame` | Sésamo | Sesame |
-  | `sulphites` | Sulfitos | Sulphites |
-  | `lupin` | Altramuces | Lupin |
-  | `molluscs` | Moluscos | Molluscs |
+  | Valor         | Español             | English                   |
+  | ------------- | ------------------- | ------------------------- |
+  | `gluten`      | Cereales con gluten | Cereals containing gluten |
+  | `crustaceans` | Crustáceos          | Crustaceans               |
+  | `eggs`        | Huevos              | Eggs                      |
+  | `fish`        | Pescado             | Fish                      |
+  | `peanuts`     | Cacahuetes          | Peanuts                   |
+  | `soybeans`    | Soja                | Soybeans                  |
+  | `milk`        | Leche               | Milk                      |
+  | `nuts`        | Frutos de cáscara   | Tree nuts                 |
+  | `celery`      | Apio                | Celery                    |
+  | `mustard`     | Mostaza             | Mustard                   |
+  | `sesame`      | Sésamo              | Sesame                    |
+  | `sulphites`   | Sulfitos            | Sulphites                 |
+  | `lupin`       | Altramuces          | Lupin                     |
+  | `molluscs`    | Moluscos            | Molluscs                  |
 
 - Los valores no se localizan (son códigos); las etiquetas se traducen en el panel (etiquetas por idioma de Payload) y en la web (diccionarios, ADR-0010). Mantener una única fuente de la lista en código (`src/lib/allergens.ts`) usada por ambos.
 - Web pública: cada plato muestra sus alérgenos **como texto** (accesible; los iconos son opcionales y siempre acompañados de texto, a decidir en M5/M6) y la carta incluye un aviso fijo y traducido: «Si tienes alguna alergia o intolerancia, consulta al personal».
 - Un plato sin alérgenos marcados **no** se presenta como "sin alérgenos" (no se puede distinguir de "no informado"): simplemente no muestra la lista.
 
 ### Fuera del alcance (propuestas futuras)
+
 - Trazas («puede contener»), etiquetas dietéticas (vegano, vegetariano…), filtro de carta por alérgenos (FP-12, FP-13).
 
 ### Responsabilidad
+
 El sistema muestra la información que introduce el restaurante; la exactitud es responsabilidad del restaurante. Se documentará en la guía de uso (M7).
 
 ## Decisión — Moneda
