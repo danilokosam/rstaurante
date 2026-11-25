@@ -4,12 +4,12 @@
 
 ## 1. Estado actual
 
-|                               |                                                                                                                                                        |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Milestone activo**          | **M2 — Authentication & Admin Foundation** (no iniciado)                                                                                               |
-| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                               |
-| **Siguiente acción concreta** | Iniciar M2 en la rama `feat/m2-auth-admin`: marcarlo activo aquí, crear `docs/milestones/milestone-2.md` y presentar objetivo, tareas y plan de tests. |
-| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                          |
+|                               |                                                                                                                               |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Milestone activo**          | **M2 — Authentication & Admin Foundation** (implementado y verificado en `feat/m2-auth-admin`, pendiente de PR/merge)         |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.      |
+| **Siguiente acción concreta** | Revisar cambios, hacer commit/push en `feat/m2-auth-admin` y abrir Pull Request hacia `main` para validar en CI.              |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa. |
 
 ## 2. Visión resumida
 
@@ -69,7 +69,7 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 | --- | --------------------------------- | ------------------------ | ------------------------------------------------ |
 | M0  | Product Definition & Architecture | ✅ Completado y revisado | [milestone-0.md](docs/milestones/milestone-0.md) |
 | M1  | Project Foundation                | ✅ Cerrado (PR #1)       | [milestone-1.md](docs/milestones/milestone-1.md) |
-| M2  | Authentication & Admin Foundation | ⏳ Siguiente             | —                                                |
+| M2  | Authentication & Admin Foundation | 🚧 En progreso           | [milestone-2.md](docs/milestones/milestone-2.md) |
 | M3  | CMS & Content Management          | ⏳ Pendiente             | —                                                |
 | M4  | Restaurant Menu Management        | ⏳ Pendiente             | —                                                |
 | M5  | Public Restaurant Website         | ⏳ Pendiente             | —                                                |
@@ -86,9 +86,9 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 - **M6 — Branding**: temas/paletas predefinidas con contraste AA, logo/branding, opciones limitadas de secciones. Sin builder.
 - **M7 — Deploy & Demo**: **CD con Vercel** (preview por PR, producción desde `main`, migraciones en el build), E2E en la CI, producción segura (cabeceras/CSP, pooler, Data API off, migraciones), seed demo ficticio, E2E de flujos críticos contra build de producción, Lighthouse, documentación de operación.
 
-## 8. Milestone activo — M2 (no iniciado)
+## 8. Milestone activo — M2: Authentication & Admin Foundation
 
-Se detallará en `docs/milestones/milestone-2.md` al iniciarlo. M1 cerrado: ver [milestone-1.md](docs/milestones/milestone-1.md).
+Detalle completo, checklist y plan de tests en [milestone-2.md](docs/milestones/milestone-2.md). M1 cerrado: ver [milestone-1.md](docs/milestones/milestone-1.md).
 
 ### Checklist de M0 (cerrado)
 
