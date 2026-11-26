@@ -1,15 +1,15 @@
 # MILESTONE.md — Fuente de verdad del proyecto
 
-> Leer este archivo al inicio de cada sesión, junto con el documento del milestone activo en `docs/milestones/`. Última actualización: **2026-11-24**.
+> Leer este archivo al inicio de cada sesión, junto con el documento del milestone activo en `docs/milestones/`. Última actualización: **2026-11-26**.
 
 ## 1. Estado actual
 
-|                               |                                                                                                                                                        |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Milestone activo**          | **M2 — Authentication & Admin Foundation** (no iniciado)                                                                                               |
-| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                               |
-| **Siguiente acción concreta** | Iniciar M2 en la rama `feat/m2-auth-admin`: marcarlo activo aquí, crear `docs/milestones/milestone-2.md` y presentar objetivo, tareas y plan de tests. |
-| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                          |
+|                               |                                                                                                                               |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Milestone activo**          | **M3 — CMS & Content Management** (no iniciado). M2 ✅ cerrado (2026-11-26, PR #2).                                           |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.      |
+| **Siguiente acción concreta** | Iniciar M3 en la rama `feat/m3-cms-content`: marcarlo activo aquí, crear `docs/milestones/milestone-3.md` y presentar plan.   |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa. |
 
 ## 2. Visión resumida
 
@@ -69,8 +69,8 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 | --- | --------------------------------- | ------------------------ | ------------------------------------------------ |
 | M0  | Product Definition & Architecture | ✅ Completado y revisado | [milestone-0.md](docs/milestones/milestone-0.md) |
 | M1  | Project Foundation                | ✅ Cerrado (PR #1)       | [milestone-1.md](docs/milestones/milestone-1.md) |
-| M2  | Authentication & Admin Foundation | ⏳ Siguiente             | —                                                |
-| M3  | CMS & Content Management          | ⏳ Pendiente             | —                                                |
+| M2  | Authentication & Admin Foundation | ✅ Cerrado (PR #2)       | [milestone-2.md](docs/milestones/milestone-2.md) |
+| M3  | CMS & Content Management          | ⏳ Siguiente             | —                                                |
 | M4  | Restaurant Menu Management        | ⏳ Pendiente             | —                                                |
 | M5  | Public Restaurant Website         | ⏳ Pendiente             | —                                                |
 | M6  | Customization & Branding          | ⏳ Pendiente             | —                                                |
@@ -86,9 +86,9 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 - **M6 — Branding**: temas/paletas predefinidas con contraste AA, logo/branding, opciones limitadas de secciones. Sin builder.
 - **M7 — Deploy & Demo**: **CD con Vercel** (preview por PR, producción desde `main`, migraciones en el build), E2E en la CI, producción segura (cabeceras/CSP, pooler, Data API off, migraciones), seed demo ficticio, E2E de flujos críticos contra build de producción, Lighthouse, documentación de operación.
 
-## 8. Milestone activo — M2 (no iniciado)
+## 8. Milestone activo — M3 (no iniciado)
 
-Se detallará en `docs/milestones/milestone-2.md` al iniciarlo. M1 cerrado: ver [milestone-1.md](docs/milestones/milestone-1.md).
+Se detallará en `docs/milestones/milestone-3.md` al iniciarlo. M2 cerrado: ver [milestone-2.md](docs/milestones/milestone-2.md).
 
 ### Checklist de M0 (cerrado)
 

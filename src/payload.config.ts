@@ -1,4 +1,6 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { en } from '@payloadcms/translations/languages/en'
+import { es } from '@payloadcms/translations/languages/es'
 import path from 'path'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
@@ -6,6 +8,7 @@ import { fileURLToPath } from 'url'
 
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
+import { defaultLocale, locales } from './i18n/config'
 import { getEnv } from './lib/env'
 
 const filename = fileURLToPath(import.meta.url)
@@ -15,12 +18,23 @@ const env = getEnv()
 
 export default buildConfig({
   serverURL: env.serverUrl,
+  cors: [env.serverUrl],
+  csrf: [env.serverUrl],
   secret: env.payloadSecret,
   admin: {
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
+  },
+  i18n: {
+    fallbackLanguage: defaultLocale,
+    supportedLanguages: { es, en },
+  },
+  localization: {
+    locales: [...locales],
+    defaultLocale,
+    fallback: true,
   },
   collections: [Users, Media],
   // GraphQL is not used by this project: disabling it reduces the attack surface (ADR-0001).
