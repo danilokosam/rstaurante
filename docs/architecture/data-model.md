@@ -49,6 +49,7 @@ menu-categories ◄── category (N:1) ── dishes ────────�
 - `imageSizes` (generados con `sharp`, salida WebP): `thumbnail` 400 px, `card` 800 px, `hero` 1920 px de ancho. Con `withoutEnlargement: true`, si el original es más pequeño se guarda una copia a su tamaño (los tres tamaños existen siempre). Definitivo (M3).
 - **Validación del archivo** (`beforeOperation` de `media`, M3): tamaño ≤ 4 MB y tipo detectado por _magic bytes_ (`src/lib/media/detectImageType.ts`); el tipo detectado sustituye al declarado por el cliente. Payload por sí solo acepta el tipo de la extensión cuando no reconoce el contenido. En HTTP, `upload.limits.fileSize` corta las subidas de más de 4 MB con 413.
 - `focalPoint` habilitado (recorte inteligente del hero).
+- Campos técnicos `prefix` y `_objectkey` del plugin de almacenamiento S3, presentes siempre (`alwaysInsertFields`) para que el esquema sea igual con y sin S3 (ADR-0004).
 - Access: `read` → público; escritura → autenticados.
 
 ### `menu-categories` — Categorías de la carta

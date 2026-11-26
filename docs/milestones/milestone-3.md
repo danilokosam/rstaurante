@@ -95,9 +95,35 @@ Que el administrador pueda gestionar desde el panel todo el contenido del restau
 - [x] PR 2: TDD `gallery`
 - [x] PR 2: versiones (historial, restaurar, máx. 20)
 - [x] PR 2: E2E del hero en ambos idiomas
-- [ ] TDD `revalidateSite` + verificación de la API de caché de Next.js 16 (nota en ADR-0007)
-- [ ] Storage S3 condicional
-- [ ] Migración + `payload-types.ts`
-- [ ] `pnpm verify` + `pnpm test:e2e` en verde
-- [ ] Documentación (`data-model.md`, ADR-0007, `MILESTONE.md`, este documento) y riesgos `R-08`/`R-11` actualizados
-- [ ] PR con CI en verde, revisión y squash merge
+- [x] PR 1 fusionada (#3) y PR 2 fusionada (#4), con CI en verde
+- [x] PR 3: TDD `revalidateSite` (unit + integración con mock y con `next/cache` real) + API de caché de Next.js 16.4 verificada (nota en ADR-0007)
+- [x] PR 3: Storage S3 condicional con `alwaysInsertFields` (esquema idéntico con y sin S3, verificado) + `S3_PUBLIC_URL`
+- [x] PR 3: migración `storage_fields` + `payload-types.ts`
+- [x] PR 3: `pnpm verify` + `pnpm test:e2e` en verde
+- [x] Documentación (`data-model.md`, `environment.md`, ADR-0004, ADR-0007, `setup.md`, `MILESTONE.md`, este documento) y riesgos `R-02`, `R-08` y `R-11` actualizados
+- [ ] PR 3 con CI en verde, revisión y squash merge → cierre de M3
+
+## Hallazgos de la PR 3
+
+- Fuera de Next.js, `revalidatePath` lanza `Invariant: static generation store missing`; se ignora a propósito (scripts y tests) y cualquier otro error se registra sin deshacer el guardado.
+- `next/cache` no se resuelve en Node ESM puro (Playwright); se importa `next/cache.js`.
+- Sin `alwaysInsertFields`, el plugin S3 cambiaría el esquema de `media` solo cuando está activo y las migraciones de desarrollo no valdrían en producción.
+- Los tests de integración guardan archivos en la carpeta `media/` del proyecto (ignorada por git). Si un test falla antes de su limpieza, quedan restos y Payload renombra los siguientes archivos (`-1`, `-2`…); el test de disco local lo tolera.
+
+## Pendientes trasladados
+
+- **M5**: revalidación de respaldo cada hora en las páginas públicas (RF-PUB-02); E2E «cambio guardado visible en la web»; ocultar el botón de WhatsApp de la portada si ya no hay número; mostrar «Cerrado» los días sin franjas; generar el enlace de Maps desde la dirección si no hay URL.
+- **M4**: añadir los hooks de revalidación a `menu-categories` y `dishes`, y usar `requiredInDefaultLocale` en sus campos traducibles obligatorios.
+- **M7**: prueba real contra un bucket de Supabase Storage; exigir las variables S3 en el despliegue de producción (ya anotado en `environment.md`).
+
+## Resumen de M3
+
+| Área                        | Entregado                                                                                                            |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Validadores                 | URL `https`, Google Maps, teléfono, WhatsApp E.164, horas y franjas; mensajes es/en                                  |
+| Imágenes                    | Solo JPEG/PNG/WebP/AVIF por contenido, 4 MB (Local API y HTTP 413), `alt`/`caption` es/en, tamaños WebP, punto focal |
+| Información del restaurante | General, contacto, ubicación, horarios, redes, SEO; versiones restaurables                                           |
+| Portada y galería           | Hero con CTA validado, sobre nosotros, títulos, SEO; galería ordenable de hasta 30                                   |
+| Publicación                 | Revalidación de todo el sitio al guardar, sin deshacer el guardado si falla                                          |
+| Almacenamiento              | Supabase Storage vía S3 si hay variables; disco local si no; mismo esquema en todos los entornos                     |
+| Idiomas                     | Español obligatorio e inglés opcional con _fallback_ (R-08 cerrado)                                                  |

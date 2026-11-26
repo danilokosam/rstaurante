@@ -279,3 +279,29 @@ describe('media uploads over HTTP (REST API used by the admin panel)', () => {
     expect(await payload.count({ collection: 'media' })).toMatchObject({ totalDocs: 0 })
   })
 })
+
+describe('storage (ADR-0004)', () => {
+  it('stores uploads on local disk when no S3 variables are set', async () => {
+    await resetDatabase(payload)
+    const image = await payload.create({
+      collection: 'media',
+      data: { alt: 'Local' },
+      file: uploadFile(await makeImage('jpeg'), 'local.jpg', 'image/jpeg'),
+    })
+
+    // Served by the app itself, not by a bucket.
+    // (Payload appends -1, -2… if the file name already exists on disk.)
+    expect(image.url).toMatch(
+      new RegExp(`^${payload.config.serverURL}/api/media/file/local(-\\d+)?\\.jpg$`),
+    )
+    await payload.delete({ collection: 'media', id: image.id })
+  })
+
+  it('keeps the S3 plugin fields in the schema even without S3 (same migrations everywhere)', () => {
+    const fieldNames = payload.collections.media.config.fields.map((field) =>
+      'name' in field ? field.name : undefined,
+    )
+
+    expect(fieldNames).toContain('prefix')
+  })
+})

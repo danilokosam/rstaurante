@@ -16,6 +16,7 @@ const validS3 = {
   S3_BUCKET: 'media',
   S3_ACCESS_KEY_ID: 'key-id',
   S3_SECRET_ACCESS_KEY: 'very-secret-value',
+  S3_PUBLIC_URL: 'https://example.supabase.co/storage/v1/object/public/media',
 }
 
 function captureError(fn: () => unknown): EnvValidationError {
@@ -93,6 +94,7 @@ describe('parseEnv', () => {
       bucket: validS3.S3_BUCKET,
       accessKeyId: validS3.S3_ACCESS_KEY_ID,
       secretAccessKey: validS3.S3_SECRET_ACCESS_KEY,
+      publicUrl: validS3.S3_PUBLIC_URL,
     })
   })
 
@@ -105,6 +107,22 @@ describe('parseEnv', () => {
     expect(error.issues[0]).toContain('S3_REGION')
     expect(error.issues[0]).toContain('S3_ACCESS_KEY_ID')
     expect(error.issues[0]).toContain('S3_SECRET_ACCESS_KEY')
+    expect(error.issues[0]).toContain('S3_PUBLIC_URL')
+  })
+
+  it.each(['http://example.supabase.co/storage', 'not-a-url'])(
+    'requires S3_PUBLIC_URL to be an https URL (%s)',
+    (value) => {
+      const error = captureError(() => parseEnv({ ...validEnv, ...validS3, S3_PUBLIC_URL: value }))
+
+      expect(error.issues).toEqual(['S3_PUBLIC_URL must be an absolute https URL'])
+    },
+  )
+
+  it('removes the trailing slash of S3_PUBLIC_URL', () => {
+    const env = parseEnv({ ...validEnv, ...validS3, S3_PUBLIC_URL: `${validS3.S3_PUBLIC_URL}/` })
+
+    expect(env.s3?.publicUrl).toBe(validS3.S3_PUBLIC_URL)
   })
 
   it('reports every problem at once', () => {

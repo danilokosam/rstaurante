@@ -42,3 +42,11 @@ El CMS debe permitir «guardar y publicar cambios» con una estrategia sencilla.
 
 - Test de integración: guardar un documento invoca la revalidación (mock de `next/cache`).
 - Test E2E (M5/M7): editar un plato en `/admin` → el cambio aparece en `/es/menu` (y en `/en/menu` si aplica).
+
+## Nota de implementación (M3, 2026-11-26)
+
+- Verificado contra `node_modules/next/dist/docs/` (Next.js 16.4.6): `revalidatePath('/', 'layout')` («Revalidating all data») invalida todo el sitio. Se puede llamar en Route Handlers, que es donde se ejecutan los hooks de Payload (API REST del panel).
+- Fuera de una petición de Next.js (scripts, tests, seed), `revalidatePath` lanza `Invariant: static generation store missing`. `src/lib/publishing/revalidateSite.ts` lo reconoce y lo ignora sin registrar nada; cualquier otro error se registra con el logger de Payload y **no** deshace el guardado. Los scripts pueden pasar `context: { disableRevalidate: true }`.
+- Hooks en `src/hooks/revalidateSite.ts`: `afterChange`/`afterDelete` de `media` y `afterChange` de `site-settings`, `homepage` y `gallery`. En M4 se añaden a `menu-categories` y `dishes`.
+- Se importa `next/cache.js` (con extensión): el paquete `next` no declara `exports` y Node ESM puro, que usa Playwright para cargar `payload.config` en los E2E, no resuelve `next/cache`.
+- **Pendiente (M5)**: la revalidación de respaldo cada hora (RF-PUB-02) se configura en las páginas públicas, y el E2E «cambio guardado visible en la web» llega con ellas.

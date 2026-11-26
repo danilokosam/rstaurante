@@ -11,6 +11,8 @@ export type S3Config = {
   bucket: string
   accessKeyId: string
   secretAccessKey: string
+  /** Public base URL of the bucket; files are served from here (ADR-0004). */
+  publicUrl: string
 }
 
 export type Env = {
@@ -40,6 +42,7 @@ const S3_VARIABLES = {
   bucket: 'S3_BUCKET',
   accessKeyId: 'S3_ACCESS_KEY_ID',
   secretAccessKey: 'S3_SECRET_ACCESS_KEY',
+  publicUrl: 'S3_PUBLIC_URL',
 } as const satisfies Record<keyof S3Config, string>
 
 function read(source: EnvSource, name: string): string | undefined {
@@ -69,7 +72,12 @@ function parseS3(source: EnvSource, issues: string[]): S3Config | null {
     return null
   }
 
-  return Object.fromEntries(entries.map(([key, , value]) => [key, value])) as S3Config
+  const config = Object.fromEntries(entries.map(([key, , value]) => [key, value])) as S3Config
+  if (!hasProtocol(config.publicUrl, ['https:'])) {
+    issues.push('S3_PUBLIC_URL must be an absolute https URL')
+    return null
+  }
+  return { ...config, publicUrl: config.publicUrl.replace(/\/+$/, '') }
 }
 
 export function parseEnv(source: EnvSource): Env {

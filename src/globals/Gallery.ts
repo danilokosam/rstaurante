@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { anyone, authenticated } from '@/access'
+import { revalidateSiteAfterGlobalChange } from '@/hooks/revalidateSite'
 
 export const MAX_GALLERY_IMAGES = 30
 
@@ -11,6 +12,9 @@ export const Gallery: GlobalConfig = {
   access: {
     read: anyone,
     update: authenticated,
+  },
+  hooks: {
+    afterChange: [revalidateSiteAfterGlobalChange],
   },
   fields: [
     {

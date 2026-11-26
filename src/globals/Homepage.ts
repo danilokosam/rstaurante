@@ -7,6 +7,7 @@ import type {
 import { select } from 'payload/shared'
 
 import { anyone, authenticated } from '@/access'
+import { revalidateSiteAfterGlobalChange } from '@/hooks/revalidateSite'
 import { requiredInDefaultLocale } from '@/fields/localizedText'
 import { textValidator } from '@/fields/validate'
 import { adminLanguage } from '@/i18n/adminLanguage'
@@ -75,6 +76,9 @@ export const Homepage: GlobalConfig = {
   access: {
     read: anyone,
     update: authenticated,
+  },
+  hooks: {
+    afterChange: [revalidateSiteAfterGlobalChange],
   },
   versions: { max: 20 },
   fields: [
