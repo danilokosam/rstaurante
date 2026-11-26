@@ -54,13 +54,13 @@ En `/admin`, con la BD vacía, Payload pide crear el primer usuario.
 
 ## Migraciones en la BD de desarrollo
 
-`pnpm dev` sincroniza el esquema por su cuenta (modo `push`), pero los tests E2E crean datos con la Local API fuera del servidor de desarrollo y necesitan que la BD de desarrollo tenga **todas las migraciones aplicadas**. Al cambiar a una rama que trae migraciones nuevas:
+`pnpm dev` sincroniza el esquema por su cuenta (modo `push`). Los tests E2E, en cambio, arrancan su servidor con `PAYLOAD_DISABLE_PUSH=true` (ver `playwright.config.ts`) para probar el esquema migrado, como la CI, así que necesitan que la BD de desarrollo tenga **todas las migraciones aplicadas**. Al cambiar a una rama que trae migraciones nuevas:
 
 ```bash
 pnpm migrate
 ```
 
-Si `pnpm migrate` avisa de que la BD se modificó en modo desarrollo («data loss will occur») o falla con «already exists», la BD de desarrollo se sincronizó con `push`. Si no tiene datos que conservar, lo más limpio es recrearla:
+Si tenías `pnpm dev` abierto, los E2E reutilizan ese servidor (con `push`). Si `pnpm migrate` avisa de que la BD se modificó en modo desarrollo («data loss will occur») o falla con «already exists», la BD de desarrollo se sincronizó con `push`. Si no tiene datos que conservar, lo más limpio es recrearla:
 
 ```bash
 docker exec rstaurante-postgres-1 psql -U postgres -d rstaurante -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"

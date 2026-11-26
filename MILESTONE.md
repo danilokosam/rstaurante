@@ -4,12 +4,12 @@
 
 ## 1. Estado actual
 
-|                               |                                                                                                                                             |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Milestone activo**          | **M3 — CMS & Content Management** (🚧 en progreso; plan aprobado, 3 PRs). M2 ✅ cerrado (PR #2).                                            |
-| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                    |
-| **Siguiente acción concreta** | PR 1 de M3 (`feat/m3-validators-media`): validadores, `media` y `users.name` con TDD. Ver [milestone-3.md](docs/milestones/milestone-3.md). |
-| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.               |
+|                               |                                                                                                                                                                       |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Milestone activo**          | **M3 — CMS & Content Management** (🚧 en progreso; plan aprobado, 3 PRs). M2 ✅ cerrado (PR #2).                                                                      |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                                              |
+| **Siguiente acción concreta** | PR 2 de M3 (`feat/m3-globals`): `site-settings`, `homepage`, `gallery`. Después, PR 3 (revalidación + Storage). Ver [milestone-3.md](docs/milestones/milestone-3.md). |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                                         |
 
 ## 2. Visión resumida
 
@@ -222,3 +222,5 @@ Commit propuesto en [milestone-0.md](docs/milestones/milestone-0.md#commit-propu
 **2026-11-26 — M2 cerrado.** PR #2 (de un colaborador) revisada; correcciones incorporadas (sin `LocaleSync`, E2E solo contra BD local, _advisory lock_ en el borrado del último usuario, tests de CSRF/logout/error genérico) y fusionada con squash. Detalle en [milestone-2.md](docs/milestones/milestone-2.md).
 
 **2026-11-26 — M3 iniciado.** Plan aprobado (3 PRs; Supabase real en M7; `users.name` incluido). PR 1 (`feat/m3-validators-media`): validadores puros, `media` completa con detector propio de _magic bytes_, `alt` obligatorio solo en español (R-08 cerrado), migración que conserva los textos `alt`. Detalle en [milestone-3.md](docs/milestones/milestone-3.md).
+
+**2026-11-26 — M3, PR 1 fusionada (#3). PR 2** (`feat/m3-globals`): globals `site-settings` (pestañas, contacto, ubicación, horarios, redes, SEO), `homepage` (hero con CTA validado, sobre nosotros, títulos, SEO) y `gallery` (ordenable, máx. 30); versiones restaurables (máx. 20); E2E de la portada en es/en; servidor E2E sin `push`.

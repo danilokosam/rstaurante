@@ -18,7 +18,11 @@
 - **Antes de M3, Payload aceptaba SVG y GIF** en `media` (comprobado con los tests nuevos en rojo).
 - **R-08 confirmado**: `required: true` en un campo localizado exige el valor en **todos** los idiomas; guardar la versión inglesa sin traducir fallaba. Solución: `requiredInDefaultLocale` (`src/fields/localizedText.ts`), obligatorio al guardar en español o al crear, y conserva las validaciones de Payload (longitud). La columna queda nullable en la BD.
 - **La migración generada perdía datos**: al traducir `media.alt`, drizzle-kit crea `media_locales` y borra `media.alt` sin copiar los textos. Se añadió a mano la copia como español (`up`) y la restauración (`down`), con test (`tests/int/migrations.int.spec.ts`). Documentado en `setup.md`.
-- **El borrado de imágenes en uso (referencias a `null`)** se prueba en la PR 2, cuando existan los globals que las referencian.
+- **PR 2 — borrado de imágenes en uso**: verificado. Las referencias simples (`logo`, `hero.image`…) usan `ON DELETE SET NULL` y la galería `ON DELETE CASCADE` (la imagen desaparece de la lista).
+- **PR 2 — `required` en campos con validación propia**: un `validate` propio sustituye al de Payload (longitud máxima incluida). `src/fields/validate.ts` (`textValidator`) ejecuta primero el validador puro y después el de Payload.
+- **PR 2 — aviso de WhatsApp (US-C1 CA3)**: la acción `whatsapp` del botón principal consulta `site-settings` al validar. Si después se borra el número de WhatsApp, la portada conserva la acción: **la web (M5) debe ocultar el botón cuando no haya número**.
+- **PR 2 — E2E y modo `push`**: cada ejecución local de los E2E arrancaba `pnpm dev` con `push`, que marca la BD de desarrollo como «dev» y hace que el siguiente `pnpm migrate` pida confirmación o falle. Ahora el servidor de los E2E usa `PAYLOAD_DISABLE_PUSH=true` (cambio menor sobre la configuración de M1, documentado en `setup.md`).
+- **PR 2 — E2E en paralelo**: cada archivo E2E usa su propio usuario para que la limpieza de uno no cierre la sesión del otro. El E2E de la portada restaura la última versión previa de `homepage` en la BD de desarrollo al terminar.
 
 ## Objetivo
 
@@ -85,14 +89,15 @@ Que el administrador pueda gestionar desde el panel todo el contenido del restau
 - [x] PR 1: TDD validadores (`src/lib/validation/`)
 - [x] PR 1: TDD `media` (tipos por contenido, tamaño en Local API y HTTP, `alt` es/en, tamaños, reemplazo y borrado)
 - [x] PR 1: migración con conservación de datos + test
-- [ ] PR 2: borrado de imagen en uso → referencias a `null`
-- [ ] TDD `site-settings`
-- [ ] TDD `homepage`
-- [ ] TDD `gallery`
+- [x] PR 2: borrado de imagen en uso → referencias a `null`
+- [x] PR 2: TDD `site-settings`
+- [x] PR 2: TDD `homepage`
+- [x] PR 2: TDD `gallery`
+- [x] PR 2: versiones (historial, restaurar, máx. 20)
+- [x] PR 2: E2E del hero en ambos idiomas
 - [ ] TDD `revalidateSite` + verificación de la API de caché de Next.js 16 (nota en ADR-0007)
 - [ ] Storage S3 condicional
 - [ ] Migración + `payload-types.ts`
-- [ ] E2E del hero en ambos idiomas
 - [ ] `pnpm verify` + `pnpm test:e2e` en verde
 - [ ] Documentación (`data-model.md`, ADR-0007, `MILESTONE.md`, este documento) y riesgos `R-08`/`R-11` actualizados
 - [ ] PR con CI en verde, revisión y squash merge

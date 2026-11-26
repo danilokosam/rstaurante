@@ -8,6 +8,9 @@ import { fileURLToPath } from 'url'
 
 import { MAX_MEDIA_FILE_SIZE, Media } from './collections/Media'
 import { Users } from './collections/Users'
+import { Gallery } from './globals/Gallery'
+import { Homepage } from './globals/Homepage'
+import { SiteSettings } from './globals/SiteSettings'
 import { defaultLocale, locales } from './i18n/config'
 import { getEnv } from './lib/env'
 
@@ -37,6 +40,7 @@ export default buildConfig({
     fallback: true,
   },
   collections: [Users, Media],
+  globals: [SiteSettings, Homepage, Gallery],
   // HTTP uploads above 4 MB are aborted with 413 before reaching the collection (RF-MEDIA-01).
   upload: {
     limits: { fileSize: MAX_MEDIA_FILE_SIZE },
@@ -55,7 +59,9 @@ export default buildConfig({
     migrationDir: path.resolve(dirname, 'migrations'),
     // Schema "push" only during local development. Tests and production use
     // versioned migrations so they are always exercised (ADR-0003).
-    push: process.env.NODE_ENV === 'development',
+    // The E2E dev server sets PAYLOAD_DISABLE_PUSH so it runs on the migrated
+    // schema, like CI, and does not leave the database in "dev push" state.
+    push: process.env.NODE_ENV === 'development' && process.env.PAYLOAD_DISABLE_PUSH !== 'true',
   }),
   sharp,
   plugins: [],
