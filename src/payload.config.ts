@@ -7,7 +7,9 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { Dishes } from './collections/Dishes'
 import { MAX_MEDIA_FILE_SIZE, Media } from './collections/Media'
+import { MenuCategories } from './collections/MenuCategories'
 import { Users } from './collections/Users'
 import { Gallery } from './globals/Gallery'
 import { Homepage } from './globals/Homepage'
@@ -41,7 +43,7 @@ export default buildConfig({
     defaultLocale,
     fallback: true,
   },
-  collections: [Users, Media],
+  collections: [Users, Media, MenuCategories, Dishes],
   globals: [SiteSettings, Homepage, Gallery],
   // HTTP uploads above 4 MB are aborted with 413 before reaching the collection (RF-MEDIA-01).
   upload: {

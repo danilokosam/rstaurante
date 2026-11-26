@@ -56,6 +56,46 @@ describe('saving content revalidates the public site (ADR-0007, RF-PUB-01)', () 
     expect(revalidatePath).toHaveBeenLastCalledWith('/', 'layout')
   })
 
+  it('revalidates after creating, updating and deleting a menu category and a dish', async () => {
+    const category = await payload.create({
+      collection: 'menu-categories',
+      data: { name: 'Entrantes' },
+    })
+    expect(revalidatePath).toHaveBeenCalledTimes(1)
+
+    await payload.update({
+      collection: 'menu-categories',
+      id: category.id,
+      data: { name: 'Tapas' },
+    })
+    expect(revalidatePath).toHaveBeenCalledTimes(2)
+
+    const dish = await payload.create({
+      collection: 'dishes',
+      data: {
+        name: 'Patatas bravas',
+        price: 7.5,
+        category: category.id,
+        availability: 'available',
+      },
+    })
+    expect(revalidatePath).toHaveBeenCalledTimes(3)
+
+    await payload.update({
+      collection: 'dishes',
+      id: dish.id,
+      data: { availability: 'unavailable' },
+    })
+    expect(revalidatePath).toHaveBeenCalledTimes(4)
+
+    await payload.delete({ collection: 'dishes', id: dish.id })
+    expect(revalidatePath).toHaveBeenCalledTimes(5)
+
+    await payload.delete({ collection: 'menu-categories', id: category.id })
+    expect(revalidatePath).toHaveBeenCalledTimes(6)
+    expect(revalidatePath).toHaveBeenLastCalledWith('/', 'layout')
+  })
+
   it('does not revalidate when the caller disables it (seed scripts)', async () => {
     await payload.updateGlobal({
       slug: 'site-settings',

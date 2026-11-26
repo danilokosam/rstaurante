@@ -69,6 +69,8 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    'menu-categories': MenuCategory;
+    dishes: Dish;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +80,8 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'menu-categories': MenuCategoriesSelect<false> | MenuCategoriesSelect<true>;
+    dishes: DishesSelect<false> | DishesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -205,6 +209,72 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-categories".
+ */
+export interface MenuCategory {
+  id: number;
+  _order?: string | null;
+  /**
+   * Required in Spanish and unique per language.
+   */
+  name?: string | null;
+  description?: string | null;
+  /**
+   * When unchecked, neither the category nor its dishes appear on the website.
+   */
+  isVisible?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dishes".
+ */
+export interface Dish {
+  id: number;
+  _order?: string | null;
+  /**
+   * Required in Spanish.
+   */
+  name?: string | null;
+  description?: string | null;
+  /**
+   * In euros, from 0 to 9999.99 with at most 2 decimal places.
+   */
+  price: number;
+  category: number | MenuCategory;
+  image?: (number | null) | Media;
+  /**
+   * "Unavailable" keeps it dimmed on the menu; "Hidden" removes it from the website and API.
+   */
+  availability: 'available' | 'unavailable' | 'hidden';
+  isFeatured?: boolean | null;
+  /**
+   * Select any present allergens per EU Regulation 1169/2011. Leaving this empty does not claim the dish is allergen-free.
+   */
+  allergens?:
+    | (
+        | 'gluten'
+        | 'crustaceans'
+        | 'eggs'
+        | 'fish'
+        | 'peanuts'
+        | 'soybeans'
+        | 'milk'
+        | 'nuts'
+        | 'celery'
+        | 'mustard'
+        | 'sesame'
+        | 'sulphites'
+        | 'lupin'
+        | 'molluscs'
+      )[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -234,6 +304,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'menu-categories';
+        value: number | MenuCategory;
+      } | null)
+    | ({
+        relationTo: 'dishes';
+        value: number | Dish;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -355,6 +433,35 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-categories_select".
+ */
+export interface MenuCategoriesSelect<T extends boolean = true> {
+  _order?: T;
+  name?: T;
+  description?: T;
+  isVisible?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dishes_select".
+ */
+export interface DishesSelect<T extends boolean = true> {
+  _order?: T;
+  name?: T;
+  description?: T;
+  price?: T;
+  category?: T;
+  image?: T;
+  availability?: T;
+  isFeatured?: T;
+  allergens?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
