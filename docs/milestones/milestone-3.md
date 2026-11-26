@@ -1,6 +1,6 @@
 # Milestone 3 — CMS & Content Management
 
-- **Estado**: 🚧 En progreso. Plan aprobado por el propietario el 2026-11-26.
+- **Estado**: ✅ Cerrado (2026-11-26). PRs [#3](https://github.com/danilokosam/rstaurante/pull/3), [#4](https://github.com/danilokosam/rstaurante/pull/4) y [#5](https://github.com/danilokosam/rstaurante/pull/5) con CI en verde, fusionadas con squash merge. Plan aprobado por el propietario el 2026-11-26.
 
 ## Decisiones del propietario (2026-11-26)
 
@@ -101,7 +101,8 @@ Que el administrador pueda gestionar desde el panel todo el contenido del restau
 - [x] PR 3: migración `storage_fields` + `payload-types.ts`
 - [x] PR 3: `pnpm verify` + `pnpm test:e2e` en verde
 - [x] Documentación (`data-model.md`, `environment.md`, ADR-0004, ADR-0007, `setup.md`, `MILESTONE.md`, este documento) y riesgos `R-02`, `R-08` y `R-11` actualizados
-- [ ] PR 3 con CI en verde, revisión y squash merge → cierre de M3
+- [x] PR 3 (#5) con CI en verde, aprobada por el propietario y fusionada → M3 cerrado
+- [x] Verificación de `main` tras la fusión: `pnpm verify` + `pnpm test:e2e`
 
 ## Hallazgos de la PR 3
 
