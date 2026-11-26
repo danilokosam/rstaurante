@@ -1,7 +1,25 @@
-import { APIError, type CollectionConfig, ValidationError } from 'payload'
+import { type PostgresAdapter, sql } from '@payloadcms/db-postgres'
+import { APIError, type CollectionConfig, type PayloadRequest, ValidationError } from 'payload'
 
 import { authenticated } from '@/access'
+import { isLocale } from '@/i18n/config'
 import { validatePassword } from '@/lib/password'
+
+/** Arbitrary constant key for the advisory lock that serializes user deletions. */
+const LAST_USER_LOCK_KEY = 74_201_001
+
+/**
+ * Serializes concurrent user deletions until the current transaction ends, so
+ * two parallel deletes cannot both see "more than one user" and empty the
+ * collection (US-A4 CA2).
+ */
+async function lockUserDeletions(req: PayloadRequest): Promise<void> {
+  // This project always uses the Postgres adapter (see payload.config.ts).
+  const adapter = req.payload.db as unknown as PostgresAdapter
+  const transactionID = req.transactionID ? await req.transactionID : undefined
+  const db = (transactionID && adapter.sessions[transactionID]?.db) || adapter.drizzle
+  await db.execute(sql`SELECT pg_advisory_xact_lock(${LAST_USER_LOCK_KEY})`)
+}
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -35,9 +53,11 @@ export const Users: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [
-      ({ data }) => {
+      ({ data, req }) => {
         if (data?.password !== undefined) {
-          const result = validatePassword(data.password)
+          const adminLanguage = req.i18n?.language ?? ''
+          const language = isLocale(adminLanguage) ? adminLanguage : undefined
+          const result = validatePassword(data.password, language)
           if (typeof result === 'string') {
             throw new ValidationError({
               collection: 'users',
@@ -50,6 +70,7 @@ export const Users: CollectionConfig = {
     ],
     beforeDelete: [
       async ({ req }) => {
+        await lockUserDeletions(req)
         const { totalDocs } = await req.payload.count({
           collection: 'users',
           overrideAccess: true,

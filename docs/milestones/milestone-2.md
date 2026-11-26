@@ -1,6 +1,6 @@
 # Milestone 2 — Authentication & Admin Foundation
 
-- **Estado**: 🚧 En progreso (rama `feat/m2-auth-admin`, iniciado 2026-11-25).
+- **Estado**: ✅ Cerrado (2026-11-26). PR [#2](https://github.com/danilokosam/rstaurante/pull/2) con CI en verde, correcciones de la revisión incorporadas y fusionado con squash merge.
 
 ## Objetivo
 
@@ -17,10 +17,10 @@ Asegurar la autenticación y el control de acceso del CMS desde la base: colecci
 - **Incluido**:
   - Funciones de acceso en `src/access/` (`authenticated`, `anyone`).
   - Reglas de acceso explícitas en `Users` y `Media` (lectura pública para `Media`, escritura solo `authenticated`; `Users` solo `authenticated`).
-  - Validador puro de contraseña (mínimo 12 caracteres) en `src/lib/password.ts` + uso en `Users`.
-  - Colección `Users`: `maxLoginAttempts: 5`, `lockTime: 10 * 60 * 1000` (10 min), cookies `HttpOnly`, `Secure` en producción, `SameSite=Lax`, protección contra borrado del último usuario.
-  - `payload.config.ts`: `cors` y `csrf` restringidos a `env.serverUrl`; `i18n` del panel (`es` por defecto, `en` disponible con `@payloadcms/translations`); `localization` (`locales: ['es', 'en']`, `defaultLocale: 'es'`, `fallback: true`).
-  - Migración de base de datos para los cambios de esquema de `users` (`login_attempts`, `lock_until`).
+  - Validador puro de contraseña (mínimo 12 caracteres, mensaje en el idioma del panel: `es` por defecto, `en`) en `src/lib/password.ts` + uso en `Users`.
+  - Colección `Users`: `maxLoginAttempts: 5`, `lockTime: 10 * 60 * 1000` (10 min), cookies `HttpOnly`, `Secure` en producción, `SameSite=Lax`, protección contra borrado del último usuario (serializada con un _advisory lock_ de PostgreSQL dentro de la transacción para que dos borrados simultáneos no vacíen la colección).
+  - `payload.config.ts`: `cors` y `csrf` restringidos a `env.serverUrl`; `i18n` del panel (`es` por defecto, `en` disponible con `@payloadcms/translations`; el usuario cambia el idioma del panel desde su cuenta); `localization` (`locales` y `defaultLocale` reutilizados de `src/i18n/config.ts`, `fallback: true`). El idioma del panel y el idioma del contenido que se edita son independientes.
+  - Migración `20261125_122312`: crea el tipo enumerado `_locales` (`es`, `en`) que necesita la localización. Los campos `login_attempts` y `lock_until` ya existían desde la migración inicial.
   - Tests unitarios, de integración y E2E (TDD).
 - **Excluido**:
   - Colecciones y globals de contenido de M3 (`media` completo con magic bytes/tamaños, `site-settings`, `homepage`, `gallery`) y M4 (`menu-categories`, `dishes`).
@@ -39,23 +39,30 @@ Asegurar la autenticación y el control de acceso del CMS desde la base: colecci
 - [x] Ejecutar `pnpm test:e2e` en local (6/6 tests E2E en verde)
 - [x] Typecheck, lint, unit, integración y build en verde
 - [x] Revisión de seguridad y actualización de documentación (`MILESTONE.md`, `milestone-2.md`)
+- [x] Correcciones de la revisión de la PR #2 (ver abajo)
 
-## Verificación ejecutada (2026-11-25)
+## Verificación ejecutada (2026-11-26, tras las correcciones de la revisión)
 
 | Comprobación                       | Resultado                                                                                                                  |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `eslint . --max-warnings=0`        | ✅ 0 errores, 0 warnings                                                                                                   |
 | `tsc --noEmit --incremental false` | ✅ 0 errores                                                                                                               |
-| `vitest run --project unit`        | ✅ 5 archivos, 38 tests en verde (`env`, `testDatabase`, `i18n-config`, `password`, `access`)                              |
-| `vitest run --project int`         | ✅ 2 archivos, 11 tests en verde (`database`, `auth`, aplicando migraciones `20261124_205719_initial` y `20261125_122312`) |
+| `vitest run --project unit`        | ✅ 5 archivos, 40 tests en verde (`env`, `testDatabase`, `i18n-config`, `password`, `access`)                              |
+| `vitest run --project int`         | ✅ 2 archivos, 16 tests en verde (`database`, `auth`, aplicando migraciones `20261124_205719_initial` y `20261125_122312`) |
 | `next build`                       | ✅ Compilación y build de producción correctos                                                                             |
 | `playwright test`                  | ✅ 2 archivos, 6 tests E2E en verde (`smoke`, `auth`)                                                                      |
 
-## Commit propuesto (no ejecutado)
+## Correcciones de la revisión (2026-11-26)
 
-```text
-feat(auth): harden users collection, access control, and admin i18n
-```
+| Problema detectado                                                                                                                                                | Corrección                                                                                              |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `LocaleSync` cambiaba el idioma del panel al cambiar el idioma del contenido: impedía traducir contenido al inglés con el panel en español; fuera de alcance/ADR. | Eliminado. El idioma del panel se cambia desde la cuenta del usuario (funcionalidad nativa de Payload). |
+| El E2E dejaba en la base de datos un administrador con contraseña conocida y podía ejecutarse contra una base de datos remota.                                    | El E2E solo se ejecuta contra una base de datos local y borra el usuario de prueba antes y después.     |
+| Dos borrados simultáneos podían eliminar a los dos últimos usuarios (reproducido en 5 de 6 ejecuciones).                                                          | _Advisory lock_ de transacción en `beforeDelete` + test de integración de concurrencia.                 |
+| Faltaban tests de CSRF real, de error genérico de login y de cookie rechazada tras el logout.                                                                     | Añadidos (integración y E2E).                                                                           |
+| Mensaje de contraseña corta solo en inglés.                                                                                                                       | Mensaje según el idioma del panel (español por defecto).                                                |
+| Locales `es`/`en` duplicados en `payload.config.ts`.                                                                                                              | Reutiliza `locales` y `defaultLocale` de `src/i18n/config.ts`.                                          |
+| Documentación de la migración incorrecta y `MILESTONE.md` desactualizado.                                                                                         | Corregidos.                                                                                             |
 
 ## Plan de tests (TDD)
 
@@ -69,8 +76,12 @@ feat(auth): harden users collection, access control, and admin i18n
    - Contraseña de menos de 12 caracteres rechazada al crear/actualizar usuario.
    - Bloqueo tras 5 intentos de login fallidos (`maxLoginAttempts: 5`, `lockTime: 10 min`).
    - Imposibilidad de borrar el último usuario existente.
-   - Petición con `Origin` no permitido rechazada por CSRF/CORS.
+   - Cookie de sesión enviada desde un `Origin` no permitido: se ignora (CSRF); desde `serverURL`: se acepta.
+   - Mismo error genérico para email inexistente y contraseña incorrecta (US-A1 CA2).
+   - Dos borrados simultáneos de los dos únicos usuarios: solo uno tiene éxito y queda un usuario.
+   - Panel en español por defecto con inglés disponible (RF-I18N-05).
 3. **E2E (`tests/e2e/auth.e2e.spec.ts`)**:
    - Visitar `/admin` sin sesión redirige a `/admin/login` (o `/admin/create-first-user` si la BD está vacía).
    - Login con credenciales válidas da acceso al panel y muestra la interfaz en español por defecto.
-   - Logout invalida la sesión y volver a `/admin` exige login de nuevo.
+   - Logout invalida la sesión: volver a `/admin` exige login y la cookie anterior es rechazada por la API (US-A2 CA1 y CA2).
+   - Solo se ejecuta contra una base de datos local y borra el usuario de prueba al terminar.

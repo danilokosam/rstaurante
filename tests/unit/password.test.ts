@@ -31,4 +31,12 @@ describe('validatePassword', () => {
     expect(typeof validatePassword(undefined)).toBe('string')
     expect(typeof validatePassword(null)).toBe('string')
   })
+
+  it('returns the error message in Spanish by default (RF-I18N-05)', () => {
+    expect(validatePassword('short')).toBe('La contraseña debe tener al menos 12 caracteres.')
+  })
+
+  it('returns the error message in English when requested', () => {
+    expect(validatePassword('short', 'en')).toBe('Password must be at least 12 characters long.')
+  })
 })

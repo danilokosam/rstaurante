@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url'
 
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
+import { defaultLocale, locales } from './i18n/config'
 import { getEnv } from './lib/env'
 
 const filename = fileURLToPath(import.meta.url)
@@ -25,17 +26,14 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    components: {
-      providers: ['@/components/admin/LocaleSync#LocaleSync'],
-    },
   },
   i18n: {
-    fallbackLanguage: 'es',
+    fallbackLanguage: defaultLocale,
     supportedLanguages: { es, en },
   },
   localization: {
-    locales: ['es', 'en'],
-    defaultLocale: 'es',
+    locales: [...locales],
+    defaultLocale,
     fallback: true,
   },
   collections: [Users, Media],
