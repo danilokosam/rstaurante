@@ -87,8 +87,16 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('es' | 'en') | ('es' | 'en')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+    homepage: Homepage;
+    gallery: Gallery;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    homepage: HomepageSelect<false> | HomepageSelect<true>;
+    gallery: GallerySelect<false> | GallerySelect<true>;
+  };
   locale: 'es' | 'en';
   widgets: {
     collections: CollectionsWidget;
@@ -383,6 +391,242 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  /**
+   * The same in every language.
+   */
+  name: string;
+  tagline?: string | null;
+  /**
+   * Also used as the search engine description when the SEO one is empty.
+   */
+  description?: string | null;
+  logo?: (number | null) | Media;
+  contact?: {
+    phone?: string | null;
+    email?: string | null;
+    /**
+     * International format without spaces, e.g. +34600111222. If empty, the website does not show the WhatsApp button.
+     */
+    whatsappNumber?: string | null;
+    whatsappMessage?: string | null;
+  };
+  location?: {
+    street?: string | null;
+    postalCode?: string | null;
+    city?: string | null;
+    region?: string | null;
+    country?: string | null;
+    /**
+     * Optional. If empty, the website builds a Google Maps link from the address.
+     */
+    mapsUrl?: string | null;
+  };
+  openingHours?: {
+    /**
+     * Add one slot per service (e.g. lunch and dinner). A day without slots is shown as "Closed". A closing time earlier than the opening time (20:00–01:00) means it closes after midnight.
+     */
+    slots?:
+      | {
+          day: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+          opens: string;
+          closes: string;
+          id?: string | null;
+        }[]
+      | null;
+    note?: string | null;
+  };
+  socialLinks?:
+    | {
+        platform: 'instagram' | 'facebook' | 'tiktok' | 'x' | 'youtube' | 'tripadvisor' | 'google';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  seo?: {
+    /**
+     * If empty, the restaurant name is used.
+     */
+    title?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage".
+ */
+export interface Homepage {
+  id: number;
+  hero?: {
+    /**
+     * Required in Spanish.
+     */
+    title?: string | null;
+    subtitle?: string | null;
+    image?: (number | null) | Media;
+    /**
+     * If the button text is empty, no button is shown.
+     */
+    cta?: {
+      label?: string | null;
+      action?: ('menu' | 'whatsapp' | 'phone' | 'external') | null;
+      url?: string | null;
+    };
+  };
+  about?: {
+    title?: string | null;
+    /**
+     * Separate paragraphs with a blank line. HTML is not allowed: it is shown as text.
+     */
+    body?: string | null;
+    image?: (number | null) | Media;
+  };
+  sections?: {
+    featuredTitle?: string | null;
+    galleryTitle?: string | null;
+    hoursTitle?: string | null;
+    contactTitle?: string | null;
+  };
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery".
+ */
+export interface Gallery {
+  id: number;
+  /**
+   * Up to 30 images. Drag them to change the order shown on the website. If there are none, the section is hidden.
+   */
+  images?: (number | Media)[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  name?: T;
+  tagline?: T;
+  description?: T;
+  logo?: T;
+  contact?:
+    | T
+    | {
+        phone?: T;
+        email?: T;
+        whatsappNumber?: T;
+        whatsappMessage?: T;
+      };
+  location?:
+    | T
+    | {
+        street?: T;
+        postalCode?: T;
+        city?: T;
+        region?: T;
+        country?: T;
+        mapsUrl?: T;
+      };
+  openingHours?:
+    | T
+    | {
+        slots?:
+          | T
+          | {
+              day?: T;
+              opens?: T;
+              closes?: T;
+              id?: T;
+            };
+        note?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage_select".
+ */
+export interface HomepageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        image?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              action?: T;
+              url?: T;
+            };
+      };
+  about?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        image?: T;
+      };
+  sections?:
+    | T
+    | {
+        featuredTitle?: T;
+        galleryTitle?: T;
+        hoursTitle?: T;
+        contactTitle?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery_select".
+ */
+export interface GallerySelect<T extends boolean = true> {
+  images?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

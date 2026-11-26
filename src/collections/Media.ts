@@ -5,7 +5,7 @@ import { ValidationError } from 'payload'
 
 import { anyone, authenticated } from '@/access'
 import { requiredInDefaultLocale } from '@/fields/localizedText'
-import { isLocale, type Locale } from '@/i18n/config'
+import { adminLanguage } from '@/i18n/adminLanguage'
 import { ALLOWED_IMAGE_TYPES, detectImageType } from '@/lib/media/detectImageType'
 import type { LocalizedMessage } from '@/lib/validation/messages'
 
@@ -27,11 +27,6 @@ const messages = {
 } satisfies Record<string, LocalizedMessage>
 
 type UploadedFile = NonNullable<PayloadRequest['file']>
-
-function adminLanguage(req: PayloadRequest): Locale {
-  const language = req.i18n?.language ?? ''
-  return isLocale(language) ? language : 'es'
-}
 
 /** Reads the first bytes of the upload, whether it is in memory or in a temp file. */
 async function readSignature(file: UploadedFile): Promise<Uint8Array> {

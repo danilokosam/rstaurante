@@ -97,11 +97,11 @@ menu-categories ◄── category (N:1) ── dishes ────────�
 | `contact.email`              | email            | Opcional                                                                                                                             |
 | `contact.whatsappNumber`     | text             | Opcional; formato E.164 (`^\+[1-9]\d{7,14}$`)                                                                                        |
 | `contact.whatsappMessage` 🌐 | text             | Opcional, máx. 200                                                                                                                   |
-| `location.street`            | text             | Opcional                                                                                                                             |
-| `location.postalCode`        | text             | Opcional                                                                                                                             |
-| `location.city`              | text             | Opcional                                                                                                                             |
-| `location.region`            | text             | Opcional                                                                                                                             |
-| `location.country`           | text             | Opcional                                                                                                                             |
+| `location.street`            | text             | Opcional, máx. 150                                                                                                                   |
+| `location.postalCode`        | text             | Opcional, máx. 20                                                                                                                    |
+| `location.city`              | text             | Opcional, máx. 100                                                                                                                   |
+| `location.region`            | text             | Opcional, máx. 100                                                                                                                   |
+| `location.country`           | text             | Opcional, máx. 100                                                                                                                   |
 | `location.mapsUrl`           | text             | Opcional; `https` y host en lista permitida (`google.com`, `www.google.com`, `maps.google.com`, `maps.app.goo.gl`, `goo.gl`)         |
 | `openingHours.slots`         | array            | Filas `{ day: select(monday…sunday), opens: text HH:MM, closes: text HH:MM }`; `opens ≠ closes`; `closes < opens` = cruza medianoche |
 | `openingHours.note` 🌐       | text             | Opcional, máx. 200                                                                                                                   |
@@ -113,35 +113,36 @@ menu-categories ◄── category (N:1) ── dishes ────────�
 - `versions: { max: 20 }` (historial y restauración; sin drafts).
 - Access: `read` → público; `update` → autenticados.
 - Campos de branding (tema, color de acento) se añadirán en **M6** (no se modelan antes).
+- En el panel se organiza en pestañas: General, Contacto, Ubicación, Horario, Redes sociales y SEO (los nombres de datos no cambian).
 
 ### `homepage` — Contenido de la home
 
-| Grupo / campo               | Tipo             | Reglas                                                                               |
-| --------------------------- | ---------------- | ------------------------------------------------------------------------------------ |
-| `hero.title` 🌐             | text             | Obligatorio (es), máx. 80                                                            |
-| `hero.subtitle` 🌐          | textarea         | Opcional, máx. 200                                                                   |
-| `hero.image`                | upload → `media` | Opcional                                                                             |
-| `hero.cta.label` 🌐         | text             | Opcional, máx. 30 (si vacío no hay CTA)                                              |
-| `hero.cta.action`           | select           | `menu` \| `whatsapp` \| `phone` \| `external`                                        |
-| `hero.cta.url`              | text             | Solo si `action = external`; `https`                                                 |
-| `about.title` 🌐            | text             | Opcional, máx. 80                                                                    |
-| `about.body` 🌐             | textarea         | Opcional, máx. 2000; párrafos separados por línea en blanco; sin HTML                |
-| `about.image`               | upload → `media` | Opcional                                                                             |
-| `sections.featuredTitle` 🌐 | text             | Opcional; si vacío, texto del diccionario («Nuestros destacados» / «Our highlights») |
-| `sections.galleryTitle` 🌐  | text             | Ídem («Galería» / «Gallery»)                                                         |
-| `sections.hoursTitle` 🌐    | text             | Ídem («Horario» / «Opening hours»)                                                   |
-| `sections.contactTitle` 🌐  | text             | Ídem («Dónde estamos» / «Find us»)                                                   |
-| `seo.title` 🌐              | text             | Opcional, máx. 60                                                                    |
-| `seo.description` 🌐        | textarea         | Opcional, máx. 160                                                                   |
+| Grupo / campo               | Tipo             | Reglas                                                                                                        |
+| --------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------- |
+| `hero.title` 🌐             | text             | Obligatorio (es), máx. 80                                                                                     |
+| `hero.subtitle` 🌐          | textarea         | Opcional, máx. 200                                                                                            |
+| `hero.image`                | upload → `media` | Opcional                                                                                                      |
+| `hero.cta.label` 🌐         | text             | Opcional, máx. 30 (si vacío no hay CTA)                                                                       |
+| `hero.cta.action`           | select           | `menu` \| `whatsapp` \| `phone` \| `external`; por defecto `menu`. `whatsapp` exige número en `site-settings` |
+| `hero.cta.url`              | text             | Solo si `action = external`; `https`                                                                          |
+| `about.title` 🌐            | text             | Opcional, máx. 80                                                                                             |
+| `about.body` 🌐             | textarea         | Opcional, máx. 2000; párrafos separados por línea en blanco; sin HTML                                         |
+| `about.image`               | upload → `media` | Opcional                                                                                                      |
+| `sections.featuredTitle` 🌐 | text             | Opcional; si vacío, texto del diccionario («Nuestros destacados» / «Our highlights»)                          |
+| `sections.galleryTitle` 🌐  | text             | Ídem («Galería» / «Gallery»)                                                                                  |
+| `sections.hoursTitle` 🌐    | text             | Ídem («Horario» / «Opening hours»)                                                                            |
+| `sections.contactTitle` 🌐  | text             | Ídem («Dónde estamos» / «Find us»)                                                                            |
+| `seo.title` 🌐              | text             | Opcional, máx. 60                                                                                             |
+| `seo.description` 🌐        | textarea         | Opcional, máx. 160                                                                                            |
 
 - `versions: { max: 20 }`.
 - Access: `read` → público; `update` → autenticados.
 
 ### `gallery` — Galería
 
-| Campo    | Tipo                              | Reglas             |
-| -------- | --------------------------------- | ------------------ |
-| `images` | upload → `media`, `hasMany: true` | Ordenable; máx. 30 |
+| Campo    | Tipo                              | Reglas                            |
+| -------- | --------------------------------- | --------------------------------- |
+| `images` | upload → `media`, `hasMany: true` | Ordenable (`isSortable`); máx. 30 |
 
 - Access: `read` → público; `update` → autenticados.
 
@@ -151,5 +152,5 @@ menu-categories ◄── category (N:1) ── dishes ────────�
 
 - **Textos sin HTML**: ningún campo admite HTML; React escapa todo el contenido al renderizar. No se usa `dangerouslySetInnerHTML` salvo para el JSON-LD, que se serializa con escape de `<` (ver [security.md](security.md)).
 - **Rich text**: no se usa en el MVP (textarea + párrafos). Ver [ADR-0005](../decisions/ADR/ADR-0005-content-model.md).
-- **Borrado de imágenes en uso**: las relaciones a `media` son opcionales salvo `alt`; al borrar una imagen, los campos que la referencian quedan a `null` (comportamiento por defecto de Payload/Postgres con `ON DELETE SET NULL`, a verificar con test en M3) y la UI pública debe tolerar `null`.
+- **Borrado de imágenes en uso**: las relaciones a `media` son opcionales salvo `alt`; al borrar una imagen, los campos que la referencian quedan a `null` (comportamiento por defecto de Payload/Postgres con `ON DELETE SET NULL`; en la galería, `ON DELETE CASCADE` quita la imagen de la lista. Verificado con test en M3) y la UI pública debe tolerar `null`.
 - **Esquema de base de datos**: tablas en un esquema PostgreSQL dedicado (`payload`) si el adaptador lo soporta sin problemas, para no exponerlas por la Data API de Supabase (ver [ADR-0003](../decisions/ADR/ADR-0003-database-supabase-postgres.md)).

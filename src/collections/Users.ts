@@ -2,7 +2,7 @@ import { type PostgresAdapter, sql } from '@payloadcms/db-postgres'
 import { APIError, type CollectionConfig, type PayloadRequest, ValidationError } from 'payload'
 
 import { authenticated } from '@/access'
-import { isLocale } from '@/i18n/config'
+import { adminLanguage } from '@/i18n/adminLanguage'
 import { validatePassword } from '@/lib/password'
 
 /** Arbitrary constant key for the advisory lock that serializes user deletions. */
@@ -55,9 +55,7 @@ export const Users: CollectionConfig = {
     beforeValidate: [
       ({ data, req }) => {
         if (data?.password !== undefined) {
-          const adminLanguage = req.i18n?.language ?? ''
-          const language = isLocale(adminLanguage) ? adminLanguage : undefined
-          const result = validatePassword(data.password, language)
+          const result = validatePassword(data.password, adminLanguage(req))
           if (typeof result === 'string') {
             throw new ValidationError({
               collection: 'users',

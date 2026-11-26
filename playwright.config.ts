@@ -27,5 +27,7 @@ export default defineConfig({
     url: baseURL,
     reuseExistingServer: !isCI,
     timeout: 120_000,
+    // Use the migrated schema (run `pnpm migrate`), never Payload's dev "push".
+    env: { PAYLOAD_DISABLE_PUSH: 'true' },
   },
 })

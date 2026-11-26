@@ -5,24 +5,11 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from
 import { MAX_MEDIA_FILE_SIZE } from '@/collections/Media'
 import config from '@/payload.config'
 
+import { rejectionMessage } from '../helpers/errors'
 import { resetDatabase } from '../helpers/resetDatabase'
+import { makeImage, uploadFile } from '../helpers/uploads'
 
 let payload: Payload
-
-type ImageFormat = 'jpeg' | 'png' | 'webp' | 'avif'
-
-/** Generates a real image of the given format with sharp. */
-async function makeImage(format: ImageFormat, width = 1000, height = 600): Promise<Buffer> {
-  return sharp({
-    create: { width, height, channels: 3, background: { r: 200, g: 120, b: 40 } },
-  })
-    .toFormat(format)
-    .toBuffer()
-}
-
-function uploadFile(data: Buffer, name: string, mimetype: string) {
-  return { data, name, mimetype, size: data.length }
-}
 
 /** Pass `null` to create the image without any alt text. */
 function createMedia(file: ReturnType<typeof uploadFile>, alt: string | null = 'Plato') {
@@ -32,20 +19,6 @@ function createMedia(file: ReturnType<typeof uploadFile>, alt: string | null = '
     file,
     locale: 'es',
   })
-}
-
-/** Extracts the validation message, which is what the admin shows to the user. */
-async function rejectionMessage(promise: Promise<unknown>): Promise<string> {
-  try {
-    await promise
-  } catch (error) {
-    const data = (error as { data?: { errors?: { message: string }[] } }).data
-    return [
-      error instanceof Error ? error.message : '',
-      ...(data?.errors?.map((e) => e.message) ?? []),
-    ].join(' | ')
-  }
-  throw new Error('Expected the operation to be rejected')
 }
 
 // One Payload instance for the whole file: destroying it in a nested `afterAll`
