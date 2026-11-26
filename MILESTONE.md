@@ -4,12 +4,12 @@
 
 ## 1. Estado actual
 
-|                               |                                                                                                                                                           |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Milestone activo**          | **M3 — CMS & Content Management** (🚧 en progreso; plan aprobado, 3 PRs). M2 ✅ cerrado (PR #2).                                                          |
-| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                                  |
-| **Siguiente acción concreta** | PR 3 de M3 (`feat/m3-publishing-storage`): revalidación + Storage. Al fusionarla, M3 queda cerrado. Ver [milestone-3.md](docs/milestones/milestone-3.md). |
-| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                             |
+|                               |                                                                                                                               |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Milestone activo**          | **M4 — Restaurant Menu Management** (no iniciado). M3 ✅ cerrado (2026-11-26, PRs #3, #4 y #5).                               |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.      |
+| **Siguiente acción concreta** | Iniciar M4 en una rama `feat/m4-…`: marcarlo activo aquí, crear `docs/milestones/milestone-4.md` y presentar el plan.         |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa. |
 
 ## 2. Visión resumida
 
@@ -70,8 +70,8 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 | M0  | Product Definition & Architecture | ✅ Completado y revisado | [milestone-0.md](docs/milestones/milestone-0.md) |
 | M1  | Project Foundation                | ✅ Cerrado (PR #1)       | [milestone-1.md](docs/milestones/milestone-1.md) |
 | M2  | Authentication & Admin Foundation | ✅ Cerrado (PR #2)       | [milestone-2.md](docs/milestones/milestone-2.md) |
-| M3  | CMS & Content Management          | 🚧 En progreso           | [milestone-3.md](docs/milestones/milestone-3.md) |
-| M4  | Restaurant Menu Management        | ⏳ Pendiente             | —                                                |
+| M3  | CMS & Content Management          | ✅ Cerrado (PRs #3–#5)   | [milestone-3.md](docs/milestones/milestone-3.md) |
+| M4  | Restaurant Menu Management        | ⏳ Siguiente             | —                                                |
 | M5  | Public Restaurant Website         | ⏳ Pendiente             | —                                                |
 | M6  | Customization & Branding          | ⏳ Pendiente             | —                                                |
 | M7  | Deployment & Demo Readiness       | ⏳ Pendiente             | —                                                |
@@ -86,9 +86,9 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 - **M6 — Branding**: temas/paletas predefinidas con contraste AA, logo/branding, opciones limitadas de secciones. Sin builder.
 - **M7 — Deploy & Demo**: **CD con Vercel** (preview por PR, producción desde `main`, migraciones en el build), E2E en la CI, producción segura (cabeceras/CSP, pooler, Data API off, migraciones), seed demo ficticio, E2E de flujos críticos contra build de producción, Lighthouse, documentación de operación.
 
-## 8. Milestone activo — M3: CMS & Content Management
+## 8. Milestone activo — M4 (no iniciado)
 
-Plan, alcance y plan de tests en [milestone-3.md](docs/milestones/milestone-3.md) (plan aprobado el 2026-11-26). M2 cerrado: ver [milestone-2.md](docs/milestones/milestone-2.md).
+Se detallará en `docs/milestones/milestone-4.md` al iniciarlo. Pendientes heredados de M3 para M4: hooks de revalidación y `requiredInDefaultLocale` en `menu-categories` y `dishes` (ver [milestone-3.md](docs/milestones/milestone-3.md#pendientes-trasladados)). M3 cerrado: ver [milestone-3.md](docs/milestones/milestone-3.md).
 
 ### Checklist de M0 (cerrado)
 
@@ -226,3 +226,5 @@ Commit propuesto en [milestone-0.md](docs/milestones/milestone-0.md#commit-propu
 **2026-11-26 — M3, PR 1 fusionada (#3). PR 2** (`feat/m3-globals`): globals `site-settings` (pestañas, contacto, ubicación, horarios, redes, SEO), `homepage` (hero con CTA validado, sobre nosotros, títulos, SEO) y `gallery` (ordenable, máx. 30); versiones restaurables (máx. 20); E2E de la portada en es/en; servidor E2E sin `push`.
 
 **2026-11-26 — M3, PR 2 fusionada (#4). PR 3** (`feat/m3-publishing-storage`): hook `revalidateSite` (Next.js 16.4 verificado, no deshace el guardado si falla), Supabase Storage condicional con `S3_PUBLIC_URL` y esquema idéntico con y sin S3. Con ella se completa el alcance de M3; pendientes trasladados a M4, M5 y M7 en [milestone-3.md](docs/milestones/milestone-3.md).
+
+**2026-11-26 — M3 cerrado.** PR 3 (#5) fusionada tras la aprobación del propietario; `main` verificado tras la fusión. README ampliado con el estado real del proyecto (qué funciona, qué falta, stack, arquitectura, puesta en marcha y estructura). Siguiente: M4.
