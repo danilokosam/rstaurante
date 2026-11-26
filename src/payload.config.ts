@@ -6,7 +6,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
-import { Media } from './collections/Media'
+import { MAX_MEDIA_FILE_SIZE, Media } from './collections/Media'
 import { Users } from './collections/Users'
 import { defaultLocale, locales } from './i18n/config'
 import { getEnv } from './lib/env'
@@ -37,6 +37,10 @@ export default buildConfig({
     fallback: true,
   },
   collections: [Users, Media],
+  // HTTP uploads above 4 MB are aborted with 413 before reaching the collection (RF-MEDIA-01).
+  upload: {
+    limits: { fileSize: MAX_MEDIA_FILE_SIZE },
+  },
   // GraphQL is not used by this project: disabling it reduces the attack surface (ADR-0001).
   graphQL: {
     disable: true,

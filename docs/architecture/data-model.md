@@ -5,7 +5,7 @@ Modelo de contenido en Payload CMS 3. Payload genera las tablas PostgreSQL (vía
 - **Collections**: conjuntos de documentos (N elementos): usuarios, imágenes, categorías, platos.
 - **Globals**: documentos únicos (1 elemento): ajustes del restaurante, home, galería.
 - Slugs en inglés (`kebab-case`); etiquetas del panel en español e inglés.
-- **🌐 = campo localizado** (es obligatorio si el campo es obligatorio; en opcional con fallback a es). Ver [ADR-0010](../decisions/ADR/ADR-0010-i18n-spanish-english.md). Configuración: `localization: { locales: ['es', 'en'], defaultLocale: 'es', fallback: true }`.
+- **🌐 = campo localizado** (es obligatorio si el campo es obligatorio; en opcional con fallback a es). Los campos 🌐 obligatorios usan `requiredInDefaultLocale` (`src/fields/localizedText.ts`) en lugar de `required: true`, que en Payload exige el valor en todos los idiomas (R-08, verificado en M3). Ver [ADR-0010](../decisions/ADR/ADR-0010-i18n-spanish-english.md). Configuración: `localization: { locales: ['es', 'en'], defaultLocale: 'es', fallback: true }`.
 - Todos los documentos tienen `id`, `createdAt`, `updatedAt` (automáticos).
 - Este modelo es **inicial**: se implementa y ajusta en M2–M4; cualquier cambio se documenta aquí.
 
@@ -40,13 +40,14 @@ menu-categories ◄── category (N:1) ── dishes ────────�
 
 ### `media` — Imágenes (upload)
 
-| Campo        | Tipo   | Reglas                                                                                                                                         |
-| ------------ | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `alt` 🌐     | text   | **Obligatorio** (es), máx. 200                                                                                                                 |
-| `caption` 🌐 | text   | Opcional, máx. 200                                                                                                                             |
-| archivo      | upload | `mimeTypes`: `image/jpeg`, `image/png`, `image/webp`, `image/avif`. Tamaño máx. 4 MB. Tipo verificado por contenido (Payload usa `file-type`). |
+| Campo        | Tipo   | Reglas                                                                                                                                                                  |
+| ------------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `alt` 🌐     | text   | **Obligatorio** (es), máx. 200                                                                                                                                          |
+| `caption` 🌐 | text   | Opcional, máx. 200                                                                                                                                                      |
+| archivo      | upload | `mimeTypes`: `image/jpeg`, `image/png`, `image/webp`, `image/avif`. Tamaño máx. 4 MB. Tipo verificado por contenido con un detector propio de _magic bytes_ (ver nota). |
 
-- `imageSizes` (generados con `sharp`, salida WebP): `thumbnail` 400 px, `card` 800 px, `hero` 1920 px de ancho (sin ampliar originales más pequeños). Valores definitivos en M3.
+- `imageSizes` (generados con `sharp`, salida WebP): `thumbnail` 400 px, `card` 800 px, `hero` 1920 px de ancho. Con `withoutEnlargement: true`, si el original es más pequeño se guarda una copia a su tamaño (los tres tamaños existen siempre). Definitivo (M3).
+- **Validación del archivo** (`beforeOperation` de `media`, M3): tamaño ≤ 4 MB y tipo detectado por _magic bytes_ (`src/lib/media/detectImageType.ts`); el tipo detectado sustituye al declarado por el cliente. Payload por sí solo acepta el tipo de la extensión cuando no reconoce el contenido. En HTTP, `upload.limits.fileSize` corta las subidas de más de 4 MB con 413.
 - `focalPoint` habilitado (recorte inteligente del hero).
 - Access: `read` → público; escritura → autenticados.
 

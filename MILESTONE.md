@@ -4,12 +4,12 @@
 
 ## 1. Estado actual
 
-|                               |                                                                                                                               |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Milestone activo**          | **M3 — CMS & Content Management** (no iniciado). M2 ✅ cerrado (2026-11-26, PR #2).                                           |
-| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.      |
-| **Siguiente acción concreta** | Iniciar M3 en la rama `feat/m3-cms-content`: marcarlo activo aquí, crear `docs/milestones/milestone-3.md` y presentar plan.   |
-| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa. |
+|                               |                                                                                                                                             |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Milestone activo**          | **M3 — CMS & Content Management** (🚧 en progreso; plan aprobado, 3 PRs). M2 ✅ cerrado (PR #2).                                            |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                    |
+| **Siguiente acción concreta** | PR 1 de M3 (`feat/m3-validators-media`): validadores, `media` y `users.name` con TDD. Ver [milestone-3.md](docs/milestones/milestone-3.md). |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.               |
 
 ## 2. Visión resumida
 
@@ -70,7 +70,7 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 | M0  | Product Definition & Architecture | ✅ Completado y revisado | [milestone-0.md](docs/milestones/milestone-0.md) |
 | M1  | Project Foundation                | ✅ Cerrado (PR #1)       | [milestone-1.md](docs/milestones/milestone-1.md) |
 | M2  | Authentication & Admin Foundation | ✅ Cerrado (PR #2)       | [milestone-2.md](docs/milestones/milestone-2.md) |
-| M3  | CMS & Content Management          | ⏳ Siguiente             | —                                                |
+| M3  | CMS & Content Management          | 🚧 En progreso           | [milestone-3.md](docs/milestones/milestone-3.md) |
 | M4  | Restaurant Menu Management        | ⏳ Pendiente             | —                                                |
 | M5  | Public Restaurant Website         | ⏳ Pendiente             | —                                                |
 | M6  | Customization & Branding          | ⏳ Pendiente             | —                                                |
@@ -86,9 +86,9 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 - **M6 — Branding**: temas/paletas predefinidas con contraste AA, logo/branding, opciones limitadas de secciones. Sin builder.
 - **M7 — Deploy & Demo**: **CD con Vercel** (preview por PR, producción desde `main`, migraciones en el build), E2E en la CI, producción segura (cabeceras/CSP, pooler, Data API off, migraciones), seed demo ficticio, E2E de flujos críticos contra build de producción, Lighthouse, documentación de operación.
 
-## 8. Milestone activo — M3 (no iniciado)
+## 8. Milestone activo — M3: CMS & Content Management
 
-Se detallará en `docs/milestones/milestone-3.md` al iniciarlo. M2 cerrado: ver [milestone-2.md](docs/milestones/milestone-2.md).
+Plan, alcance y plan de tests en [milestone-3.md](docs/milestones/milestone-3.md) (plan aprobado el 2026-11-26). M2 cerrado: ver [milestone-2.md](docs/milestones/milestone-2.md).
 
 ### Checklist de M0 (cerrado)
 
@@ -166,10 +166,10 @@ Ver la matriz en [testing-strategy.md](docs/development/testing-strategy.md#matr
 | R-05 | Riesgo coste            | Proyectos gratuitos de Supabase se pausan por inactividad; plan Hobby de Vercel no comercial     | Demo caída / coste                                         | Decidir planes en M7                                                                                                        | Abierto                |
 | R-06 | Riesgo funcional        | Recuperación de contraseña por email no incluida (sin adaptador de email)                        | Usuario bloqueado sin acceso                               | Otro admin o script restablece; reevaluar en M7 (ADR-0006)                                                                  | Aceptado               |
 | R-07 | Riesgo legal/producto   | Exactitud de los alérgenos (responsabilidad del restaurante)                                     | Información incorrecta a clientes alérgicos                | Alérgenos incluidos (ADR-0011); lista cerrada UE; aviso fijo en la carta; documentar responsabilidad en la guía de uso (M7) | Mitigado               |
-| R-08 | Riesgo técnico          | Validación de campos obligatorios localizados en Payload (¿exige cada idioma?)                   | Inglés obligatorio sin querer                              | Test en M3; validación propia si hace falta (ADR-0010)                                                                      | Abierto                |
+| R-08 | Riesgo técnico          | Validación de campos obligatorios localizados en Payload (¿exige cada idioma?)                   | Inglés obligatorio sin querer                              | Confirmado en M3: `required` exige todos los idiomas → validación propia `requiredInDefaultLocale` con tests                | ✅ Cerrado             |
 | R-09 | Riesgo de alcance       | i18n duplica el trabajo de contenido y de pruebas en M3–M5                                       | Más esfuerzo                                               | Diccionarios simples, rutas no traducidas, fallback a español                                                               | Aceptado               |
 | R-10 | Riesgo seguridad (bajo) | Vulnerabilidad moderada GHSA-67mh-4wv8-2f99 en `esbuild <= 0.24.2` (transitiva de `drizzle-kit`) | Solo afecta al servidor de desarrollo de esbuild, no usado | Aceptada; revisar al actualizar Payload; CI falla solo con altas/críticas                                                   | Aceptado               |
-| R-11 | Riesgo seguridad        | Colecciones `Users`/`Media` de la plantilla sin access control propio                            | Exposición si se desplegara antes de M2/M3                 | No desplegar hasta M2/M3 (CD llega en M7)                                                                                   | Abierto                |
+| R-11 | Riesgo seguridad        | Colecciones `Users`/`Media` de la plantilla sin access control propio                            | Exposición si se desplegara antes de M2/M3                 | Reglas de acceso explícitas en `users` (M2) y `media` (M2, ampliado en M3) con tests                                        | ✅ Cerrado             |
 
 ## 12. Preguntas abiertas (para el propietario)
 
@@ -218,3 +218,7 @@ Commit propuesto en [milestone-0.md](docs/milestones/milestone-0.md#commit-propu
 **2026-11-24 — M1 implementado y verificado en local** (rama `feat/m1-project-foundation`): Next.js 16.4.6 + Payload 3.94.1 + Postgres 17 (Docker) + Tailwind 4; `env.ts` validado (TDD); GraphQL deshabilitado; migración inicial; rutas `/es` `/en`; Vitest unit (29) + integración (2) + Playwright E2E (4) en verde; `pnpm verify` y build en verde; CI en `.github/workflows/ci.yml` con detección de migraciones pendientes. Detalle en [milestone-1.md](docs/milestones/milestone-1.md). Pendiente: push, PR, CI en GitHub, protección de `main`, merge.
 
 **2026-11-24 — M1 cerrado.** PR #1 con CI en verde en GitHub; `main` protegida (PR + checks `Quality` y `App` obligatorios, rama al día, historial lineal, sin force-push, aplicado también a administradores; 0 aprobaciones requeridas mientras haya un único desarrollador); repositorio con solo squash merge y borrado automático de ramas. Siguiente: M2.
+
+**2026-11-26 — M2 cerrado.** PR #2 (de un colaborador) revisada; correcciones incorporadas (sin `LocaleSync`, E2E solo contra BD local, _advisory lock_ en el borrado del último usuario, tests de CSRF/logout/error genérico) y fusionada con squash. Detalle en [milestone-2.md](docs/milestones/milestone-2.md).
+
+**2026-11-26 — M3 iniciado.** Plan aprobado (3 PRs; Supabase real en M7; `users.name` incluido). PR 1 (`feat/m3-validators-media`): validadores puros, `media` completa con detector propio de _magic bytes_, `alt` obligatorio solo en español (R-08 cerrado), migración que conserva los textos `alt`. Detalle en [milestone-3.md](docs/milestones/milestone-3.md).
