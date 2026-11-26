@@ -5,6 +5,7 @@ import { ValidationError } from 'payload'
 
 import { anyone, authenticated } from '@/access'
 import { requiredInDefaultLocale } from '@/fields/localizedText'
+import { revalidateSiteAfterChange, revalidateSiteAfterDelete } from '@/hooks/revalidateSite'
 import { adminLanguage } from '@/i18n/adminLanguage'
 import { ALLOWED_IMAGE_TYPES, detectImageType } from '@/lib/media/detectImageType'
 import type { LocalizedMessage } from '@/lib/validation/messages'
@@ -96,6 +97,8 @@ export const Media: CollectionConfig = {
   },
   hooks: {
     beforeOperation: [validateUploadedImage],
+    afterChange: [revalidateSiteAfterChange],
+    afterDelete: [revalidateSiteAfterDelete],
   },
   fields: [
     requiredInDefaultLocale({

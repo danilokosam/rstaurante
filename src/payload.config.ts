@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { s3Storage } from '@payloadcms/storage-s3'
 import { en } from '@payloadcms/translations/languages/en'
 import { es } from '@payloadcms/translations/languages/es'
 import path from 'path'
@@ -13,6 +14,7 @@ import { Homepage } from './globals/Homepage'
 import { SiteSettings } from './globals/SiteSettings'
 import { defaultLocale, locales } from './i18n/config'
 import { getEnv } from './lib/env'
+import { buildS3StorageOptions } from './lib/storage/s3Options'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -64,5 +66,6 @@ export default buildConfig({
     push: process.env.NODE_ENV === 'development' && process.env.PAYLOAD_DISABLE_PUSH !== 'true',
   }),
   sharp,
-  plugins: [],
+  // Supabase Storage when S3_* variables are set; local disk otherwise (ADR-0004).
+  plugins: [s3Storage(buildS3StorageOptions(env.s3))],
 })

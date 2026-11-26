@@ -37,3 +37,9 @@ El CMS permite subir imágenes (logo, hero, platos, galería). En un hosting ser
 
 - Seguridad: bucket solo lectura pública; claves de escritura solo en el servidor; validación de tipo por contenido en Payload (ver security.md).
 - Coste: 1 GB gratuito; imágenes limitadas a 4 MB y redimensionadas.
+
+## Nota de implementación (M3, 2026-11-26)
+
+- Plugin `@payloadcms/storage-s3` 3.94.1, opciones en `src/lib/storage/s3Options.ts` (con tests unitarios): `forcePathStyle: true`, `disablePayloadAccessControl: true` y `generateFileURL` con la nueva variable `S3_PUBLIC_URL` (URL pública del bucket). Se usa una variable explícita en lugar de deducirla del endpoint para no depender del formato de URL de Supabase (portabilidad S3).
+- `enabled` según haya variables `S3_*`, y **`alwaysInsertFields: true`**: sin esta opción, el plugin solo añade a `media` sus campos (`prefix`, `_objectkey`) cuando está activo, y el esquema de producción (con S3) no coincidiría con el de desarrollo y CI (sin S3). Verificado: con S3 activado, `migrate:create --skip-empty` no genera ninguna migración.
+- La prueba real contra un bucket de Supabase se aplaza a M7 (decisión del propietario).

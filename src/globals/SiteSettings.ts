@@ -1,6 +1,7 @@
 import type { GlobalConfig, TextFieldSingleValidation } from 'payload'
 
 import { anyone, authenticated } from '@/access'
+import { revalidateSiteAfterGlobalChange } from '@/hooks/revalidateSite'
 import { textValidator } from '@/fields/validate'
 import { adminLanguage } from '@/i18n/adminLanguage'
 import { validateMapsUrl, validateHttpsUrl } from '@/lib/validation/url'
@@ -53,6 +54,9 @@ export const SiteSettings: GlobalConfig = {
   access: {
     read: anyone,
     update: authenticated,
+  },
+  hooks: {
+    afterChange: [revalidateSiteAfterGlobalChange],
   },
   versions: { max: 20 },
   fields: [
