@@ -83,6 +83,12 @@ export const Users: CollectionConfig = {
     ],
   },
   fields: [
-    // Email added by default by Payload auth.
+    // Email and password are added by Payload auth.
+    {
+      name: 'name',
+      type: 'text',
+      maxLength: 100,
+      label: { es: 'Nombre', en: 'Name' },
+    },
   ],
 }

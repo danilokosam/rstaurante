@@ -90,6 +90,28 @@ describe('authentication & access control', () => {
     })
   })
 
+  describe('user name (data-model.md)', () => {
+    it('stores an optional display name', async () => {
+      const withoutName = await createAdminUser('no-name@example.com')
+      expect(withoutName.name ?? null).toBeNull()
+
+      const withName = await payload.update({
+        collection: 'users',
+        id: withoutName.id,
+        data: { name: 'Ana García' },
+      })
+      expect(withName.name).toBe('Ana García')
+    })
+
+    it('limits the name to 100 characters', async () => {
+      const admin = await createAdminUser()
+
+      await expect(
+        payload.update({ collection: 'users', id: admin.id, data: { name: 'a'.repeat(101) } }),
+      ).rejects.toThrow()
+    })
+  })
+
   describe('media access control', () => {
     it('allows anonymous read and denies anonymous write on media', async () => {
       const found = await payload.find({

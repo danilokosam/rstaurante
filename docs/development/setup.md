@@ -47,9 +47,25 @@ En `/admin`, con la BD vacía, Payload pide crear el primer usuario.
 ## Cambios de esquema (colecciones, globals, campos)
 
 1. Cambia la configuración en `src/collections` / `src/globals`.
-2. `pnpm migrate:create <nombre-descriptivo>` y revisa el SQL generado.
-3. `pnpm generate:types`.
-4. Commitea la migración junto con el cambio. **La CI falla si el esquema cambia sin migración.**
+2. `pnpm migrate:create <nombre-descriptivo>` y revisa el SQL generado. Si drizzle-kit pregunta si una columna se ha «creado» o «renombrado», elige **crear** salvo que realmente sea un renombrado.
+3. **Revisa si la migración pierde datos.** Al traducir un campo (`localized: true`) o moverlo de tabla, drizzle-kit genera `DROP COLUMN` sin copiar los valores: añade a mano el `INSERT … SELECT` (en `up` y en `down`) y un test en `tests/int/migrations.int.spec.ts`.
+4. `pnpm generate:types`.
+5. Commitea la migración junto con el cambio. **La CI falla si el esquema cambia sin migración.**
+
+## Migraciones en la BD de desarrollo
+
+`pnpm dev` sincroniza el esquema por su cuenta (modo `push`), pero los tests E2E crean datos con la Local API fuera del servidor de desarrollo y necesitan que la BD de desarrollo tenga **todas las migraciones aplicadas**. Al cambiar a una rama que trae migraciones nuevas:
+
+```bash
+pnpm migrate
+```
+
+Si `pnpm migrate` avisa de que la BD se modificó en modo desarrollo («data loss will occur») o falla con «already exists», la BD de desarrollo se sincronizó con `push`. Si no tiene datos que conservar, lo más limpio es recrearla:
+
+```bash
+docker exec rstaurante-postgres-1 psql -U postgres -d rstaurante -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+pnpm migrate
+```
 
 ## Problemas frecuentes
 
