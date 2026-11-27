@@ -1,5 +1,5 @@
-import type { TextFieldSingleValidation } from 'payload'
-import { text } from 'payload/shared'
+import type { NumberFieldSingleValidation, TextFieldSingleValidation } from 'payload'
+import { number, text } from 'payload/shared'
 
 import { adminLanguage } from '@/i18n/adminLanguage'
 import type { Locale } from '@/i18n/config'
@@ -16,5 +16,18 @@ export function textValidator(
   return (value, options) => {
     const result = validator(value, adminLanguage(options.req))
     return result === true ? text(value, options) : result
+  }
+}
+
+/**
+ * Adapts a pure validator from `src/lib/validation` to a Payload number field,
+ * preserving Payload's built-in number validation (`required`, `min`, `max`).
+ */
+export function numberValidator(
+  validator: (value: unknown, language: Locale) => ValidationResult,
+): NumberFieldSingleValidation {
+  return (value, options) => {
+    const result = validator(value, adminLanguage(options.req))
+    return result === true ? number(value, options) : result
   }
 }

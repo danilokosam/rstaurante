@@ -7,7 +7,7 @@ Modelo de contenido en Payload CMS 3. Payload genera las tablas PostgreSQL (vía
 - Slugs en inglés (`kebab-case`); etiquetas del panel en español e inglés.
 - **🌐 = campo localizado** (es obligatorio si el campo es obligatorio; en opcional con fallback a es). Los campos 🌐 obligatorios usan `requiredInDefaultLocale` (`src/fields/localizedText.ts`) en lugar de `required: true`, que en Payload exige el valor en todos los idiomas (R-08, verificado en M3). Ver [ADR-0010](../decisions/ADR/ADR-0010-i18n-spanish-english.md). Configuración: `localization: { locales: ['es', 'en'], defaultLocale: 'es', fallback: true }`.
 - Todos los documentos tienen `id`, `createdAt`, `updatedAt` (automáticos).
-- Este modelo es **inicial**: se implementa y ajusta en M2–M4; cualquier cambio se documenta aquí.
+- Este modelo refleja el esquema implementado hasta **M4**; cualquier cambio posterior se documenta aquí.
 
 ## Diagrama
 
@@ -62,7 +62,10 @@ menu-categories ◄── category (N:1) ── dishes ────────�
 | `_order`         | (Payload `orderable: true`) | Orden manual arrastrando en el listado      |
 
 - Access: `read` → público **solo `isVisible = true`** (constraint de consulta); autenticados ven todo. Escritura → autenticados.
-- `beforeDelete`: error si existen platos en la categoría (RF-MENU-06).
+- Orden por defecto: `defaultSort: '_order'` (necesario además de `orderable: true` para que las consultas y el listado sigan el orden manual).
+- `name`: se recortan los espacios al guardar; la unicidad por idioma no distingue mayúsculas (hook `beforeValidate`, además del índice único de la BD).
+- `beforeDelete`: error 400 (traducido es/en) si existen platos en la categoría (RF-MENU-06).
+- Hooks `afterChange` / `afterDelete`: `revalidateSite` (RF-PUB-01).
 
 ### `dishes` — Platos
 
@@ -78,8 +81,11 @@ menu-categories ◄── category (N:1) ── dishes ────────�
 | `allergens`      | select `hasMany`                 | Lista cerrada de los 14 alérgenos UE: `gluten`, `crustaceans`, `eggs`, `fish`, `peanuts`, `soybeans`, `milk`, `nuts`, `celery`, `mustard`, `sesame`, `sulphites`, `lupin`, `molluscs` ([ADR-0011](../decisions/ADR/ADR-0011-allergens-and-currency.md)). No localizado (códigos). |
 | `_order`         | (Payload `orderable: true`)      | Orden manual                                                                                                                                                                                                                                                                      |
 
-- Access: `read` → público con constraint `availability != hidden` **y** categoría visible; autenticados ven todo. Escritura → autenticados.
-- Precio: se almacena como `numeric` en PostgreSQL (sin error de coma flotante en BD). El formateo usa `Intl.NumberFormat` con **EUR fijo** y el formato del idioma (`es-ES` / `en-IE`). Ver [ADR-0011](../decisions/ADR/ADR-0011-allergens-and-currency.md).
+- Access: `read` → público con constraint `availability != hidden` **y** `category.isVisible = true`; autenticados ven todo. Escritura → autenticados.
+- Orden por defecto: `defaultSort: '_order'` junto con `orderable: true`. El orden es único para toda la carta (la web agrupa por categoría); el listado del panel recomienda filtrar por categoría antes de reordenar.
+- Alérgenos: catálogo único en `src/lib/allergens.ts` usado por el campo `select` múltiple (`hasMany: true`) y por la web pública en M5.
+- Hooks `afterChange` / `afterDelete`: `revalidateSite` (RF-PUB-01).
+- Precio: se almacena como `numeric` en PostgreSQL (sin error de coma flotante en BD), validado por `src/lib/validation/price.ts`. El formateo en la web pública (M5) usa `Intl.NumberFormat` con **EUR fijo** y el formato del idioma (`es-ES` / `en-IE`). Ver [ADR-0011](../decisions/ADR/ADR-0011-allergens-and-currency.md).
 - La moneda **no** se guarda en la base de datos (EUR fijo en código).
 
 ---
