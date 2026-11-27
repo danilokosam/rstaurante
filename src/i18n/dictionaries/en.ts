@@ -30,6 +30,8 @@ export const en: Dictionary = {
     closed: 'Closed',
   },
   menu: {
+    viewAll: 'See the full menu',
+    categories: 'Menu categories',
     title: 'Menu',
     unavailable: 'Unavailable',
     allergens: 'Allergens',
@@ -37,6 +39,7 @@ export const en: Dictionary = {
     empty: 'Our menu will be available very soon.',
   },
   sections: {
+    about: 'About us',
     featured: 'Our highlights',
     gallery: 'Gallery',
     hours: 'Opening hours',

@@ -1,7 +1,10 @@
 import { expect, type Page, test } from '@playwright/test'
 import type { Payload } from 'payload'
 
+import { type PostgresAdapter, sql } from '@payloadcms/db-postgres'
+
 import { connectPayload, createE2EUser, deleteE2EUser, loginAsE2EUser } from './helpers/adminUser'
+import { expectPublished } from './helpers/publicSite'
 
 const E2E_EMAIL = 'e2e-homepage@example.com'
 const SPANISH_TITLE = `Cocina de mercado E2E ${Date.now()}`
@@ -40,6 +43,10 @@ test.describe('home page content in two languages (US-C1, US-C3)', () => {
     }
     if (previousVersionId) {
       await payload.restoreGlobalVersion({ slug: 'homepage', id: previousVersionId })
+    } else {
+      // The home page was never saved: return it to that state (child tables cascade).
+      const db = payload.db as unknown as PostgresAdapter
+      await db.drizzle.execute(sql`DELETE FROM "_homepage_v"; DELETE FROM "homepage";`)
     }
     await deleteE2EUser(payload, E2E_EMAIL)
   })
@@ -58,5 +65,17 @@ test.describe('home page content in two languages (US-C1, US-C3)', () => {
     const english = await payload.findGlobal({ slug: 'homepage', locale: 'en' })
     expect(spanish.hero?.title).toBe(SPANISH_TITLE)
     expect(english.hero?.title).toBe(ENGLISH_TITLE)
+
+    // Saved = published: each language of the public home page shows its title (US-F4).
+    for (const [path, title] of [
+      ['/es', SPANISH_TITLE],
+      ['/en', ENGLISH_TITLE],
+    ] as const) {
+      await expectPublished(page, path, async () => {
+        await expect(page.getByRole('heading', { level: 1, name: title })).toBeVisible({
+          timeout: 1_000,
+        })
+      })
+    }
   })
 })

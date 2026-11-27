@@ -5,6 +5,7 @@ import {
   ALLERGEN_LABELS,
   ALLERGEN_OPTIONS,
   getAllergenLabel,
+  getAllergenLabels,
   isAllergenCode,
 } from '@/lib/allergens'
 
@@ -60,5 +61,20 @@ describe('EU allergens catalogue (ADR-0011, RF-MENU-08)', () => {
     expect(isAllergenCode('garlic')).toBe(false)
     expect(isAllergenCode('')).toBe(false)
     expect(isAllergenCode('GLUTEN')).toBe(false)
+  })
+})
+
+describe('getAllergenLabels (US-E5 CA2, CA4)', () => {
+  it('returns the labels of the page language in the stored order', () => {
+    expect(getAllergenLabels(['milk', 'gluten'], 'es')).toEqual(['Leche', 'Cereales con gluten'])
+    expect(getAllergenLabels(['milk', 'gluten'], 'en')).toEqual([
+      'Milk',
+      'Cereals containing gluten',
+    ])
+  })
+
+  it('returns an empty list when no allergen is marked (no "allergen-free" claim)', () => {
+    expect(getAllergenLabels([], 'es')).toEqual([])
+    expect(getAllergenLabels(null, 'en')).toEqual([])
   })
 })

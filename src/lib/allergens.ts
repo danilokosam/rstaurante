@@ -54,3 +54,14 @@ export function isAllergenCode(value: string): value is AllergenCode {
 export function getAllergenLabel(code: AllergenCode, locale: Locale): string {
   return ALLERGEN_LABELS[code][locale]
 }
+
+/**
+ * Labels of a dish's allergens in the page language (US-E5 CA2). An empty list
+ * means "not informed", never "allergen-free" (CA4, ADR-0011).
+ */
+export function getAllergenLabels(
+  codes: readonly AllergenCode[] | null | undefined,
+  locale: Locale,
+): string[] {
+  return (codes ?? []).map((code) => getAllergenLabel(code, locale))
+}

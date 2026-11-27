@@ -36,6 +36,22 @@ export async function connectPayload(): Promise<Payload> {
  * file's cleanup never logs out another file's test.
  */
 export async function deleteE2EUser(payload: Payload, email: string): Promise<void> {
+  // Release the documents this user left open in the admin panel: deleting the
+  // user directly would leave locks without a user until they expire (5 min),
+  // and the panel cannot render a locked document whose owner is gone.
+  const { docs } = await payload.find({
+    collection: 'users',
+    where: { email: { equals: email } },
+    depth: 0,
+    pagination: false,
+  })
+  const ids = docs.map((user) => user.id)
+  if (ids.length) {
+    await payload.delete({
+      collection: 'payload-locked-documents',
+      where: { 'user.value': { in: ids } },
+    })
+  }
   // Uses the adapter directly: the "last user" hook would otherwise block the
   // cleanup on a database where the E2E admin is the only user.
   await payload.db.deleteMany({

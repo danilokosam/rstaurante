@@ -25,8 +25,8 @@ Basada en la plantilla oficial `with-postgres` de Payload 3 (route groups `(fron
 │   │   ├── (frontend)/           # Web pública
 │   │   │   ├── [locale]/         # ✅ es | en (otro → 404 por dynamicParams = false)
 │   │   │   │   ├── layout.tsx    # ✅ <html lang>, cabecera, selector de idioma, pie, WhatsApp; revalidate = 3600
-│   │   │   │   ├── page.tsx      # ✅ Home (provisional hasta M5)
-│   │   │   │   ├── menu/page.tsx # Carta
+│   │   │   │   ├── page.tsx      # ✅ Portada: hero, sobre nosotros, destacados, galería, horario, contacto
+│   │   │   │   ├── menu/page.tsx # ✅ Carta: categorías, platos, precios, alérgenos y aviso
 │   │   │   │   ├── not-found.tsx # ✅
 │   │   │   │   └── error.tsx     # ✅
 │   │   │   ├── sitemap.ts        # Con alternativas por idioma
@@ -47,9 +47,9 @@ Basada en la plantilla oficial `with-postgres` de Payload 3 (route groups `(fron
 │   ├── lib/
 │   │   ├── env.ts                # ✅ Validación de variables de entorno
 │   │   ├── content/              # ✅ Consultas de la web pública vía Local API (anónimas, con fallback)
-│   │   └── *.ts                  # ✅ Lógica pura: price, allergens, hours, links, localePath, imageSrc (JSON-LD en M5 PR 3)
+│   │   └── *.ts                  # ✅ Lógica pura: price, allergens, hours, links, localePath, imageSrc, home (JSON-LD en M5 PR 3)
 │   ├── components/               # ✅ UI de la web pública (SiteHeader, SiteFooter, MainNav, LanguageSwitcher, WhatsAppButton, CmsImage, OpeningHours)
-│   │   └── sections/             # Hero, About, Featured, Gallery, Hours, Contact
+│   │   └── sections/             # ✅ Hero, About, Featured, Gallery, Hours, Contact (+ DishItem en components/)
 │   ├── migrations/               # ✅ Migraciones generadas por Payload (no editar a mano)
 │   └── styles/                   # ✅ globals.css (Tailwind, solo web pública)
 ├── scripts/
