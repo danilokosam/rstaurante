@@ -1,6 +1,6 @@
 # Milestone 5 — Public Restaurant Website
 
-- **Estado**: 🚧 En curso. Plan aprobado por el propietario el 2026-11-27. PR 1 en `feat/m5-foundation`.
+- **Estado**: 🚧 En curso. Plan aprobado por el propietario el 2026-11-27. PR 1 fusionada (#8); PR 2 en `feat/m5-home-menu`.
 - **Inicio**: 2026-11-27.
 
 ## Decisiones del propietario (2026-11-27)
@@ -67,6 +67,14 @@ Construir la web pública del restaurante en español e inglés a partir del con
 - **E2E contra el build de producción**: las páginas son estáticas (ISR), así que el E2E guarda `site-settings` por la API REST del servidor (como el panel) para que se ejecute la revalidación real; un cambio hecho con la Local API desde el proceso de Playwright no revalidaría la web.
 - **Limpieza de la BD de desarrollo**: si `site-settings` no tenía versiones, el E2E lo devuelve al estado «sin guardar» al terminar. Las primeras ejecuciones locales de esta PR, anteriores a esa corrección, dejaron datos de prueba («Casa E2E …») en la BD de desarrollo del propietario; ver la nota en `MILESTONE.md`.
 
+## Hallazgos de la PR 2
+
+- **Bloqueos de documento huérfanos en los E2E**: Payload bloquea un documento mientras se edita en el panel. Los E2E borraban su usuario con `db.deleteMany` y dejaban el bloqueo sin usuario; durante 5 minutos el panel mostraba el global en blanco y el siguiente E2E fallaba. `deleteE2EUser` libera ahora los bloqueos del usuario antes de borrarlo.
+- **Servidor de desarrollo**: en la suite completa con varios workers, el E2E de la portada falló una vez en unas ocho ejecuciones locales, esperando el formulario del panel durante la compilación bajo demanda de `next dev`. No se reproduce contra el build de producción (el modo de la CI). Se anota por si reaparece.
+- **E2E de la portada**: si `homepage` no tenía versiones previas, el E2E lo devuelve al estado «sin guardar», como `site-settings`. Los datos de prueba que los E2E de M3 dejaron en `homepage` de la BD de desarrollo (21 versiones, todas de E2E) los limpió el propietario.
+- **`cache` de React** en `src/lib/content`: el layout y la portada comparten la lectura de `site-settings` en la misma petición.
+- **No disponible**: se atenúa con colores que mantienen el contraste AA (no con `opacity`) y con un aviso de texto, no solo con estilo.
+
 ## Excluido
 
 - Temas, paletas, tipografías de marca y logo como favicon → **M6**. M5 usa un diseño neutro y sobrio con Tailwind y tipografía del sistema, preparado para que M6 cambie colores y fuentes con variables CSS.
@@ -90,6 +98,10 @@ Construir la web pública del restaurante en español e inglés a partir del con
 - [x] PR 1 — Layout público (cabecera, navegación, selector de idioma, pie, WhatsApp), `revalidate = 3600`, 404/error/`global-not-found`/`global-error`, `remotePatterns` de S3
 - [x] PR 1 — E2E del layout (contenido publicado vía API, WhatsApp condicional, selector de idioma, 404, 360 px, axe) y `@axe-core/playwright` 4.14.1
 - [x] PR 1 — Verificación local: `format:check`, `lint`, `typecheck`, unit (217), integración (101), E2E (14) con el servidor de desarrollo y contra el build de producción (`CI=1`)
-- [ ] PR 1 — Push, PR y CI en verde
-- [ ] PR 2: portada, carta, responsive, accesibilidad, E2E de publicación
+- [x] PR 1 — PR #8 con CI en verde, aprobada por el propietario y fusionada con squash (2026-11-27)
+- [x] PR 2 — TDD unit: párrafos de «Sobre nosotros», destino del botón del hero (`heroCtaHref`: sin número de WhatsApp o teléfono no hay botón), etiquetas de alérgenos por idioma
+- [x] PR 2 — Portada con secciones en orden fijo y sin secciones vacías (hero, sobre nosotros, destacados, galería, horario, ubicación/contacto) y carta `/{locale}/menu` (orden del panel, precios EUR, «No disponible», alérgenos como texto, aviso de alergias, índice de categorías)
+- [x] PR 2 — E2E: carta es/en con precios, alérgenos, `unavailable` y sin `hidden`; destacados en la portada; precio guardado en `/admin` visible en la carta; título del hero publicado en es/en; 360 px y axe en `/es`, `/es/menu`, `/en/menu`
+- [x] PR 2 — Verificación local: unit (229), integración (101), E2E (17) con el servidor de desarrollo y contra el build de producción (`CI=1`, dos veces seguidas)
+- [ ] PR 2 — Push, PR y CI en verde
 - [ ] PR 3: metadata, sitemap, robots, JSON-LD, Lighthouse manual, cierre

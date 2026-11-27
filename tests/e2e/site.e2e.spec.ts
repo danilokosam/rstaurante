@@ -1,9 +1,14 @@
-import AxeBuilder from '@axe-core/playwright'
 import { type PostgresAdapter, sql } from '@payloadcms/db-postgres'
 import { expect, type Page, test } from '@playwright/test'
 import type { Payload } from 'payload'
 
 import { connectPayload, createE2EUser, deleteE2EUser, loginAsE2EUser } from './helpers/adminUser'
+import {
+  adminApi,
+  expectNoHorizontalScroll,
+  expectNoSeriousA11yViolations,
+  expectPublished,
+} from './helpers/publicSite'
 
 const E2E_EMAIL = 'e2e-site@example.com'
 const NAME = `Casa E2E ${Date.now()}`
@@ -11,34 +16,8 @@ const NAME = `Casa E2E ${Date.now()}`
 let payload: Payload
 let previousVersionId: string | undefined
 
-/**
- * Saves site settings through the REST API of the running server, as the admin
- * panel does, so the on-save revalidation of the public site runs (ADR-0007).
- */
 async function saveSiteSettings(page: Page, data: Record<string, unknown>): Promise<void> {
-  const response = await page.request.post('/api/globals/site-settings?locale=es', {
-    data,
-    headers: { origin: new URL(page.url()).origin },
-  })
-  expect(response.ok(), await response.text()).toBe(true)
-}
-
-/** Reloads a page until the saved content is visible (RF-PUB-01: < 10 s). */
-async function expectPublished(page: Page, path: string, check: () => Promise<void>) {
-  await expect(async () => {
-    await page.goto(path)
-    await check()
-  }).toPass({ timeout: 10_000 })
-}
-
-async function expectNoSeriousA11yViolations(page: Page): Promise<void> {
-  const results = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
-    .analyze()
-  const serious = results.violations.filter(
-    (violation) => violation.impact === 'serious' || violation.impact === 'critical',
-  )
-  expect(serious.map((violation) => `${violation.id}: ${violation.help}`)).toEqual([])
+  await adminApi(page, 'POST', '/api/globals/site-settings?locale=es', data)
 }
 
 test.describe('public site layout (RF-WEB-03, RF-WEB-04, RF-WEB-06, RF-I18N-04)', () => {
@@ -116,7 +95,9 @@ test.describe('public site layout (RF-WEB-03, RF-WEB-04, RF-WEB-06, RF-I18N-04)'
 
     await page.goto('/en')
     await expect(page.getByRole('contentinfo').getByText('Closed')).toHaveCount(6)
-    await expect(page.getByRole('link', { name: 'Get directions' })).toBeVisible()
+    await expect(
+      page.getByRole('contentinfo').getByRole('link', { name: 'Get directions' }),
+    ).toBeVisible()
     await expect(page.getByRole('link', { name: 'Home' })).toHaveAttribute('aria-current', 'page')
   })
 
@@ -155,10 +136,7 @@ test.describe('public site layout (RF-WEB-03, RF-WEB-04, RF-WEB-06, RF-I18N-04)'
     await page.setViewportSize({ width: 360, height: 740 })
     for (const path of ['/es', '/en']) {
       await page.goto(path)
-      const overflow = await page.evaluate(
-        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      )
-      expect(overflow, path).toBeLessThanOrEqual(0)
+      await expectNoHorizontalScroll(page)
     }
   })
 

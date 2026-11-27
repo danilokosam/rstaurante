@@ -28,6 +28,8 @@ export const es = {
     closed: 'Cerrado',
   },
   menu: {
+    viewAll: 'Ver la carta completa',
+    categories: 'Categorías de la carta',
     title: 'Carta',
     unavailable: 'No disponible',
     allergens: 'Alérgenos',
@@ -35,6 +37,7 @@ export const es = {
     empty: 'La carta estará disponible muy pronto.',
   },
   sections: {
+    about: 'Sobre nosotros',
     featured: 'Nuestros destacados',
     gallery: 'Galería',
     hours: 'Horario',

@@ -15,10 +15,12 @@ type Props = {
   priority?: boolean
   /** Decorative images get an empty alt; content images use the CMS alt text. */
   decorative?: boolean
+  /** Fills the positioned parent (`object-cover` backgrounds) instead of using intrinsic size. */
+  fill?: boolean
 }
 
 /** CMS image with the generated WebP size and its localized alt text. */
-export function CmsImage({ image, size, sizes, className, priority, decorative }: Props) {
+export function CmsImage({ image, size, sizes, className, priority, decorative, fill }: Props) {
   if (!image) {
     return null
   }
@@ -32,8 +34,7 @@ export function CmsImage({ image, size, sizes, className, priority, decorative }
   return (
     <Image
       src={src}
-      width={width}
-      height={height}
+      {...(fill ? { fill: true } : { width, height })}
       alt={decorative ? '' : (image.alt ?? '')}
       sizes={sizes}
       className={className}

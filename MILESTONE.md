@@ -4,12 +4,12 @@
 
 ## 1. Estado actual
 
-|                               |                                                                                                                                      |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| **Milestone activo**          | **M5 — Public Restaurant Website** (🚧 en curso; plan aprobado, PR 1 en `feat/m5-foundation`). M4 ✅ cerrado (2026-11-27, PR #7).    |
-| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.             |
-| **Siguiente acción concreta** | PR 1 de M5 (`feat/m5-foundation`) implementada y verificada en local: pendiente de push, PR y CI. Después, PR 2 `feat/m5-home-menu`. |
-| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.        |
+|                               |                                                                                                                                   |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Milestone activo**          | **M5 — Public Restaurant Website** (🚧 en curso; PR 1 fusionada, PR 2 en `feat/m5-home-menu`). M4 ✅ cerrado (2026-11-27, PR #7). |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.          |
+| **Siguiente acción concreta** | PR 1 de M5 fusionada (#8). PR 2 (`feat/m5-home-menu`) en revisión. Después, PR 3 `feat/m5-seo`.                                   |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.     |
 
 ## 2. Visión resumida
 
@@ -236,3 +236,9 @@ Commit propuesto en [milestone-0.md](docs/milestones/milestone-0.md#commit-propu
 **2026-11-27 — M5 iniciado.** Plan propuesto en [milestone-5.md](docs/milestones/milestone-5.md) (tres PRs: base y contenido, portada y carta, SEO), verificado contra la documentación de Next.js 16.4.6. Aprobado por el propietario con `@axe-core/playwright` y `experimental.globalNotFound`.
 
 **2026-11-27 — M5, PR 1 implementada en local** (`feat/m5-foundation`): diccionarios es/en, lógica pura (precios, horarios, enlaces, rutas por idioma, imágenes), capa de contenido `src/lib/content`, layout público (cabecera, selector de idioma, pie, WhatsApp), 404/error con diseño (`experimental.globalNotFound`), revalidación de respaldo de 1 h y E2E con axe. Corregidos los E2E inestables de `main` (`payload.destroy()` compartido). Verificado: unit 217, integración 101, E2E 14 (también contra el build de producción). **Nota**: las primeras ejecuciones locales del E2E dejaron datos de prueba en `site-settings` de la BD de desarrollo (antes nunca guardado); limpiarlos borrando las filas de `site_settings` y `_site_settings_v` en la BD `rstaurante`.
+
+**2026-11-27 — M5, PR 1 abierta (#8)** con CI en verde (E2E 14/14 sin reintentos). Datos de prueba de `site-settings` limpiados por el propietario en la BD de desarrollo.
+
+**2026-11-27 — M5, PR 2 implementada en local** (`feat/m5-home-menu`): portada con sus seis secciones, carta `/{locale}/menu` con precios EUR, «No disponible», alérgenos y aviso; E2E de publicación (precio guardado en `/admin` visible en la carta). Corregidos los bloqueos de documento huérfanos de los E2E. Verificado: unit 229, integración 101, E2E 17 (también contra el build de producción).
+
+**2026-11-27 — M5, PR 1 fusionada (#8)** con squash tras la aprobación del propietario; PR 2 rebasada sobre `main`.

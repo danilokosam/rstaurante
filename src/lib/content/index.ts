@@ -1,5 +1,6 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
+import { cache } from 'react'
 
 import { defaultLocale, type Locale } from '@/i18n/config'
 import type { AllergenCode } from '@/lib/allergens'
@@ -9,7 +10,8 @@ import type { Gallery, Homepage, Media, SiteSetting } from '@/payload-types'
  * Content queries of the public site (ADR-0002, data-flows F2). They always
  * read as an anonymous visitor (`overrideAccess: false`), so the collections'
  * access rules hide invisible categories and hidden dishes, and they fall
- * back to Spanish when a text is not translated (ADR-0010).
+ * back to Spanish when a text is not translated (ADR-0010). Each query is
+ * memoized per server request with React `cache` (layout and page share it).
  */
 async function readOptions(locale: Locale) {
   return {
@@ -43,7 +45,7 @@ const relationId = (value: number | { id: number } | null | undefined): number |
   typeof value === 'object' && value !== null ? value.id : (value ?? null)
 
 /** Visible categories with their non-hidden dishes, in the panel order; empty categories are left out. */
-export async function getMenu(locale: Locale): Promise<MenuSection[]> {
+export const getMenu = cache(async (locale: Locale): Promise<MenuSection[]> => {
   const { payload, query } = await readOptions(locale)
   const [categories, dishes] = await Promise.all([
     payload.find({ collection: 'menu-categories', ...query, depth: 0, pagination: false }),
@@ -69,34 +71,34 @@ export async function getMenu(locale: Locale): Promise<MenuSection[]> {
         })),
     }))
     .filter((section) => section.dishes.length > 0)
-}
+})
 
 export const MAX_FEATURED_DISHES = 6
 
 /** Up to 6 featured dishes shown on the menu, in menu order (US-E4). */
-export async function getFeaturedDishes(locale: Locale): Promise<PublicDish[]> {
+export const getFeaturedDishes = cache(async (locale: Locale): Promise<PublicDish[]> => {
   const menu = await getMenu(locale)
   return menu
     .flatMap((section) => section.dishes)
     .filter((dish) => dish.isFeatured)
     .slice(0, MAX_FEATURED_DISHES)
-}
+})
 
 /** Restaurant information with populated images (logo, SEO image). */
-export async function getSiteSettings(locale: Locale): Promise<SiteSetting> {
+export const getSiteSettings = cache(async (locale: Locale): Promise<SiteSetting> => {
   const { payload, query } = await readOptions(locale)
   return payload.findGlobal({ slug: 'site-settings', ...query, depth: 1 })
-}
+})
 
 /** Home page content with populated images. */
-export async function getHomepage(locale: Locale): Promise<Homepage> {
+export const getHomepage = cache(async (locale: Locale): Promise<Homepage> => {
   const { payload, query } = await readOptions(locale)
   return payload.findGlobal({ slug: 'homepage', ...query, depth: 1 })
-}
+})
 
 /** Gallery images in their order; deleted images are already removed from the list. */
-export async function getGalleryImages(locale: Locale): Promise<Media[]> {
+export const getGalleryImages = cache(async (locale: Locale): Promise<Media[]> => {
   const { payload, query } = await readOptions(locale)
   const gallery: Gallery = await payload.findGlobal({ slug: 'gallery', ...query, depth: 1 })
   return (gallery.images ?? []).map(asMedia).filter((image): image is Media => image !== null)
-}
+})
