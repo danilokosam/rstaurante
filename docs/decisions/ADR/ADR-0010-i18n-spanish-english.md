@@ -43,3 +43,10 @@ En la revisión de M0 el propietario decidió que la web debe estar en **españo
 - Unit: diccionarios con las mismas claves en `es` y `en` (test que compara claves); resolución de locale válida/inválida.
 - Integración: lectura con `locale: 'en'` y fallback a `es`.
 - E2E: `/` redirige a `/es`; selector de idioma; `hreflang` presentes; `/fr` → 404.
+
+## Nota de implementación (M5, 2026-11-27)
+
+- Diccionarios en `src/i18n/dictionaries/{es,en}.ts` con `getDictionary(locale)`; el tipo `Dictionary` y un test unitario exigen las mismas claves en ambos idiomas. Las etiquetas de alérgenos salen de `src/lib/allergens.ts` (fuente única, ADR-0011).
+- Las lecturas de la web (`src/lib/content`) piden el idioma con `fallbackLocale: 'es'`: un texto sin traducir se muestra en español (verificado con tests de integración y E2E).
+- Selector de idioma en la cabecera (`switchLocalePath`) que mantiene la página; `hreflang` `es`/`en`/`x-default` → `es` en los metadatos de cada página y en `sitemap.xml`; Open Graph con `es_ES` / `en_IE`.
+- Las páginas 404 de rutas inexistentes (`global-not-found`, fuera de cualquier layout) y `global-error` muestran el texto en los dos idiomas, porque no pueden conocer el idioma de la URL.
