@@ -32,7 +32,7 @@ export function SiteHeader({ locale, dictionary, name, logo }: Props) {
               sizes="48px"
               className="h-10 w-auto"
               decorative
-              priority
+              loading="eager"
             />
           ) : null}
           <span>{name}</span>

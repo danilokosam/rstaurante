@@ -58,7 +58,7 @@ export function Hero({ title, subtitle, image, cta }: Props) {
         sizes="100vw"
         className="-z-10 object-cover"
         fill
-        priority
+        loading="lcp"
         decorative
       />
       <div className="absolute inset-0 -z-10 bg-ink/60" aria-hidden="true" />

@@ -1,12 +1,31 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { DishItem } from '@/components/DishItem'
 import { isLocale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/dictionaries'
-import { getMenu } from '@/lib/content'
+import { getMenu, getSiteSettings } from '@/lib/content'
+import { ogImage } from '@/lib/content/seo'
+import { pageMetadata } from '@/lib/seo'
 
 type Props = {
   params: Promise<{ locale: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params
+  if (!isLocale(locale)) return {}
+  const dictionary = getDictionary(locale)
+  const settings = await getSiteSettings(locale)
+  const name = settings.name?.trim() || dictionary.site.defaultName
+  return pageMetadata({
+    locale,
+    path: 'menu',
+    title: dictionary.menu.title,
+    description: dictionary.menu.metaDescription.replace('{name}', name),
+    siteName: name,
+    image: ogImage(settings.seo?.image),
+  })
 }
 
 /**

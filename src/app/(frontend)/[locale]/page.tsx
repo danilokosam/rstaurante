@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { About } from '@/components/sections/About'
@@ -9,9 +10,13 @@ import { Hours } from '@/components/sections/Hours'
 import { isLocale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/dictionaries'
 import { getFeaturedDishes, getGalleryImages, getHomepage, getSiteSettings } from '@/lib/content'
+import { ogImage } from '@/lib/content/seo'
+import { getEnv } from '@/lib/env'
 import { heroCtaHref, paragraphs } from '@/lib/home'
 import { groupOpeningHours } from '@/lib/hours'
+import { restaurantJsonLd, serializeJsonLd } from '@/lib/jsonLd'
 import { addressLines, mapsHref, phoneHref, whatsappHref } from '@/lib/links'
+import { pageMetadata } from '@/lib/seo'
 import type { Media } from '@/payload-types'
 
 type Props = {
@@ -22,6 +27,24 @@ const media = (value: number | Media | null | undefined): Media | null =>
   typeof value === 'object' && value !== null ? value : null
 
 const text = (value: string | null | undefined): string => value?.trim() ?? ''
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params
+  if (!isLocale(locale)) return {}
+  const [settings, homepage] = await Promise.all([getSiteSettings(locale), getHomepage(locale)])
+  const name = text(settings.name) || getDictionary(locale).site.defaultName
+  return pageMetadata({
+    locale,
+    title: { absolute: text(homepage.seo?.title) || text(settings.seo?.title) || name },
+    description:
+      text(homepage.seo?.description) ||
+      text(settings.seo?.description) ||
+      text(settings.description) ||
+      null,
+    siteName: name,
+    image: ogImage(settings.seo?.image) ?? ogImage(homepage.hero?.image),
+  })
+}
 
 /**
  * Home page: hero, about, featured dishes, gallery, opening hours and
@@ -53,8 +76,21 @@ export default async function HomePage({ params }: Props) {
   const email = text(settings.contact?.email)
   const hasContact = Boolean(address.length || directions || phoneLink || whatsapp || email)
 
+  const jsonLd = restaurantJsonLd({
+    baseUrl: getEnv().serverUrl,
+    locale,
+    name,
+    description: text(settings.description) || text(settings.seo?.description) || null,
+    image: (ogImage(settings.seo?.image) ?? ogImage(homepage.hero?.image))?.url ?? null,
+    settings,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+      />
       <Hero
         title={text(homepage.hero?.title) || name}
         subtitle={text(homepage.hero?.subtitle) || text(settings.tagline) || null}

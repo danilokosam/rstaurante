@@ -12,6 +12,8 @@ import {
 
 const E2E_EMAIL = 'e2e-site@example.com'
 const NAME = `Casa E2E ${Date.now()}`
+const SEO_TITLE = `${NAME} · Cocina de mercado`
+const SEO_DESCRIPTION = 'Cocina de mercado en el centro de Madrid.'
 
 let payload: Payload
 let previousVersionId: string | undefined
@@ -64,6 +66,7 @@ test.describe('public site layout (RF-WEB-03, RF-WEB-04, RF-WEB-06, RF-I18N-04)'
       location: { street: 'Calle Mayor 1', postalCode: '28013', city: 'Madrid', mapsUrl: '' },
       openingHours: { slots: [{ day: 'monday', opens: '13:00', closes: '16:00' }] },
       socialLinks: [{ platform: 'instagram', url: 'https://www.instagram.com/example' }],
+      seo: { title: SEO_TITLE, description: SEO_DESCRIPTION },
     })
 
     await expectPublished(page, '/es', async () => {
@@ -108,6 +111,76 @@ test.describe('public site layout (RF-WEB-03, RF-WEB-04, RF-WEB-06, RF-I18N-04)'
     await expectPublished(page, '/es', async () => {
       await expect(page.getByTestId('whatsapp-button')).toHaveCount(0, { timeout: 1_000 })
     })
+  })
+
+  test('publishes title, description, canonical, hreflang, Open Graph and JSON-LD (US-F3, US-F5 CA4)', async ({
+    page,
+  }) => {
+    await page.goto('/es')
+    const origin = new URL(page.url()).origin
+    const head = page.locator('head')
+
+    await expect(page).toHaveTitle(SEO_TITLE)
+    await expect(head.locator('meta[name="description"]')).toHaveAttribute(
+      'content',
+      SEO_DESCRIPTION,
+    )
+    await expect(head.locator('link[rel="canonical"]')).toHaveAttribute('href', `${origin}/es`)
+    for (const [hreflang, path] of [
+      ['es', '/es'],
+      ['en', '/en'],
+      ['x-default', '/es'],
+    ]) {
+      await expect(head.locator(`link[rel="alternate"][hreflang="${hreflang}"]`)).toHaveAttribute(
+        'href',
+        `${origin}${path}`,
+      )
+    }
+    await expect(head.locator('meta[property="og:title"]')).toHaveAttribute('content', SEO_TITLE)
+    await expect(head.locator('meta[property="og:locale"]')).toHaveAttribute('content', 'es_ES')
+    await expect(head.locator('meta[property="og:url"]')).toHaveAttribute('content', `${origin}/es`)
+
+    const jsonLd = JSON.parse(
+      (await page.locator('script[type="application/ld+json"]').textContent()) ?? '{}',
+    )
+    expect(jsonLd).toMatchObject({
+      '@type': 'Restaurant',
+      name: NAME,
+      telephone: '+34910000000',
+      url: `${origin}/es`,
+      hasMenu: `${origin}/es/menu`,
+      address: { streetAddress: 'Calle Mayor 1', addressLocality: 'Madrid' },
+    })
+
+    await page.goto('/en/menu')
+    await expect(page).toHaveTitle(`Menu | ${NAME}`)
+    await expect(head.locator('link[rel="canonical"]')).toHaveAttribute('href', `${origin}/en/menu`)
+    await expect(head.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute(
+      'href',
+      `${origin}/es/menu`,
+    )
+    await expect(head.locator('meta[property="og:locale"]')).toHaveAttribute('content', 'en_IE')
+  })
+
+  test('serves sitemap.xml and robots.txt (US-F3 CA2)', async ({ page }) => {
+    await page.goto('/es')
+    const origin = new URL(page.url()).origin
+
+    const sitemap = await page.request.get('/sitemap.xml')
+    expect(sitemap.ok()).toBe(true)
+    const xml = await sitemap.text()
+    for (const path of ['/es', '/en', '/es/menu', '/en/menu']) {
+      expect(xml).toContain(`<loc>${origin}${path}</loc>`)
+    }
+    expect(xml).toContain(`hreflang="x-default" href="${origin}/es/menu"`)
+    expect(xml).not.toContain('/admin')
+
+    const robots = await page.request.get('/robots.txt')
+    expect(robots.ok()).toBe(true)
+    const text = await robots.text()
+    expect(text).toContain('Disallow: /admin')
+    expect(text).toContain('Disallow: /api')
+    expect(text).toContain(`Sitemap: ${origin}/sitemap.xml`)
   })
 
   test('switches language and keeps the current page (US-F5 CA1)', async ({ page }) => {
