@@ -42,7 +42,6 @@ test.describe('home page content in two languages (US-C1, US-C3)', () => {
       await payload.restoreGlobalVersion({ slug: 'homepage', id: previousVersionId })
     }
     await deleteE2EUser(payload, E2E_EMAIL)
-    await payload.destroy()
   })
 
   test('edits the hero title in Spanish and in English from /admin', async ({ page }) => {

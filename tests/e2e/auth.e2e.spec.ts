@@ -18,7 +18,6 @@ test.describe('admin authentication (US-A1, US-A2, RF-I18N-05)', () => {
   test.afterAll(async () => {
     if (payload) {
       await deleteE2EUser(payload, E2E_EMAIL)
-      await payload.destroy()
     }
   })
 

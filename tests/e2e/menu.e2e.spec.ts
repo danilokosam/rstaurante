@@ -40,7 +40,6 @@ test.describe('menu management in /admin (US-E1..E3, US-E5)', () => {
         .catch(() => undefined)
     }
     await deleteE2EUser(payload, E2E_EMAIL)
-    await payload.destroy()
   })
 
   test('creates a category and a dish with multi-select allergens and updates availability', async ({
