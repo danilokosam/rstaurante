@@ -50,3 +50,8 @@ El CMS debe permitir «guardar y publicar cambios» con una estrategia sencilla.
 - Hooks en `src/hooks/revalidateSite.ts`: `afterChange`/`afterDelete` de `media` y `afterChange` de `site-settings`, `homepage` y `gallery`. En M4 se añaden a `menu-categories` y `dishes`.
 - Se importa `next/cache.js` (con extensión): el paquete `next` no declara `exports` y Node ESM puro, que usa Playwright para cargar `payload.config` en los E2E, no resuelve `next/cache`.
 - **Pendiente (M5)**: la revalidación de respaldo cada hora (RF-PUB-02) se configura en las páginas públicas, y el E2E «cambio guardado visible en la web» llega con ellas.
+
+## Nota de implementación (M5, PR 1, 2026-11-27)
+
+- Verificado contra `node_modules/next/dist/docs/` (Next.js 16.4.6): el proyecto no activa `cacheComponents`, así que rige el modelo de caché «previo». `export const revalidate = 3600` en `src/app/(frontend)/[locale]/layout.tsx` fija el respaldo de 1 hora para todas las páginas públicas (RF-PUB-02); `/es` y `/en` se generan estáticamente (`generateStaticParams`) y se invalidan al guardar con `revalidatePath('/', 'layout')`.
+- Verificado con un E2E contra el build de producción: guardar `site-settings` por la API REST se refleja en `/es` en menos de 10 s (RF-PUB-01). El E2E específico de la carta llega en la PR 2.

@@ -4,12 +4,12 @@
 
 ## 1. Estado actual
 
-|                               |                                                                                                                                                                |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Milestone activo**          | **M5 — Public Restaurant Website** (no iniciado). M4 ✅ cerrado (2026-11-27, PR #7).                                                                           |
-| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                                       |
-| **Siguiente acción concreta** | Iniciar M5 en una rama `feat/m5-…`: marcarlo activo aquí, crear `docs/milestones/milestone-5.md` y **presentar el plan para aprobación antes de implementar**. |
-| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                                  |
+|                               |                                                                                                                                      |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Milestone activo**          | **M5 — Public Restaurant Website** (🚧 en curso; plan aprobado, PR 1 en `feat/m5-foundation`). M4 ✅ cerrado (2026-11-27, PR #7).    |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.             |
+| **Siguiente acción concreta** | PR 1 de M5 (`feat/m5-foundation`) implementada y verificada en local: pendiente de push, PR y CI. Después, PR 2 `feat/m5-home-menu`. |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.        |
 
 ## 2. Visión resumida
 
@@ -72,7 +72,7 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 | M2  | Authentication & Admin Foundation | ✅ Cerrado (PR #2)       | [milestone-2.md](docs/milestones/milestone-2.md) |
 | M3  | CMS & Content Management          | ✅ Cerrado (PRs #3–#5)   | [milestone-3.md](docs/milestones/milestone-3.md) |
 | M4  | Restaurant Menu Management        | ✅ Cerrado (PR #7)       | [milestone-4.md](docs/milestones/milestone-4.md) |
-| M5  | Public Restaurant Website         | ⏳ Siguiente             | —                                                |
+| M5  | Public Restaurant Website         | 🚧 En curso              | [milestone-5.md](docs/milestones/milestone-5.md) |
 | M6  | Customization & Branding          | ⏳ Pendiente             | —                                                |
 | M7  | Deployment & Demo Readiness       | ⏳ Pendiente             | —                                                |
 
@@ -86,9 +86,9 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 - **M6 — Branding**: temas/paletas predefinidas con contraste AA, logo/branding, opciones limitadas de secciones. Sin builder.
 - **M7 — Deploy & Demo**: **CD con Vercel** (preview por PR, producción desde `main`, migraciones en el build), E2E en la CI, producción segura (cabeceras/CSP, pooler, Data API off, migraciones), seed demo ficticio, E2E de flujos críticos contra build de producción, Lighthouse, documentación de operación.
 
-## 8. Milestone activo — M5 (no iniciado)
+## 8. Milestone activo — M5 (en curso)
 
-Se detallará en `docs/milestones/milestone-5.md` al iniciarlo. Pendientes heredados: de M3 (revalidación de respaldo, E2E de publicación visible, WhatsApp, «Cerrado», enlace de Maps; ver [milestone-3.md](docs/milestones/milestone-3.md#pendientes-trasladados)) y de M4 (carta pública, alérgenos y aviso, formato de precios, destacados; ver [milestone-4.md](docs/milestones/milestone-4.md#pendientes-trasladados)). M4 cerrado: ver [milestone-4.md](docs/milestones/milestone-4.md).
+Documento: [milestone-5.md](docs/milestones/milestone-5.md). Plan aprobado (2026-11-27): tres PRs (`feat/m5-foundation`, `feat/m5-home-menu`, `feat/m5-seo`), `@axe-core/playwright` y `experimental.globalNotFound`. Pendientes heredados: de M3 (revalidación de respaldo, E2E de publicación visible, WhatsApp, «Cerrado», enlace de Maps; ver [milestone-3.md](docs/milestones/milestone-3.md#pendientes-trasladados)) y de M4 (carta pública, alérgenos y aviso, formato de precios, destacados; ver [milestone-4.md](docs/milestones/milestone-4.md#pendientes-trasladados)). M4 cerrado: ver [milestone-4.md](docs/milestones/milestone-4.md).
 
 ### Checklist de M0 (cerrado)
 
@@ -232,3 +232,7 @@ Commit propuesto en [milestone-0.md](docs/milestones/milestone-0.md#commit-propu
 **2026-11-26 — M4 implementado en local** (rama `feat/m4-menu-management`): catálogo único de los 14 alérgenos UE (`src/lib/allergens.ts`), validador de precios EUR (`src/lib/validation/price.ts`) y `numberValidator`, colecciones `menu-categories` y `dishes` (ordenables con `defaultSort: '_order'`, localización es obligatoria / en opcional, alérgenos en `select` múltiple `hasMany: true`, lectura pública restringida a categorías visibles y platos no ocultos, borrado protegido de categorías con platos, hooks de revalidación), migración `20261126_203258_menu_categories_and_dishes` y `payload-types.ts`. Verificado en local con unit (178), integración (91), E2E (8), `typecheck`, `lint`, `build` y `schema-drift-check`. Detalle en [milestone-4.md](docs/milestones/milestone-4.md).
 
 **2026-11-27 — M4 cerrado.** PR #7 (de un colaborador) revisada por el propietario: cumple RF-MENU-01 a 08. Correcciones menores incorporadas en la misma PR (nombre de categoría recortado y único sin distinguir mayúsculas, E2E de cambio de disponibilidad desde el listado, ayuda del listado de platos, criterios de aceptación y pendientes trasladados a M5) y fusionada con squash. Siguiente: M5.
+
+**2026-11-27 — M5 iniciado.** Plan propuesto en [milestone-5.md](docs/milestones/milestone-5.md) (tres PRs: base y contenido, portada y carta, SEO), verificado contra la documentación de Next.js 16.4.6. Aprobado por el propietario con `@axe-core/playwright` y `experimental.globalNotFound`.
+
+**2026-11-27 — M5, PR 1 implementada en local** (`feat/m5-foundation`): diccionarios es/en, lógica pura (precios, horarios, enlaces, rutas por idioma, imágenes), capa de contenido `src/lib/content`, layout público (cabecera, selector de idioma, pie, WhatsApp), 404/error con diseño (`experimental.globalNotFound`), revalidación de respaldo de 1 h y E2E con axe. Corregidos los E2E inestables de `main` (`payload.destroy()` compartido). Verificado: unit 217, integración 101, E2E 14 (también contra el build de producción). **Nota**: las primeras ejecuciones locales del E2E dejaron datos de prueba en `site-settings` de la BD de desarrollo (antes nunca guardado); limpiarlos borrando las filas de `site_settings` y `_site_settings_v` en la BD `rstaurante`.

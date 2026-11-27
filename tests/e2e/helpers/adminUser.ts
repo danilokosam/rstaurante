@@ -19,6 +19,13 @@ export function assertLocalDatabase(databaseUrl: string | undefined): void {
   }
 }
 
+/**
+ * Payload instance shared by every E2E file of a worker. `getPayload` caches
+ * one instance per process and `payload.destroy()` empties its database
+ * adapter without removing it from that cache, so files must not destroy it:
+ * the next file of the same worker (CI runs a single worker) would get a broken
+ * instance. The connection is closed when the worker process exits.
+ */
 export async function connectPayload(): Promise<Payload> {
   assertLocalDatabase(process.env.DATABASE_URL)
   return getPayload({ config: await config })

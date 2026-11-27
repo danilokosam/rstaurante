@@ -24,13 +24,15 @@ Basada en la plantilla oficial `with-postgres` de Payload 3 (route groups `(fron
 │   ├── app/
 │   │   ├── (frontend)/           # Web pública
 │   │   │   ├── [locale]/         # ✅ es | en (otro → 404 por dynamicParams = false)
-│   │   │   │   ├── layout.tsx    # ✅ <html lang>; cabecera con selector de idioma (M5)
+│   │   │   │   ├── layout.tsx    # ✅ <html lang>, cabecera, selector de idioma, pie, WhatsApp; revalidate = 3600
 │   │   │   │   ├── page.tsx      # ✅ Home (provisional hasta M5)
 │   │   │   │   ├── menu/page.tsx # Carta
-│   │   │   │   ├── not-found.tsx
-│   │   │   │   └── error.tsx
+│   │   │   │   ├── not-found.tsx # ✅
+│   │   │   │   └── error.tsx     # ✅
 │   │   │   ├── sitemap.ts        # Con alternativas por idioma
 │   │   │   └── robots.ts
+│   │   ├── global-not-found.tsx  # ✅ 404 bilingüe para URLs sin ruta (experimental.globalNotFound)
+│   │   ├── global-error.tsx      # ✅ error bilingüe si falla un layout raíz
 │   │   └── (payload)/            # Generado por Payload: admin y API — no modificar salvo necesidad
 │   │       ├── admin/[[...segments]]/
 │   │       └── api/[...slug]/
@@ -41,12 +43,12 @@ Basada en la plantilla oficial `with-postgres` de Payload 3 (route groups `(fron
 │   ├── hooks/                    # Hooks de Payload (p. ej. revalidateSite)
 │   ├── i18n/
 │   │   ├── config.ts             # ✅ locales soportados, locale por defecto, isLocale
-│   │   └── dictionaries/         # es.ts, en.ts (textos fijos de la web)
+│   │   └── dictionaries/         # ✅ es.ts, en.ts (textos fijos de la web), getDictionary
 │   ├── lib/
 │   │   ├── env.ts                # ✅ Validación de variables de entorno
-│   │   ├── content/              # Consultas de la web pública vía Local API
-│   │   └── *.ts                  # Lógica pura: precios (EUR), alérgenos, horarios, enlaces, JSON-LD
-│   ├── components/               # Componentes de UI de la web pública
+│   │   ├── content/              # ✅ Consultas de la web pública vía Local API (anónimas, con fallback)
+│   │   └── *.ts                  # ✅ Lógica pura: price, allergens, hours, links, localePath, imageSrc (JSON-LD en M5 PR 3)
+│   ├── components/               # ✅ UI de la web pública (SiteHeader, SiteFooter, MainNav, LanguageSwitcher, WhatsAppButton, CmsImage, OpeningHours)
 │   │   └── sections/             # Hero, About, Featured, Gallery, Hours, Contact
 │   ├── migrations/               # ✅ Migraciones generadas por Payload (no editar a mano)
 │   └── styles/                   # ✅ globals.css (Tailwind, solo web pública)
