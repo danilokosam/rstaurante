@@ -1,6 +1,6 @@
 # Milestone 5 — Public Restaurant Website
 
-- **Estado**: ✅ Completo, pendiente de fusionar la PR 3 (`feat/m5-seo`). PRs [#8](https://github.com/danilokosam/rstaurante/pull/8) y [#9](https://github.com/danilokosam/rstaurante/pull/9) fusionadas con squash. Al fusionar la PR 3, M5 queda cerrado.
+- **Estado**: ✅ Cerrado (2026-11-27). PRs [#8](https://github.com/danilokosam/rstaurante/pull/8), [#9](https://github.com/danilokosam/rstaurante/pull/9) y [#10](https://github.com/danilokosam/rstaurante/pull/10) con CI en verde, aprobadas por el propietario y fusionadas con squash. Plan aprobado el 2026-11-27.
 - **Inicio**: 2026-11-27.
 
 ## Decisiones del propietario (2026-11-27)
@@ -157,4 +157,5 @@ RNF-01 exige ≥ 90 en las cuatro categorías (cumplido) y LCP < 2,5 s. En la po
 - [x] PR 3 — Lighthouse manual (móvil) contra el build de producción con contenido de ejemplo ficticio en la BD de tests (resultados abajo)
 - [x] PR 3 — Verificación local: unit (240), integración (101), E2E (19) con el servidor de desarrollo y contra el build de producción (`CI=1`)
 - [x] Criterios de aceptación, pendientes trasladados y documentación de cierre
-- [ ] PR 3 — Push, PR, CI en verde y fusión → M5 cerrado
+- [x] PR 3 — PR #10 con CI en verde, aprobada por el propietario y fusionada → M5 cerrado
+- [x] Verificación de `main` tras la fusión: CI en verde; en local `pnpm verify` (unit 240, integración 101, build) y E2E 19/19 (un fallo intermitente del servidor de desarrollo en la primera ejecución tras el build, el ya descrito en los hallazgos de la PR 2; no se reprodujo en cuatro ejecuciones más)

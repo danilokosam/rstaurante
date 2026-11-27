@@ -4,12 +4,12 @@
 
 ## 1. Estado actual
 
-|                               |                                                                                                                                                                       |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Milestone activo**          | **M5 — Public Restaurant Website** (✅ completo; pendiente de fusionar la PR 3 `feat/m5-seo`). M4 ✅ cerrado (2026-11-27, PR #7).                                     |
-| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                                              |
-| **Siguiente acción concreta** | M5 completo: PRs #8 y #9 fusionadas; PR 3 (`feat/m5-seo`) en revisión. Al fusionarla, M5 queda cerrado y el siguiente es M6 (presentar el plan antes de implementar). |
-| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                                         |
+|                               |                                                                                                                                                                                             |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Milestone activo**          | **M6 — Customization & Branding** (no iniciado). M5 ✅ cerrado (2026-11-27, PRs #8, #9 y #10).                                                                                              |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                                                                    |
+| **Siguiente acción concreta** | Iniciar M6 solo cuando el propietario lo pida: rama `feat/m6-…`, marcarlo activo aquí, crear `docs/milestones/milestone-6.md` y **presentar el plan para aprobación antes de implementar**. |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                                                               |
 
 ## 2. Visión resumida
 
@@ -72,8 +72,8 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 | M2  | Authentication & Admin Foundation | ✅ Cerrado (PR #2)       | [milestone-2.md](docs/milestones/milestone-2.md) |
 | M3  | CMS & Content Management          | ✅ Cerrado (PRs #3–#5)   | [milestone-3.md](docs/milestones/milestone-3.md) |
 | M4  | Restaurant Menu Management        | ✅ Cerrado (PR #7)       | [milestone-4.md](docs/milestones/milestone-4.md) |
-| M5  | Public Restaurant Website         | 🚧 PR 3 en revisión      | [milestone-5.md](docs/milestones/milestone-5.md) |
-| M6  | Customization & Branding          | ⏳ Pendiente             | —                                                |
+| M5  | Public Restaurant Website         | ✅ Cerrado (PRs #8–#10)  | [milestone-5.md](docs/milestones/milestone-5.md) |
+| M6  | Customization & Branding          | ⏳ Siguiente             | —                                                |
 | M7  | Deployment & Demo Readiness       | ⏳ Pendiente             | —                                                |
 
 ### Resumen de cada milestone
@@ -86,9 +86,9 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 - **M6 — Branding**: temas/paletas predefinidas con contraste AA, logo/branding, opciones limitadas de secciones. Sin builder.
 - **M7 — Deploy & Demo**: **CD con Vercel** (preview por PR, producción desde `main`, migraciones en el build), E2E en la CI, producción segura (cabeceras/CSP, pooler, Data API off, migraciones), seed demo ficticio, E2E de flujos críticos contra build de producción, Lighthouse, documentación de operación.
 
-## 8. Milestone activo — M5 (en curso)
+## 8. Milestone activo — M6 (no iniciado)
 
-Documento: [milestone-5.md](docs/milestones/milestone-5.md). Plan aprobado (2026-11-27): tres PRs (`feat/m5-foundation`, `feat/m5-home-menu`, `feat/m5-seo`), `@axe-core/playwright` y `experimental.globalNotFound`. Pendientes heredados: de M3 (revalidación de respaldo, E2E de publicación visible, WhatsApp, «Cerrado», enlace de Maps; ver [milestone-3.md](docs/milestones/milestone-3.md#pendientes-trasladados)) y de M4 (carta pública, alérgenos y aviso, formato de precios, destacados; ver [milestone-4.md](docs/milestones/milestone-4.md#pendientes-trasladados)). M4 cerrado: ver [milestone-4.md](docs/milestones/milestone-4.md).
+Se detallará en `docs/milestones/milestone-6.md` al iniciarlo, a petición del propietario. Pendientes heredados de M5 para M6: favicon e imagen Open Graph por defecto a partir del logo; temas y tipografías sobre las variables de `src/styles/globals.css` (ver [milestone-5.md](docs/milestones/milestone-5.md#pendientes-trasladados)). M5 cerrado: ver [milestone-5.md](docs/milestones/milestone-5.md).
 
 ### Checklist de M0 (cerrado)
 
@@ -160,7 +160,7 @@ Ver la matriz en [testing-strategy.md](docs/development/testing-strategy.md#matr
 | ---- | ----------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
 | B-01 | Bloqueo (M1)            | Node.js local 24.18.0; Payload 3.94 exige ≥ 24.22.3                                              | No se puede instalar/ejecutar Payload                      | Node actualizado a 24.22.3 (verificado)                                                                                       | ✅ Cerrado             |
 | R-01 | Riesgo seguridad        | Data API de Supabase podría exponer tablas de Payload                                            | Fuga de datos (hashes de usuarios)                         | Deshabilitar Data API; evaluar `schemaName`; verificación manual en M1/M7 (ADR-0003)                                          | Mitigación planificada |
-| R-02 | Riesgo técnico          | Cambios en la API de caché de Next.js 16                                                         | Publicación no inmediata                                   | Verificado en M3 contra la doc de Next.js 16.4 (`revalidatePath('/', 'layout')`); E2E de publicación visible en M5 (ADR-0007) | Mitigado (M3)          |
+| R-02 | Riesgo técnico          | Cambios en la API de caché de Next.js 16                                                         | Publicación no inmediata                                   | Verificado en M3 contra la doc de Next.js 16.4 (`revalidatePath('/', 'layout')`); E2E de publicación visible en M5 (ADR-0007) | ✅ Cerrado (M5)        |
 | R-03 | Riesgo técnico          | Pooling de conexiones Supabase desde funciones serverless                                        | Errores de conexión en producción                          | Pooler de Supabase; prueba en M7 (ADR-0003/0009)                                                                              | Abierto                |
 | R-04 | Riesgo producto         | Payload 4 en beta → futura migración                                                             | Trabajo de actualización                                   | Mantener configuración estándar; FP-09                                                                                        | Aceptado               |
 | R-05 | Riesgo coste            | Proyectos gratuitos de Supabase se pausan por inactividad; plan Hobby de Vercel no comercial     | Demo caída / coste                                         | Decidir planes en M7                                                                                                          | Abierto                |
@@ -244,3 +244,5 @@ Commit propuesto en [milestone-0.md](docs/milestones/milestone-0.md#commit-propu
 **2026-11-27 — M5, PR 1 fusionada (#8)** con squash tras la aprobación del propietario; PR 2 rebasada sobre `main`.
 
 **2026-11-27 — M5, PR 2 fusionada (#9).** **PR 3** (`feat/m5-seo`): metadatos por página (título, descripción, canónica, `hreflang` es/en/x-default, Open Graph), `sitemap.xml`, `robots.txt`, JSON-LD `Restaurant`, icono neutro y `preload` en el hero (sustituye al `priority` obsoleto de Next 16). Lighthouse móvil con contenido ficticio: ≥ 97 en las cuatro categorías; LCP de la portada en el límite de 2,5 s (verificación formal en M7). Verificado: unit 240, integración 101, E2E 19 (también contra el build de producción).
+
+**2026-11-27 — M5 cerrado.** PR 3 (#10) fusionada tras la aprobación del propietario. `main` verificado tras la fusión: CI en verde y, en local, `pnpm verify` (unit 240, integración 101, build) y E2E 19/19 (un fallo intermitente del servidor de desarrollo en la primera ejecución tras el build, ya documentado en `milestone-5.md`; no se reprodujo en cuatro ejecuciones más). Criterios de aceptación en [milestone-5.md](docs/milestones/milestone-5.md#criterios-de-aceptación): todos cumplidos salvo el LCP de la portada (RNF-01), en el límite de 2,5 s y con verificación formal en M7. R-02 cerrado. Siguiente: M6, a petición del propietario.
