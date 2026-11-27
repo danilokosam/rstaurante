@@ -39,13 +39,16 @@ Next.js: ¿página en caché y válida? ── sí ──► HTML cacheado (ráp
 Server Component [locale]/menu/page.tsx
   │ valida el locale (es|en; otro → 404) y llama a src/lib/content/getMenu(locale)
   ▼
-Payload Local API: payload.find({ collection: 'dishes', locale: 'en', fallbackLocale: 'es', overrideAccess: false, ... })
-  │  (sin usuario → reglas de visitante: excluye availability=hidden y categorías ocultas)
+Payload Local API (memoizada por petición con React cache):
+  payload.find({ collection: 'menu-categories' | 'dishes', locale: 'en', fallbackLocale: 'es', overrideAccess: false, pagination: false })
+  │  (sin usuario → reglas de visitante: excluye availability=hidden y categorías ocultas; orden _order del panel)
   ▼
-PostgreSQL ──► datos ──► lógica pura (agrupar por categoría, formatPrice EUR según idioma, etiquetas de alérgenos del diccionario)
+PostgreSQL ──► datos ──► src/lib: agrupar platos por categoría (sin categorías vacías), formatPrice EUR según idioma,
+  │                       etiquetas de alérgenos (src/lib/allergens.ts) y textos fijos (src/i18n/dictionaries)
   ▼
-Componentes de UI (sin lógica de negocio) ──► HTML ──► se cachea ──► Visitante
-  Imágenes: <img>/next/image con URL pública de Supabase Storage (el navegador las descarga directamente)
+Componentes de UI (sin lógica de negocio) ──► HTML estático (ISR) ──► se cachea ──► Visitante
+  Imágenes: next/image → /_next/image (optimiza los archivos de /api/media/file) o URL pública de Supabase Storage
+  Invalidación: revalidatePath('/', 'layout') al guardar en el panel; respaldo cada hora (revalidate = 3600)
 ```
 
 ## F3 — Subida de imagen

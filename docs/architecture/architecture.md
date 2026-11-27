@@ -55,7 +55,7 @@
 - Páginas públicas renderizadas en servidor y cacheadas (estáticas/ISR).
 - Hooks `afterChange`/`afterDelete` de las colecciones y globals públicas invalidan la caché del sitio completo (`revalidatePath('/', 'layout')`). El sitio tiene pocas páginas, por lo que invalidar todo es simple y barato.
 - Revalidación temporal de respaldo (1 h) por si una invalidación falla.
-- Detalle y alternativas en [ADR-0007](../decisions/ADR/ADR-0007-publishing-and-caching.md). La API exacta de caché de Next.js 16 se fija y testea en M3/M5.
+- Detalle y alternativas en [ADR-0007](../decisions/ADR/ADR-0007-publishing-and-caching.md). La API de caché de Next.js 16 se verificó en M3 (`revalidatePath('/', 'layout')`) y en M5 (`revalidate = 3600` y E2E de publicación contra el build de producción); ver las notas de implementación de ADR-0007.
 
 ## Entornos
 

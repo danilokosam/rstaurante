@@ -67,6 +67,16 @@ docker exec rstaurante-postgres-1 psql -U postgres -d rstaurante -c "DROP SCHEMA
 pnpm migrate
 ```
 
+## Tests E2E y BD de desarrollo
+
+Los E2E usan la BD de desarrollo y limpian lo que crean (usuarios, platos, categorías y bloqueos de documento). Si `site-settings` o `homepage` nunca se habían guardado, al terminar los devuelven a ese estado; si no, restauran la versión anterior. Antes de M5 no era así, y versiones antiguas de los E2E podían dejar textos «… E2E …»; si aparecen y la BD no tiene contenido real, se limpian así:
+
+```bash
+docker exec rstaurante-postgres-1 psql -U postgres -d rstaurante -c "DELETE FROM _site_settings_v; DELETE FROM site_settings; DELETE FROM _homepage_v; DELETE FROM homepage;"
+```
+
+Con `next dev` y varios workers, un E2E del panel puede fallar de forma esporádica mientras se compila una ruta bajo demanda (sobre todo en la primera ejecución tras un `pnpm build`). Contra el build de producción (`pnpm build && CI=1 pnpm test:e2e`, como la CI) no ocurre.
+
 ## Problemas frecuentes
 
 - `ECONNREFUSED 127.0.0.1:5433` → `docker compose up -d`.

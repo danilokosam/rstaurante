@@ -20,11 +20,11 @@ Excepciones razonables al "test primero" (configuración generada por herramient
 
 ## Pirámide
 
-| Nivel       | Ubicación    | Comando (previsto) | Velocidad    | Ejemplos                                                                                                                                                                                                                                                                                                               |
-| ----------- | ------------ | ------------------ | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Unit        | `tests/unit` | `pnpm test:unit`   | ms           | `formatPrice(12.5, 'es')` → `12,50 €` y `formatPrice(12.5, 'en')` → `€12.50`; diccionarios `es`/`en` con las mismas claves; 14 alérgenos con etiquetas en ambos idiomas; `buildWhatsAppUrl`; `groupOpeningHours`; validador de horas; `env.ts` rechaza `PAYLOAD_SECRET` corto; serializador JSON-LD escapa `</script>` |
-| Integración | `tests/int`  | `pnpm test:int`    | s            | Anónimo no puede crear plato; anónimo no ve plato `hidden`; precio con 3 decimales rechazado; SVG rechazado; no se borra categoría con platos; no se borra el último usuario; guardar dispara revalidación                                                                                                             |
-| E2E         | `tests/e2e`  | `pnpm test:e2e`    | decenas de s | Login/logout; editar precio y verlo en `/es/menu`; selector de idioma y fallback; home en 360 px sin scroll horizontal; axe sin violaciones serias                                                                                                                                                                     |
+| Nivel       | Ubicación    | Comando (previsto) | Velocidad    | Ejemplos                                                                                                                                                                                                                                                                                                           |
+| ----------- | ------------ | ------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Unit        | `tests/unit` | `pnpm test:unit`   | ms           | `formatPrice(12.5, 'es')` → `12,50 €` y `formatPrice(12.5, 'en')` → `€12.50`; diccionarios `es`/`en` con las mismas claves; 14 alérgenos con etiquetas en ambos idiomas; `whatsappHref`; `groupOpeningHours`; validador de horas; `env.ts` rechaza `PAYLOAD_SECRET` corto; serializador JSON-LD escapa `</script>` |
+| Integración | `tests/int`  | `pnpm test:int`    | s            | Anónimo no puede crear plato; anónimo no ve plato `hidden`; precio con 3 decimales rechazado; SVG rechazado; no se borra categoría con platos; no se borra el último usuario; guardar dispara revalidación                                                                                                         |
+| E2E         | `tests/e2e`  | `pnpm test:e2e`    | decenas de s | Login/logout; editar precio y verlo en `/es/menu`; selector de idioma y fallback; home en 360 px sin scroll horizontal; axe sin violaciones serias                                                                                                                                                                 |
 
 `pnpm test` ejecuta todo. `pnpm verify` (previsto) = `typecheck` + `lint` + `test:unit` + `test:int` + `build`.
 
@@ -36,6 +36,13 @@ Excepciones razonables al "test primero" (configuración generada por herramient
 ## Datos de test
 
 - Fábricas/helpers en `tests/helpers` para crear usuarios, categorías y platos mínimos.
+- **Reglas de los E2E** (`tests/e2e/helpers`):
+  - Cada archivo usa su propio usuario (`createE2EUser` / `deleteE2EUser`). `deleteE2EUser` libera antes los bloqueos de documento del usuario, para que el panel no quede en blanco.
+  - Los archivos no llaman a `payload.destroy()`: la instancia de `getPayload` se comparte en el proceso y el archivo siguiente la recibiría rota.
+  - Los cambios que deben verse en la web se hacen por la API REST del servidor (`adminApi`) o desde el panel, nunca con la Local API desde Playwright, que no revalida el build de producción.
+  - Esperar la publicación con `expectPublished` (< 10 s).
+  - Al terminar, los E2E restauran la versión previa de los globals que modifican o, si nunca se habían guardado, los devuelven a ese estado.
+  - Accesibilidad con `expectNoSeriousA11yViolations` (axe, WCAG 2.2 AA) y 360 px con `expectNoHorizontalScroll`.
 - BD de test aislada (`DATABASE_URL` de test); limpieza entre suites.
 - Almacenamiento de archivos en directorio temporal.
 
