@@ -30,6 +30,7 @@ export const en: Dictionary = {
     closed: 'Closed',
   },
   menu: {
+    metaDescription: '{name} menu: dishes, prices and allergens.',
     viewAll: 'See the full menu',
     categories: 'Menu categories',
     title: 'Menu',

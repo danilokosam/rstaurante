@@ -28,6 +28,7 @@ export const es = {
     closed: 'Cerrado',
   },
   menu: {
+    metaDescription: 'Carta de {name}: platos, precios y alérgenos.',
     viewAll: 'Ver la carta completa',
     categories: 'Categorías de la carta',
     title: 'Carta',

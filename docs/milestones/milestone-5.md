@@ -1,6 +1,6 @@
 # Milestone 5 — Public Restaurant Website
 
-- **Estado**: 🚧 En curso. Plan aprobado por el propietario el 2026-11-27. PR 1 fusionada (#8); PR 2 en `feat/m5-home-menu`.
+- **Estado**: ✅ Completo, pendiente de fusionar la PR 3 (`feat/m5-seo`). PRs [#8](https://github.com/danilokosam/rstaurante/pull/8) y [#9](https://github.com/danilokosam/rstaurante/pull/9) fusionadas con squash. Al fusionar la PR 3, M5 queda cerrado.
 - **Inicio**: 2026-11-27.
 
 ## Decisiones del propietario (2026-11-27)
@@ -75,6 +75,53 @@ Construir la web pública del restaurante en español e inglés a partir del con
 - **`cache` de React** en `src/lib/content`: el layout y la portada comparten la lectura de `site-settings` en la misma petición.
 - **No disponible**: se atenúa con colores que mantienen el contraste AA (no con `opacity`) y con un aviso de texto, no solo con estilo.
 
+## Hallazgos de la PR 3
+
+- **`priority` de `next/image` está obsoleto en Next.js 16**: se sustituye por `preload` (inserta un `<link rel="preload">` en el `<head>`) o por `loading="eager"` / `fetchPriority="high"`, y la documentación pide no combinarlos. `CmsImage` usa `preload` en la imagen del hero (único candidato a LCP en todas las anchuras) y `loading="eager"` en el logo.
+- **Favicon**: sin icono, el navegador pedía `/favicon.ico` (404) y Lighthouse lo contaba como error de consola (Best Practices 96). Se añade un icono neutro `src/app/icon.svg`; el icono a partir del logo es de M6.
+- **`experimental.inlineCss` descartado**: medido en local, no mejora el LCP de la portada (sigue en 2,6 s simulados) y se aplicaría también al panel de Payload (la página de login pasa a 715 KB de HTML).
+- **Medición de Lighthouse con imágenes sintéticas**: con colores lisos, Chrome descarta el hero como LCP (baja entropía) y el resultado no es representativo; con ruido gaussiano sin comprimir, el peor caso, la portada bajaba a 88. Las cifras de abajo usan imágenes con textura desenfocada, más parecidas a fotos.
+- **`sitemap.ts` y `robots.ts`** van en la raíz de `src/app` (convención de archivos de metadatos), no dentro de `(frontend)` como anticipaba `folder-structure.md` (actualizado).
+
+### Lighthouse (móvil, 2026-11-27)
+
+Lighthouse 13.6.0, perfil móvil por defecto (4G lento simulado, CPU ×4), build de producción local, contenido de ejemplo ficticio (6 imágenes, 3 categorías, 15 platos) en la BD de tests:
+
+| Página     | Performance | Accessibility | Best Practices | SEO | LCP       |
+| ---------- | ----------- | ------------- | -------------- | --- | --------- |
+| `/es`      | 97–99       | 100           | 100            | 100 | 2,0–2,6 s |
+| `/en`      | 97          | 100           | 100            | 100 | 2,6 s     |
+| `/es/menu` | 99–100      | 100           | 100            | 100 | 0,8–0,9 s |
+| `/en/menu` | 100         | 100           | 100            | 100 | 0,9 s     |
+
+RNF-01 exige ≥ 90 en las cuatro categorías (cumplido) y LCP < 2,5 s. En la portada, el LCP es la imagen del hero y queda en el límite (2,0–2,6 s) por la latencia simulada de la propia petición de la imagen (sin simulación tarda unos 60 ms). Se acepta en M5 y la verificación formal se hace en M7 con fotos reales del contenido demo y desplegado en Vercel.
+
+## Criterios de aceptación
+
+| Criterio                                                                                                         | Verificado | Evidencia                                                               |
+| ---------------------------------------------------------------------------------------------------------------- | ---------- | ----------------------------------------------------------------------- |
+| RF-WEB-01: portada en orden fijo y sin secciones vacías                                                          | ✅         | `page.tsx`, `public-menu.e2e`, `homepage.e2e`                           |
+| RF-WEB-02 / US-F1 CA2: carta en orden, precios EUR por idioma, alérgenos como texto y aviso                      | ✅         | `content.int`, `formatPrice.test`, `public-menu.e2e`                    |
+| RF-WEB-03: cabecera con logo/nombre y navegación; pie con contacto, redes y horario                              | ✅         | `site.e2e`                                                              |
+| RF-WEB-04: botón de WhatsApp solo con número                                                                     | ✅         | `links.test`, `home.test`, `site.e2e`                                   |
+| RF-WEB-05 / US-F3: metadatos, Open Graph, canónica, `hreflang`, sitemap, robots y JSON-LD `Restaurant`           | ✅         | `seo.test`, `jsonLd.test`, `site.e2e`                                   |
+| RF-WEB-06: 404 y error con el diseño del sitio                                                                   | ✅         | `site.e2e` (404 dentro y fuera de `/{locale}`)                          |
+| RF-WEB-07: la web no enlaza ni expone el panel; `/admin` y `/api` excluidos del rastreo                          | ✅         | `robots.txt` y sitemap en `site.e2e`                                    |
+| RF-I18N-01/03/04, US-F5: es/en, textos fijos traducidos, selector que mantiene la página, _fallback_, `hreflang` | ✅         | `dictionaries.test`, `content.int`, `site.e2e`                          |
+| RF-PUB-01 / US-F4: lo guardado en `/admin` se ve en la web en < 10 s                                             | ✅         | `public-menu.e2e`, `homepage.e2e`, `site.e2e`                           |
+| RF-PUB-02: revalidación de respaldo de 1 hora                                                                    | ✅         | `revalidate = 3600` (ADR-0007, nota M5)                                 |
+| US-E1 CA2, US-E2 CA3, US-E3 CA1, US-E4, US-E5 CA2–CA4 (parte pública de M4)                                      | ✅         | `content.int`, `public-menu.e2e`                                        |
+| US-F2 CA1: `tel:`, `wa.me` y «Cómo llegar»                                                                       | ✅         | `links.test`, `site.e2e`                                                |
+| RNF-01: Lighthouse móvil ≥ 90 y LCP < 2,5 s                                                                      | ⚠️         | ≥ 97 en todo; LCP de la portada en el límite (ver arriba; formal en M7) |
+| RNF-02: sin violaciones _serious/critical_ de axe                                                                | ✅         | `site.e2e`, `public-menu.e2e`                                           |
+| RNF-03: correcto desde 360 px                                                                                    | ✅         | `site.e2e`, `public-menu.e2e`                                           |
+| RNF-10: sin cookies de seguimiento en la web pública                                                             | ✅         | Sin scripts de terceros ni analítica                                    |
+
+## Pendientes trasladados
+
+- **M6**: favicon e imagen Open Graph por defecto a partir del logo; temas y tipografías sobre las variables de `globals.css`.
+- **M7**: Lighthouse formal y LCP de la portada con fotos reales del contenido demo y desplegado en Vercel; cabeceras de seguridad/CSP (el JSON-LD es un `<script>` inline: tenerlo en cuenta en la CSP); E2E en la CI contra el despliegue.
+
 ## Excluido
 
 - Temas, paletas, tipografías de marca y logo como favicon → **M6**. M5 usa un diseño neutro y sobrio con Tailwind y tipografía del sistema, preparado para que M6 cambie colores y fuentes con variables CSS.
@@ -103,5 +150,11 @@ Construir la web pública del restaurante en español e inglés a partir del con
 - [x] PR 2 — Portada con secciones en orden fijo y sin secciones vacías (hero, sobre nosotros, destacados, galería, horario, ubicación/contacto) y carta `/{locale}/menu` (orden del panel, precios EUR, «No disponible», alérgenos como texto, aviso de alergias, índice de categorías)
 - [x] PR 2 — E2E: carta es/en con precios, alérgenos, `unavailable` y sin `hidden`; destacados en la portada; precio guardado en `/admin` visible en la carta; título del hero publicado en es/en; 360 px y axe en `/es`, `/es/menu`, `/en/menu`
 - [x] PR 2 — Verificación local: unit (229), integración (101), E2E (17) con el servidor de desarrollo y contra el build de producción (`CI=1`, dos veces seguidas)
-- [ ] PR 2 — Push, PR y CI en verde
-- [ ] PR 3: metadata, sitemap, robots, JSON-LD, Lighthouse manual, cierre
+- [x] PR 2 — PR #9 con CI en verde, aprobada por el propietario y fusionada con squash (2026-11-27)
+- [x] PR 3 — TDD unit: `localeAlternates`, `pageMetadata`, `sitemapEntries`, `robotsRules` (`src/lib/seo.ts`), `restaurantJsonLd` y `serializeJsonLd` (`src/lib/jsonLd.ts`); `ogImage` (`src/lib/content/seo.ts`, test escrito después de la función)
+- [x] PR 3 — `generateMetadata` en layout (`metadataBase`, plantilla de título), portada y carta; `sitemap.ts`, `robots.ts`, JSON-LD en la portada, icono neutro `icon.svg`
+- [x] PR 3 — E2E: título, descripción, canónica, `hreflang` (es, en, x-default), Open Graph y JSON-LD en `/es` y `/en/menu`; `sitemap.xml` y `robots.txt`
+- [x] PR 3 — Lighthouse manual (móvil) contra el build de producción con contenido de ejemplo ficticio en la BD de tests (resultados abajo)
+- [x] PR 3 — Verificación local: unit (240), integración (101), E2E (19) con el servidor de desarrollo y contra el build de producción (`CI=1`)
+- [x] Criterios de aceptación, pendientes trasladados y documentación de cierre
+- [ ] PR 3 — Push, PR, CI en verde y fusión → M5 cerrado

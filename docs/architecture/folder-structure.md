@@ -29,8 +29,9 @@ Basada en la plantilla oficial `with-postgres` de Payload 3 (route groups `(fron
 │   │   │   │   ├── menu/page.tsx # ✅ Carta: categorías, platos, precios, alérgenos y aviso
 │   │   │   │   ├── not-found.tsx # ✅
 │   │   │   │   └── error.tsx     # ✅
-│   │   │   ├── sitemap.ts        # Con alternativas por idioma
-│   │   │   └── robots.ts
+│   │   ├── sitemap.ts            # ✅ /sitemap.xml con alternativas por idioma
+│   │   ├── robots.ts             # ✅ /robots.txt (excluye /admin y /api)
+│   │   ├── icon.svg              # ✅ icono neutro (el del logo llega en M6)
 │   │   ├── global-not-found.tsx  # ✅ 404 bilingüe para URLs sin ruta (experimental.globalNotFound)
 │   │   ├── global-error.tsx      # ✅ error bilingüe si falla un layout raíz
 │   │   └── (payload)/            # Generado por Payload: admin y API — no modificar salvo necesidad
@@ -47,7 +48,7 @@ Basada en la plantilla oficial `with-postgres` de Payload 3 (route groups `(fron
 │   ├── lib/
 │   │   ├── env.ts                # ✅ Validación de variables de entorno
 │   │   ├── content/              # ✅ Consultas de la web pública vía Local API (anónimas, con fallback)
-│   │   └── *.ts                  # ✅ Lógica pura: price, allergens, hours, links, localePath, imageSrc, home (JSON-LD en M5 PR 3)
+│   │   └── *.ts                  # ✅ Lógica pura: price, allergens, hours, links, localePath, imageSrc, home, seo, jsonLd
 │   ├── components/               # ✅ UI de la web pública (SiteHeader, SiteFooter, MainNav, LanguageSwitcher, WhatsAppButton, CmsImage, OpeningHours)
 │   │   └── sections/             # ✅ Hero, About, Featured, Gallery, Hours, Contact (+ DishItem en components/)
 │   ├── migrations/               # ✅ Migraciones generadas por Payload (no editar a mano)

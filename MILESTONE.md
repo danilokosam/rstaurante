@@ -4,12 +4,12 @@
 
 ## 1. Estado actual
 
-|                               |                                                                                                                                   |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| **Milestone activo**          | **M5 — Public Restaurant Website** (🚧 en curso; PR 1 fusionada, PR 2 en `feat/m5-home-menu`). M4 ✅ cerrado (2026-11-27, PR #7). |
-| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.          |
-| **Siguiente acción concreta** | PR 1 de M5 fusionada (#8). PR 2 (`feat/m5-home-menu`) en revisión. Después, PR 3 `feat/m5-seo`.                                   |
-| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.     |
+|                               |                                                                                                                                                                       |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Milestone activo**          | **M5 — Public Restaurant Website** (✅ completo; pendiente de fusionar la PR 3 `feat/m5-seo`). M4 ✅ cerrado (2026-11-27, PR #7).                                     |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                                              |
+| **Siguiente acción concreta** | M5 completo: PRs #8 y #9 fusionadas; PR 3 (`feat/m5-seo`) en revisión. Al fusionarla, M5 queda cerrado y el siguiente es M6 (presentar el plan antes de implementar). |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                                         |
 
 ## 2. Visión resumida
 
@@ -72,7 +72,7 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 | M2  | Authentication & Admin Foundation | ✅ Cerrado (PR #2)       | [milestone-2.md](docs/milestones/milestone-2.md) |
 | M3  | CMS & Content Management          | ✅ Cerrado (PRs #3–#5)   | [milestone-3.md](docs/milestones/milestone-3.md) |
 | M4  | Restaurant Menu Management        | ✅ Cerrado (PR #7)       | [milestone-4.md](docs/milestones/milestone-4.md) |
-| M5  | Public Restaurant Website         | 🚧 En curso              | [milestone-5.md](docs/milestones/milestone-5.md) |
+| M5  | Public Restaurant Website         | 🚧 PR 3 en revisión      | [milestone-5.md](docs/milestones/milestone-5.md) |
 | M6  | Customization & Branding          | ⏳ Pendiente             | —                                                |
 | M7  | Deployment & Demo Readiness       | ⏳ Pendiente             | —                                                |
 
@@ -242,3 +242,5 @@ Commit propuesto en [milestone-0.md](docs/milestones/milestone-0.md#commit-propu
 **2026-11-27 — M5, PR 2 implementada en local** (`feat/m5-home-menu`): portada con sus seis secciones, carta `/{locale}/menu` con precios EUR, «No disponible», alérgenos y aviso; E2E de publicación (precio guardado en `/admin` visible en la carta). Corregidos los bloqueos de documento huérfanos de los E2E. Verificado: unit 229, integración 101, E2E 17 (también contra el build de producción).
 
 **2026-11-27 — M5, PR 1 fusionada (#8)** con squash tras la aprobación del propietario; PR 2 rebasada sobre `main`.
+
+**2026-11-27 — M5, PR 2 fusionada (#9).** **PR 3** (`feat/m5-seo`): metadatos por página (título, descripción, canónica, `hreflang` es/en/x-default, Open Graph), `sitemap.xml`, `robots.txt`, JSON-LD `Restaurant`, icono neutro y `preload` en el hero (sustituye al `priority` obsoleto de Next 16). Lighthouse móvil con contenido ficticio: ≥ 97 en las cuatro categorías; LCP de la portada en el límite de 2,5 s (verificación formal en M7). Verificado: unit 240, integración 101, E2E 19 (también contra el build de producción).

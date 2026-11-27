@@ -8,6 +8,7 @@ import { WhatsAppButton } from '@/components/WhatsAppButton'
 import { isLocale, locales } from '@/i18n/config'
 import { getDictionary } from '@/i18n/dictionaries'
 import { getSiteSettings } from '@/lib/content'
+import { getEnv } from '@/lib/env'
 
 import '@/styles/globals.css'
 
@@ -21,9 +22,21 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-// Placeholder metadata: page metadata, Open Graph and hreflang arrive with the SEO PR of M5.
-export const metadata: Metadata = {
-  title: 'Restaurante',
+/**
+ * Site-wide metadata: base URL for relative metadata URLs and the title
+ * template of child pages ("Carta | Casa Pepe"). Each page adds its own
+ * description, canonical URL, hreflang and Open Graph (RF-WEB-05).
+ */
+export async function generateMetadata({ params }: Pick<Props, 'params'>): Promise<Metadata> {
+  const { locale } = await params
+  if (!isLocale(locale)) return {}
+  const settings = await getSiteSettings(locale)
+  const name = settings.name?.trim() || getDictionary(locale).site.defaultName
+  return {
+    metadataBase: new URL(getEnv().serverUrl),
+    title: { template: `%s | ${name}`, default: settings.seo?.title?.trim() || name },
+    applicationName: name,
+  }
 }
 
 type Props = {
