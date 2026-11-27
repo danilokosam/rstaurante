@@ -102,5 +102,30 @@ test.describe('menu management in /admin (US-E1..E3, US-E5)', () => {
     expect(savedDish?.category).toBe(createdCategoryId)
     expect(savedDish?.availability).toBe('unavailable')
     expect(savedDish?.allergens).toEqual(['gluten', 'eggs'])
+
+    // 4. Change availability from the list view with bulk edit (US-E3 CA3).
+    await page.goto('/admin/collections/dishes?locale=es')
+    const row = page.locator('tr', { hasText: DISH_NAME })
+    await row.locator('input[type="checkbox"]').check()
+    await page.getByRole('button', { name: 'Editar', exact: true }).click()
+    const drawer = page.locator('.edit-many__main')
+    await selectOption(page, drawer.locator('.field-select'), 'Disponibilidad')
+    await selectOption(page, drawer.locator('#field-availability'), 'Oculto')
+    await Promise.all([
+      page.waitForResponse(
+        (response) =>
+          response.url().includes('/api/dishes') &&
+          response.request().method() === 'PATCH' &&
+          response.ok(),
+      ),
+      drawer.locator('.edit-many__save').click(),
+    ])
+
+    const afterBulkEdit = await payload.findByID({
+      collection: 'dishes',
+      id: savedDish!.id,
+      depth: 0,
+    })
+    expect(afterBulkEdit.availability).toBe('hidden')
   })
 })

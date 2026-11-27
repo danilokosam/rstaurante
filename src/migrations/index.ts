@@ -29,7 +29,7 @@ export const migrations = [
   {
     up: migration_20261126_193305_storage_fields.up,
     down: migration_20261126_193305_storage_fields.down,
-    name: '20261126_193305_storage_fields',
+    name: '20261126_193305_storage_fields'
   },
   {
     up: migration_20261126_203258_menu_categories_and_dishes.up,

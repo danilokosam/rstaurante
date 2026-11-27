@@ -215,7 +215,7 @@ export interface MenuCategory {
   id: number;
   _order?: string | null;
   /**
-   * Required in Spanish and unique per language.
+   * Required in Spanish and unique per language (case-insensitive).
    */
   name?: string | null;
   description?: string | null;
@@ -227,6 +227,8 @@ export interface MenuCategory {
   createdAt: string;
 }
 /**
+ * Dish order is shared across the whole menu: filter by category before dragging to reorder only that category's dishes. To change the availability of several dishes, select them and click "Edit".
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "dishes".
  */

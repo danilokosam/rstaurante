@@ -4,12 +4,12 @@
 
 ## 1. Estado actual
 
-|                               |                                                                                                                                                                                  |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Milestone activo**          | **M4 — Restaurant Menu Management** (🚧 implementado y verificado en local en `feat/m4-menu-management`; pendiente de revisión/PR). M3 ✅ cerrado (2026-11-26, PRs #3, #4 y #5). |
-| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                                                         |
-| **Siguiente acción concreta** | Revisar los cambios de M4 en `feat/m4-menu-management`, hacer commit y abrir PR hacia `main`.                                                                                    |
-| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                                                    |
+|                               |                                                                                                                                                                |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Milestone activo**          | **M5 — Public Restaurant Website** (no iniciado). M4 ✅ cerrado (2026-11-27, PR #7).                                                                           |
+| **Estado de M0**              | ✅ **Cerrado** (2026-11-24): completado, verificado, revisado y confirmado por el propietario; commit inicial en `main`.                                       |
+| **Siguiente acción concreta** | Iniciar M5 en una rama `feat/m5-…`: marcarlo activo aquí, crear `docs/milestones/milestone-5.md` y **presentar el plan para aprobación antes de implementar**. |
+| **No hacer**                  | No trabajar directamente en `main` (ver [CONTRIBUTING.md](CONTRIBUTING.md)). No hacer commit/push/merge sin petición expresa.                                  |
 
 ## 2. Visión resumida
 
@@ -71,8 +71,8 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 | M1  | Project Foundation                | ✅ Cerrado (PR #1)       | [milestone-1.md](docs/milestones/milestone-1.md) |
 | M2  | Authentication & Admin Foundation | ✅ Cerrado (PR #2)       | [milestone-2.md](docs/milestones/milestone-2.md) |
 | M3  | CMS & Content Management          | ✅ Cerrado (PRs #3–#5)   | [milestone-3.md](docs/milestones/milestone-3.md) |
-| M4  | Restaurant Menu Management        | 🚧 En revisión           | [milestone-4.md](docs/milestones/milestone-4.md) |
-| M5  | Public Restaurant Website         | ⏳ Pendiente             | —                                                |
+| M4  | Restaurant Menu Management        | ✅ Cerrado (PR #7)       | [milestone-4.md](docs/milestones/milestone-4.md) |
+| M5  | Public Restaurant Website         | ⏳ Siguiente             | —                                                |
 | M6  | Customization & Branding          | ⏳ Pendiente             | —                                                |
 | M7  | Deployment & Demo Readiness       | ⏳ Pendiente             | —                                                |
 
@@ -86,18 +86,9 @@ MVP de un sistema para que **un restaurante** gestione el contenido de su propia
 - **M6 — Branding**: temas/paletas predefinidas con contraste AA, logo/branding, opciones limitadas de secciones. Sin builder.
 - **M7 — Deploy & Demo**: **CD con Vercel** (preview por PR, producción desde `main`, migraciones en el build), E2E en la CI, producción segura (cabeceras/CSP, pooler, Data API off, migraciones), seed demo ficticio, E2E de flujos críticos contra build de producción, Lighthouse, documentación de operación.
 
-## 8. Milestone activo — M4 (implementado, en revisión)
+## 8. Milestone activo — M5 (no iniciado)
 
-Documento: [milestone-4.md](docs/milestones/milestone-4.md). Rama: `feat/m4-menu-management`.
-
-- [x] Rama creada y plan documentado en `milestone-4.md`
-- [x] TDD unit: alérgenos (`src/lib/allergens.ts`) y validador de precio (`src/lib/validation/price.ts`)
-- [x] TDD integración: `menu-categories` y `dishes` (CRUD, visibilidad, borrado protegido, alérgenos en `select` múltiple, localización, orden, revalidación)
-- [x] Colecciones `MenuCategories`, `Dishes`, migración (`20261126_203258_menu_categories_and_dishes`) y tipos regenerados
-- [x] E2E de gestión de carta en `/admin` (`tests/e2e/menu.e2e.spec.ts`, suite E2E completa 8/8 en verde)
-- [x] Verificación técnica (`typecheck`, `lint`, `test:unit`, `test:int`, `build`, `schema-drift-check`, `test:e2e`) y documentación actualizada
-
-M3 cerrado: ver [milestone-3.md](docs/milestones/milestone-3.md).
+Se detallará en `docs/milestones/milestone-5.md` al iniciarlo. Pendientes heredados: de M3 (revalidación de respaldo, E2E de publicación visible, WhatsApp, «Cerrado», enlace de Maps; ver [milestone-3.md](docs/milestones/milestone-3.md#pendientes-trasladados)) y de M4 (carta pública, alérgenos y aviso, formato de precios, destacados; ver [milestone-4.md](docs/milestones/milestone-4.md#pendientes-trasladados)). M4 cerrado: ver [milestone-4.md](docs/milestones/milestone-4.md).
 
 ### Checklist de M0 (cerrado)
 
@@ -239,3 +230,5 @@ Commit propuesto en [milestone-0.md](docs/milestones/milestone-0.md#commit-propu
 **2026-11-26 — M3 cerrado.** PR 3 (#5) fusionada tras la aprobación del propietario; `main` verificado tras la fusión. README ampliado con el estado real del proyecto (qué funciona, qué falta, stack, arquitectura, puesta en marcha y estructura). Siguiente: M4.
 
 **2026-11-26 — M4 implementado en local** (rama `feat/m4-menu-management`): catálogo único de los 14 alérgenos UE (`src/lib/allergens.ts`), validador de precios EUR (`src/lib/validation/price.ts`) y `numberValidator`, colecciones `menu-categories` y `dishes` (ordenables con `defaultSort: '_order'`, localización es obligatoria / en opcional, alérgenos en `select` múltiple `hasMany: true`, lectura pública restringida a categorías visibles y platos no ocultos, borrado protegido de categorías con platos, hooks de revalidación), migración `20261126_203258_menu_categories_and_dishes` y `payload-types.ts`. Verificado en local con unit (178), integración (91), E2E (8), `typecheck`, `lint`, `build` y `schema-drift-check`. Detalle en [milestone-4.md](docs/milestones/milestone-4.md).
+
+**2026-11-27 — M4 cerrado.** PR #7 (de un colaborador) revisada por el propietario: cumple RF-MENU-01 a 08. Correcciones menores incorporadas en la misma PR (nombre de categoría recortado y único sin distinguir mayúsculas, E2E de cambio de disponibilidad desde el listado, ayuda del listado de platos, criterios de aceptación y pendientes trasladados a M5) y fusionada con squash. Siguiente: M5.

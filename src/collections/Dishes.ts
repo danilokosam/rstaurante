@@ -25,6 +25,10 @@ export const Dishes: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'category', 'price', 'availability', 'isFeatured'],
+    description: {
+      es: 'El orden de los platos es único para toda la carta: filtra por categoría antes de arrastrar para reordenar solo los platos de esa categoría. Para cambiar la disponibilidad de varios platos, selecciónalos y pulsa «Editar».',
+      en: 'Dish order is shared across the whole menu: filter by category before dragging to reorder only that category\'s dishes. To change the availability of several dishes, select them and click "Edit".',
+    },
   },
   access: {
     read: ({ req: { user } }) => {

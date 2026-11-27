@@ -63,6 +63,7 @@ menu-categories ◄── category (N:1) ── dishes ────────�
 
 - Access: `read` → público **solo `isVisible = true`** (constraint de consulta); autenticados ven todo. Escritura → autenticados.
 - Orden por defecto: `defaultSort: '_order'` (necesario además de `orderable: true` para que las consultas y el listado sigan el orden manual).
+- `name`: se recortan los espacios al guardar; la unicidad por idioma no distingue mayúsculas (hook `beforeValidate`, además del índice único de la BD).
 - `beforeDelete`: error 400 (traducido es/en) si existen platos en la categoría (RF-MENU-06).
 - Hooks `afterChange` / `afterDelete`: `revalidateSite` (RF-PUB-01).
 
@@ -81,7 +82,7 @@ menu-categories ◄── category (N:1) ── dishes ────────�
 | `_order`         | (Payload `orderable: true`)      | Orden manual                                                                                                                                                                                                                                                                      |
 
 - Access: `read` → público con constraint `availability != hidden` **y** `category.isVisible = true`; autenticados ven todo. Escritura → autenticados.
-- Orden por defecto: `defaultSort: '_order'` junto con `orderable: true`.
+- Orden por defecto: `defaultSort: '_order'` junto con `orderable: true`. El orden es único para toda la carta (la web agrupa por categoría); el listado del panel recomienda filtrar por categoría antes de reordenar.
 - Alérgenos: catálogo único en `src/lib/allergens.ts` usado por el campo `select` múltiple (`hasMany: true`) y por la web pública en M5.
 - Hooks `afterChange` / `afterDelete`: `revalidateSite` (RF-PUB-01).
 - Precio: se almacena como `numeric` en PostgreSQL (sin error de coma flotante en BD), validado por `src/lib/validation/price.ts`. El formateo en la web pública (M5) usa `Intl.NumberFormat` con **EUR fijo** y el formato del idioma (`es-ES` / `en-IE`). Ver [ADR-0011](../decisions/ADR/ADR-0011-allergens-and-currency.md).

@@ -268,6 +268,39 @@ describe('menu-categories (RF-MENU-01, RF-MENU-02, RF-MENU-06, US-E1)', () => {
     ).rejects.toThrow()
   })
 
+  it('trims category names and treats names differing only in case or spaces as duplicates', async () => {
+    const first = await createCategory({ name: '  Postres  ' })
+    expect(first.name).toBe('Postres')
+
+    const message = await rejectionMessage(createCategory({ name: 'postres ' }))
+    expect(message).toContain('Ya existe una categoría con este nombre')
+    await expect(createCategory({ name: 'POSTRES' })).rejects.toThrow()
+
+    // Saving the same document again with its own name is not a duplicate.
+    await expect(
+      payload.update({ collection: 'menu-categories', id: first.id, data: { name: 'Postres' } }),
+    ).resolves.toMatchObject({ name: 'Postres' })
+
+    // Uniqueness is per language: the same English name on another category is rejected,
+    // case-insensitively, while a Spanish name can match another category's English name.
+    await payload.update({
+      collection: 'menu-categories',
+      id: first.id,
+      locale: 'en',
+      data: { name: 'Desserts' },
+    })
+    const other = await createCategory({ name: 'Dulces' })
+    await expect(
+      payload.update({
+        collection: 'menu-categories',
+        id: other.id,
+        locale: 'en',
+        data: { name: 'desserts' },
+      }),
+    ).rejects.toThrow()
+    await expect(createCategory({ name: 'Desserts' })).resolves.toMatchObject({ name: 'Desserts' })
+  })
+
   it('maintains manual order via Payload orderable (RF-MENU-02)', async () => {
     const first = await createCategory({ name: 'Primero' })
     const second = await createCategory({ name: 'Segundo' })

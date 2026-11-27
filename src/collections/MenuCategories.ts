@@ -1,4 +1,9 @@
-import { APIError, type CollectionConfig } from 'payload'
+import {
+  APIError,
+  type CollectionBeforeValidateHook,
+  type CollectionConfig,
+  ValidationError,
+} from 'payload'
 
 import { authenticated } from '@/access'
 import { requiredInDefaultLocale } from '@/fields/localizedText'
@@ -9,6 +14,51 @@ import type { LocalizedMessage } from '@/lib/validation/messages'
 const deleteWithDishesMessage: LocalizedMessage = {
   es: 'No se puede borrar la categoría porque contiene platos. Muévelos o bórralos primero.',
   en: 'Cannot delete this category because it contains dishes. Move or delete them first.',
+}
+
+const duplicateNameMessage: LocalizedMessage = {
+  es: 'Ya existe una categoría con este nombre (sin distinguir mayúsculas ni espacios).',
+  en: 'A category with this name already exists (ignoring case and spaces).',
+}
+
+const normalizeName = (value: string): string => value.trim().toLocaleLowerCase()
+
+/**
+ * Category names are unique per language ignoring case and surrounding spaces
+ * (RF-MENU-01): the database unique index alone would accept "Postres" and "postres ".
+ */
+const rejectDuplicateName: CollectionBeforeValidateHook = async ({ data, originalDoc, req }) => {
+  const name = typeof data?.name === 'string' ? data.name.trim() : ''
+  if (!name) {
+    return data
+  }
+  const locale = req.locale && req.locale !== 'all' ? req.locale : undefined
+  // `like` is a case-insensitive superset (it matches words); the exact comparison is below.
+  const candidates = await req.payload.find({
+    collection: 'menu-categories',
+    where: {
+      name: { like: name },
+      ...(originalDoc?.id !== undefined ? { id: { not_equals: originalDoc.id } } : {}),
+    },
+    locale,
+    fallbackLocale: false,
+    depth: 0,
+    pagination: false,
+    overrideAccess: true,
+    req,
+  })
+  const target = normalizeName(name)
+  if (
+    candidates.docs.some(
+      (doc) => typeof doc.name === 'string' && normalizeName(doc.name) === target,
+    )
+  ) {
+    throw new ValidationError({
+      collection: 'menu-categories',
+      errors: [{ message: duplicateNameMessage[adminLanguage(req)], path: 'name' }],
+    })
+  }
+  return data
 }
 
 /** Menu categories managed by the restaurant (RF-MENU-01, RF-MENU-02, RF-MENU-06). */
@@ -31,6 +81,7 @@ export const MenuCategories: CollectionConfig = {
     delete: authenticated,
   },
   hooks: {
+    beforeValidate: [rejectDuplicateName],
     beforeDelete: [
       async ({ id, req }) => {
         const { totalDocs } = await req.payload.count({
@@ -54,10 +105,13 @@ export const MenuCategories: CollectionConfig = {
       maxLength: 80,
       unique: true,
       label: { es: 'Nombre', en: 'Name' },
+      hooks: {
+        beforeValidate: [({ value }) => (typeof value === 'string' ? value.trim() : value)],
+      },
       admin: {
         description: {
-          es: 'Obligatorio en español y único por idioma.',
-          en: 'Required in Spanish and unique per language.',
+          es: 'Obligatorio en español y único por idioma (sin distinguir mayúsculas).',
+          en: 'Required in Spanish and unique per language (case-insensitive).',
         },
       },
     }),
